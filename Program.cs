@@ -254,18 +254,9 @@
             Console.WriteLine();
             Console.WriteLine("{0} ( {1} )", _player.Name, _player.Job);
 
-
-
-           // int bonusAtk = getSumBonusAtk();
-           // PrintTextWithHighlights("공격력 : ", (_player.Atk + bonusAtk).ToString(), bonusAtk > 0 ? string.Format(" (+{0})", bonusAtk) : "");
-
-           // int bonusDef = getSumBonusDef();
-           // PrintTextWithHighlights("방어력 : ", (_player.Def + bonusDef).ToString(), bonusDef > 0 ? string.Format(" (+{0})", bonusDef) : "");
-
-           // int bonusHp = getSumBonusHp();
-           // PrintTextWithHighlights("체력 : ", (_player.Hp + bonusHp).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
-
-
+            PrintTextWithHighlights("공격력 : ", _player.Atk.ToString());
+            PrintTextWithHighlights("방어력 : ", _player.Def.ToString());
+            PrintTextWithHighlights("체력 : ", _player.Hp.ToString());
             PrintTextWithHighlights("골드 : ", _player.Gold.ToString());
             Console.WriteLine();
             Console.WriteLine("0. 뒤로 가기");
