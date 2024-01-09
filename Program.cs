@@ -1,5 +1,6 @@
 ﻿namespace _5week_assignment
 {
+    //hi
     public class Character
     {
         public string Name { get; }
