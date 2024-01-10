@@ -33,17 +33,19 @@ namespace _5week_assignment
     public class Monster
     {
         public string Name { get; }
-        public int Lv { get; } 
+        public int Level { get; } 
         public int Atk { get; }
         public int MaxHp { get; }
         public int CurrentHp { get; set; }
+        public bool Dead { get; set; }
 
-        public Monster(string name, int lv, int atk, int maxhp)
+        public Monster(string name, int level, int atk, int maxhp, bool dead = false)
         {
             Name = name;
-            Lv = lv;
+            Level = level;
             Atk = atk;
             MaxHp = maxhp;
+            Dead = dead;
         }
     }
 
@@ -149,7 +151,7 @@ namespace _5week_assignment
     {
         private static Character _player;
         private static Item[] _items;
-        private static Monster[] _monster;
+     
 
         static void Main(string[] args)
         {
@@ -165,7 +167,7 @@ namespace _5week_assignment
         {
             _player = new Character("Chad", "전사", 1, 10, 5, 10, 1500);
            _items = new Item[10];
-           _monster = new Monster[10];
+          
 
            AddItem(new Item("무쇠 갑옷", "무쇠로 만들어져 튼튼한 갑옷입니다.", 0, 0, 5, 0));
            AddItem(new Item("낡은 검", "쉽게 볼 수 있는 낡은 검입니다.", 1, 2, 0, 0));
@@ -433,27 +435,28 @@ namespace _5week_assignment
 
                 Console.WriteLine("원하는 행동을 선택하세요.");
                 Console.WriteLine("1. 공격");
-                Console.WriteLine("0. 종료");
+                Console.WriteLine("2. 방어");
 
                 string input = Console.ReadLine();
 
                 switch (input)
                 {
                     case "1":
-                        PlayerAttack();
+                        PlayerPhase();
                         if (CheckVictory())
                         {
-                            Console.WriteLine("모든 몬스터를 처치했습니다. 승리하셨습니다!");
+                            Console.WriteLine("모든 몬스터를 처치했습니다. 승리!");
                             return;
                         }
+                
                         EnemyPhase();
                         if (CheckPlayerLose())
                         {
-                            Console.WriteLine("플레이어가 전멸했습니다. 패배하셨습니다!");
+                            Console.WriteLine("플레이어가 전멸했습니다. 패배!");
                             return;
                         }
                         break;
-                    case "0":
+                    case "2":
                         Console.WriteLine("게임을 종료합니다.");
                         return;
                     default:
@@ -474,7 +477,7 @@ namespace _5week_assignment
             for (int i = 0; i < random.Next(minCount, maxCount + 1); i++)
             {
                 Monster randomMonster = monster[random.Next(monster.Count)];
-                randomMonsters.Add(new Monster(randomMonster.Name, randomMonster.Lv, randomMonster.Atk, randomMonster.MaxHp));
+                randomMonsters.Add(new Monster(randomMonster.Name, randomMonster.Level, randomMonster.Atk, randomMonster.MaxHp));
             }
 
             return randomMonsters;
@@ -483,20 +486,22 @@ namespace _5week_assignment
         private static void DisplayBattle()
         {
             Console.WriteLine("[내 정보]");
-            Console.WriteLine("{player.Name} (Lv.{player.Level})");
-            Console.WriteLine("HP: {player.CurrentHP}/{player.MaxHP}");
+            Console.WriteLine($"{_player.Name} (Lv.{_player.Level})");
+            Console.WriteLine($"HP: {_player.CurrentHp}/{_player.MaxHp}");
 
             Console.WriteLine("[몬스터]");
             for (int i = 0; i < monster.Count; i++)
             {
-                Console.WriteLine($"{i + 1} Lv.{monster[i].Lv} {monster[i].Name} HP: {monster[i].MaxHp}");
+                Console.WriteLine($"{i + 1} Lv.{monster[i].Level} {monster[i].Name} HP: {monster[i].MaxHp}");
             }
         }
 
 
-        private static bool CheckPlayerLose()
+
+
+        static bool CheckPlayerLose()
         {
-            throw new NotImplementedException();
+            return _player.CurrentHp <= 0;
         }
 
         private static void EnemyPhase()
@@ -504,25 +509,49 @@ namespace _5week_assignment
             throw new NotImplementedException();
         }
 
-        private static bool CheckVictory()
+        static bool CheckVictory()
         {
-            throw new NotImplementedException();
+            return monster.All(monster => monster.CurrentHp <= 0);
         }
 
-        private static void PlayerAttack()
-        {
-            throw new NotImplementedException();
-        }
-    
 
-        static List<Monster> monster = new List<Monster>
-    {
-        new Monster( "슬라임", 1, 1, 20 ),
-        new Monster( "고블린", 3, 5, 30 ),
-        new Monster( "시궁쥐", 2, 4, 20 ),
-        new Monster( "늑대", 4, 8, 25 ),
-        new Monster( "피폐해진 개발자", 1, 1, 10),
-        new Monster( "흉폭해진 개발자", 5, 10, 30),
+        private static void PlayerPhase()
+        {
+            Console.Clear();
+            Console.WriteLine("몬스터를 선택하세요.");
+            for (int i = 0; i < monster.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {monster[i].Name}");
+            }
+
+            int selectedMonsterIndex = CheckValidInput(1, monster.Count) - 1;
+            Monster selectedMonster = monster[selectedMonsterIndex];
+
+            if (selectedMonster.CurrentHp <= 0)
+            {
+                Console.WriteLine("이미 죽은 몬스터를 공격했습니다. 잘못된 입력입니다.");
+                return;
+            }
+            
+
+            Console.WriteLine($"{selectedMonster.Name}을(를) 공격했습니다. [데미지 : {damage}]");
+
+            selectedMonster.CurrentHp -= damage;
+
+            if (selectedMonster.CurrentHp <= 0)
+            {
+                Console.WriteLine($"{selectedMonster.Name}이(가) 사망했습니다.");
+            }
+        }
+
+        private static List<Monster> monster = new List<Monster>
+        {
+            new Monster( "슬라임", 1, 1, 20 ),
+            new Monster( "고블린", 3, 5, 30 ),
+            new Monster( "시궁쥐", 2, 4, 20 ),
+            new Monster( "늑대", 4, 8, 25 ),
+            new Monster( "피폐해진 개발자", 1, 1, 10),
+            new Monster( "흉폭해진 개발자", 5, 10, 30),
 
     };
     }
