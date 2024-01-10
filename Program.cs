@@ -6,6 +6,7 @@ namespace _5week_assignment
     //hi
     public class Character
     {
+        //hi
         public string Name { get; }
         public string Job { get; }
         public int Level { get; }
