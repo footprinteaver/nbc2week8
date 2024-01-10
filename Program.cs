@@ -599,11 +599,13 @@
 
                         int inputKey = CheckValidInput(0, 0);
 
-                        if (inputKey == 0) continue;
+                        if (inputKey == 0)
+                        {
+                            monsterPool.Clear();
+                            AddMonster();
+                            startMenu();
+                        }
 
-                        monsterPool.Clear();
-                        AddMonster();
-                        startMenu();
 
 
                     }
