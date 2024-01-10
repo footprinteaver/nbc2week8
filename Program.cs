@@ -1,6 +1,7 @@
 ﻿
 using System.Xml.Linq;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace _5week_assignment
 {
@@ -12,17 +13,19 @@ namespace _5week_assignment
         public int Level { get; }
         public int Atk { get; }
         public int Def { get; }
-        public int Hp { get; }
+        public int MaxHp { get; }
+        public int CurrentHp { get; set; }
         public int Gold { get; }
 
-        public Character(string name, string job, int level, int atk, int def, int hp, int gold)
+        public Character(string name, string job, int level, int atk, int def, int maxhp, int gold)
         {
             Name = name;
             Job = job;
             Level = level;
             Atk = atk;
             Def = def;
-            Hp = hp;
+            MaxHp = maxhp;
+            CurrentHp = maxhp;
             Gold = gold;
         }
     }
@@ -32,14 +35,15 @@ namespace _5week_assignment
         public string Name { get; }
         public int Lv { get; } 
         public int Atk { get; }
-        public int Hp { get; }
+        public int MaxHp { get; }
+        public int CurrentHp { get; set; }
 
-        public Monster(string name, int lv, int atk, int hp)
+        public Monster(string name, int lv, int atk, int maxhp)
         {
             Name = name;
             Lv = lv;
             Atk = atk;
-            Hp = hp;
+            MaxHp = maxhp;
         }
     }
 
@@ -145,6 +149,7 @@ namespace _5week_assignment
     {
         private static Character _player;
         private static Item[] _items;
+        private static Monster[] _monster;
 
         static void Main(string[] args)
         {
@@ -160,6 +165,7 @@ namespace _5week_assignment
         {
             _player = new Character("Chad", "전사", 1, 10, 5, 10, 1500);
            _items = new Item[10];
+           _monster = new Monster[10];
 
            AddItem(new Item("무쇠 갑옷", "무쇠로 만들어져 튼튼한 갑옷입니다.", 0, 0, 5, 0));
            AddItem(new Item("낡은 검", "쉽게 볼 수 있는 낡은 검입니다.", 1, 2, 0, 0));
@@ -274,6 +280,7 @@ namespace _5week_assignment
 
         private static void StatusMenu()
         {
+            
             Console.Clear();
 
             ShowHighlightedText("■상 태  보 기■");
@@ -292,7 +299,7 @@ namespace _5week_assignment
            PrintTextWithHighlights("방어력 : ", (_player.Def + bonusDef).ToString(), bonusDef > 0 ? string.Format(" (+{0})", bonusDef) : "");
 
            int bonusHp = getSumBonusHp();
-           PrintTextWithHighlights("체력 : ", (_player.Hp + bonusHp).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
+           PrintTextWithHighlights("체력 : ", (_player.MaxHp + bonusHp).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
 
 
             PrintTextWithHighlights("골드 : ", _player.Gold.ToString());
@@ -415,9 +422,11 @@ namespace _5week_assignment
         private static void BattleMenu()
         {
             Console.Clear();
+            
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("몬스터들과 마주했다!");
             Console.ResetColor();
+            List < Monster > encounter = GetRandomMonster(1, 4);
             while (true)
             {
                 DisplayBattle();
@@ -455,9 +464,33 @@ namespace _5week_assignment
 
 
         }
+
+        static List<Monster> GetRandomMonster(int minCount, int maxCount)
+        {
+            List<Monster> randomMonsters = new List<Monster>();
+            Random random = new Random();
+
+            // 몬스터 리스트에서 무작위로 선택
+            for (int i = 0; i < random.Next(minCount, maxCount + 1); i++)
+            {
+                Monster randomMonster = monster[random.Next(monster.Count)];
+                randomMonsters.Add(new Monster(randomMonster.Name, randomMonster.Lv, randomMonster.Atk, randomMonster.MaxHp));
+            }
+
+            return randomMonsters;
+        }
+
         private static void DisplayBattle()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("[내 정보]");
+            Console.WriteLine("{player.Name} (Lv.{player.Level})");
+            Console.WriteLine("HP: {player.CurrentHP}/{player.MaxHP}");
+
+            Console.WriteLine("[몬스터]");
+            for (int i = 0; i < monster.Count; i++)
+            {
+                Console.WriteLine($"{i + 1} Lv.{monster[i].Lv} {monster[i].Name} HP: {monster[i].MaxHp}");
+            }
         }
 
 
