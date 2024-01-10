@@ -80,7 +80,7 @@
             Random rand = new Random();
             int minAtk = Atk - (int)Math.Ceiling(Atk * 0.1);
             int maxAtk = Atk + (int)Math.Ceiling(Atk * 0.1);
-            int attack = rand.Next(minAtk, maxAtk);
+            int attack = rand.Next(minAtk, maxAtk + 1);
             monster.Hp -= attack;
         }
 
@@ -295,7 +295,7 @@
             Random rand = new Random();
             int minAtk = Atk - (int)Math.Ceiling(Atk * 0.1);
             int maxAtk = Atk + (int)Math.Ceiling(Atk * 0.1);
-            int attack = rand.Next(minAtk, maxAtk);
+            int attack = rand.Next(minAtk, maxAtk + 1);
             character.currentHP -= attack;
         }
 
@@ -456,6 +456,10 @@
                     Console.Clear();
                     AttackResult(0);
                     break;
+                case 2:
+                    Console.Clear();
+                    AttackResult(1);
+                    break;
             }
         }
 
@@ -466,6 +470,10 @@
 
             Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
             Console.WriteLine($"[데미지 : {monsterPool[input].Hp - monsterPool[input].currentHp}]");
+
+            Console.WriteLine();
+            Console.WriteLine("[Please AnyKey]");
+            Console.ReadKey();
         }
 
         private static int CheckValidInput(int min, int max)
