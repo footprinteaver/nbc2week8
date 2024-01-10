@@ -15,6 +15,8 @@
         public int Atk { get; set; }
         public int Def { get; set; }
         public int Hp { get; set; }
+
+        public bool isDead { get; set; }
         public int currentHP { get; set; }
         public int Gold { get; set; }
 
@@ -22,14 +24,15 @@
         {
             Console.WriteLine("이름을 입력해주세요.");
             Console.Write(">>");
-            String input = Console.ReadLine();
+            string input = Console.ReadLine();
+
             Name = input;
             Gold = 1500;
+            isDead = false;
             Level = 1;
             Console.Clear();
             ChoiceClass();
             Console.Clear();
-
         }
 
         public ClassType ChoiceClass()  // 직업선택 메서드
@@ -75,13 +78,15 @@
             return choice;    
         }
 
-        public void PlayerAttack(Monster monster)
+        public void PlayerAttack(Monster monster, out int damaged)
         {
             Random rand = new Random();
             int minAtk = Atk - (int)Math.Ceiling(Atk * 0.1);
             int maxAtk = Atk + (int)Math.Ceiling(Atk * 0.1);
             int attack = rand.Next(minAtk, maxAtk + 1);
-            monster.Hp -= attack;
+            monster.currentHp -= attack;
+
+            damaged = attack;
         }
 
         private int CheckValidInput(int min, int max)
@@ -115,8 +120,8 @@
         public void PlayerInfo()
         {
             
-            Console.WriteLine($"Lv.{Level.ToString("00")} {Name}");
-            Console.WriteLine($"HP {currentHP}/{Hp}");
+            Console.WriteLine($"Lv.{Level.ToString("00")} {Name} ({Job})");
+            Console.WriteLine($"HP {Hp}/{currentHP}");
         }
     }
 
@@ -272,16 +277,17 @@
         public void MonsterInfo(bool withNumber = false, int index = 0)
         {
             Console.Write("- ");
-            if(withNumber)
+            
+            if(isDead)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine($"Lv.{Level.ToString("00")} {Name}  Dead");
+                Console.ResetColor();
+            }
+            else if (withNumber)
             {
                 Console.Write($"{index}  ");
                 Console.WriteLine($"Lv.{Level.ToString("00")} {Name} HP {currentHp}");
-            }
-            else if(isDead && withNumber)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.Write($"Lv.{Level.ToString("00")} {Name} Dead");
-                Console.ResetColor();
             }
             else
             {
@@ -290,13 +296,15 @@
             
         }
 
-        public void MonsterAttack(Character character)
+        public void MonsterAttack(Character character,out int damaged)
         {
             Random rand = new Random();
             int minAtk = Atk - (int)Math.Ceiling(Atk * 0.1);
             int maxAtk = Atk + (int)Math.Ceiling(Atk * 0.1);
             int attack = rand.Next(minAtk, maxAtk + 1);
             character.currentHP -= attack;
+
+            damaged = attack;
         }
 
     }
@@ -446,7 +454,8 @@
             Console.WriteLine();
             Console.WriteLine("0. 취소");
 
-            switch(CheckValidInput(0,monsterPool.Count))
+            int input = CheckValidInput(0, monsterPool.Count);
+            switch (input)
             {
                 case 0:
                     Console.Clear();
@@ -454,26 +463,154 @@
                     break;
                 case 1:
                     Console.Clear();
-                    AttackResult(0);
+                    PlayerAttackResult(input - 1);
                     break;
                 case 2:
                     Console.Clear();
-                    AttackResult(1);
+                    PlayerAttackResult(input - 1);
+                    break;
+                case 3:
+                    Console.Clear();
+                    PlayerAttackResult(input - 1);
+                    break;
+                case 4:
+                    Console.Clear();
+                    PlayerAttackResult(input - 1);
                     break;
             }
         }
 
-        private static void AttackResult(int input)
+        private static void PlayerAttackResult(int input)
         {
-            Console.WriteLine($"{_player.Name} 의 공격!");
-            _player.PlayerAttack(monsterPool[input]);
+            int damaged = 0;
 
+            ShowHighlightedText("■ PlayerTurn ■");
+            Console.WriteLine();
+
+            _player.PlayerAttack(monsterPool[input],out damaged);
+
+            Console.WriteLine($"{_player.Name} 의 공격!");
             Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
-            Console.WriteLine($"[데미지 : {monsterPool[input].Hp - monsterPool[input].currentHp}]");
+            Console.WriteLine($" [데미지 : {damaged}]");
+
+            if (monsterPool[input].currentHp <= 0)
+            {
+                monsterPool[input].isDead = true;
+            }
 
             Console.WriteLine();
-            Console.WriteLine("[Please AnyKey]");
-            Console.ReadKey();
+            
+
+            Console.WriteLine();
+            Console.WriteLine("0. 다음");
+            Console.WriteLine();
+
+            int inputKey = CheckValidInput(0, 0);
+
+            if (inputKey == 0)
+            {
+                Console.Clear();
+                MonsterTurn();
+            }
+
+            
+        }
+
+        private static void MonsterTurn()
+        {
+            int deadCount = 0;
+
+            ShowHighlightedText("■ MonsterTurn ■");
+
+            for (int i = 0; i < monsterPool.Count; i++)
+            {
+                int beforeHitHP = _player.currentHP;
+
+                if (!monsterPool[i].isDead)
+                {
+
+                    monsterPool[i].MonsterAttack(_player,out int damaged);
+
+                    Console.WriteLine($"Lv.{monsterPool[i].Level} {monsterPool[i].Name} 의 공격!");
+                    Console.WriteLine($"{_player.Name} ({_player.Job})을(를) 맞췄습니다.  [데미지 : {damaged}]");
+                    Console.WriteLine();
+
+                    Console.WriteLine($"Lv. {_player.Level} {_player.Name} {_player.Job}");
+                    Console.WriteLine($"HP {beforeHitHP} -> {_player.currentHP}");
+
+                    Console.WriteLine();
+                    Console.WriteLine("0.다음");
+                    Console.WriteLine();
+
+
+                    
+                    
+                    if (_player.currentHP <= 0)
+                    {
+                        _player.currentHP = 0;
+                        _player.isDead = true;
+
+                        if(_player.isDead)
+                        {
+                            Console.Clear();
+
+                            Console.Clear();
+                            ShowHighlightedText("■ You Lose :( ■");
+
+                            Console.WriteLine();
+                            Console.WriteLine($"Lv.{_player.Level} {_player.Name}");
+                            Console.WriteLine($"HP {_player.Hp} -> {_player.currentHP}");
+
+                            Console.WriteLine();
+                            Console.WriteLine("0. 다음");
+
+                            int inputKey2 = CheckValidInput(0, 0);
+
+                            if (inputKey2 == 0)
+                            {
+                                monsterPool.Clear();
+                                GameDataSetting();
+                                startMenu();
+                            }
+                        }
+                    }
+
+                    int inputKey = CheckValidInput(0, 0);
+
+                    if (inputKey == 0) { continue; }
+                }
+                else
+                {
+                    deadCount++;
+                    if(deadCount == monsterPool.Count)
+                    {
+                        Console.Clear();
+                        ShowHighlightedText("■ Victory :) ■");
+
+                        Console.WriteLine();
+                        Console.WriteLine($"던전에서 몬스터 {deadCount}마리를 잡았습니다.");
+
+                        Console.WriteLine();
+                        Console.WriteLine($"Lv.{_player.Level} {_player.Name}");
+                        Console.WriteLine($"HP {_player.Hp} -> {_player.currentHP}");
+
+                        Console.WriteLine();
+                        Console.WriteLine("0. 다음");
+
+                        int inputKey = CheckValidInput(0, 0);
+
+                        if (inputKey == 0) continue;
+
+                        monsterPool.Clear();
+                        AddMonster();
+                        startMenu();
+
+
+                    }
+                }
+            }
+
+            Attack();
         }
 
         private static int CheckValidInput(int min, int max)
@@ -481,11 +618,13 @@
             int keyInput;
             bool result;
 
+            #region 이전코드
             //do
             //{
             //    Console.WriteLine("원하시는 행동을 입력해주세요.");
             //    result = int.TryParse(Console.ReadLine(), out keyInput);
             //} while (result == false || CheckIfValid(keyInput, min, max) == false);
+            #endregion
 
             Console.WriteLine("원하시는 행동을 입력하세요");
             Console.Write(">>");
@@ -493,8 +632,14 @@
             do
             {
                 result = int.TryParse(Console.ReadLine(), out keyInput);
+                if (!result)
+                {
+                    Console.WriteLine("다시 입력하세요");
+                    Console.Write(">>");
+                    continue;
+                }
             }
-            while (result == false || CheckIfValid(keyInput, min, max) == false) ;
+            while (result == false || CheckIfValid(keyInput, min, max) == false);
 
             return keyInput;
 
@@ -508,7 +653,8 @@
             }
             else
             {
-                Console.WriteLine("다시 입력해주세요!");
+                Console.WriteLine("다시 입력하세요");
+                Console.Write(">>");
                 return false;
             }
         }
