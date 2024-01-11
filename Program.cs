@@ -1,7 +1,10 @@
-﻿namespace _5week_assignment
+﻿using System.Security.Cryptography.X509Certificates;
+using static System.Net.Mime.MediaTypeNames;
+
+namespace _5week_assignment
 {
     public class Character
-    {
+    {   
         public enum ClassType
         {
             None = 0,
@@ -9,6 +12,7 @@
             Archer = 2,     // 궁수
             Mage = 3        //마법사
         }
+
         public string Name { get; set; }
         public string Job{ get; set; }
         public int Level { get; set; }
@@ -36,6 +40,7 @@
             ChoiceClass();
             Console.Clear();
         }
+        
 
         public ClassType ChoiceClass()  // 직업선택 메서드
         {
@@ -95,6 +100,7 @@
 
             damaged = attack;
         }
+        
 
         private int CheckValidInput(int min, int max)
         {
@@ -129,7 +135,26 @@
             
             Console.WriteLine($"Lv.{Level.ToString("00")} {Name} ({Job})");
             Console.WriteLine($"HP {Hp}/{currentHP}");
+            Console.WriteLine($"MP{Mp}/{currentMP}");
         }
+    }
+
+    public class playerSkill
+    {
+        enum SkillType
+        {
+            none =0,
+            Attack = 1,
+            Heal = 2,
+            Buff = 3,
+        }
+
+        public string Name { get; set; }
+        public string Description { get; set; }
+
+ 
+
+
     }
 
     #region 아이템
@@ -247,6 +272,7 @@
 
         public bool isDead; // 죽었니 살았니?
 
+        
         public Monster()
         {
             Random rand = new Random();
@@ -431,16 +457,20 @@
             Console.WriteLine();
 
             Console.WriteLine("1. 공격");
-            Console.WriteLine();
+            Console.WriteLine("2. 스킬");
 
-            switch(CheckValidInput(1,1))
+            switch(CheckValidInput(1,2))
             {
                 case 1:
                     // 공격
                     Attack();
                     break;
+                case 2:                
+                    Skill();
+                    break;
             }
         }
+     
 
         private static void Attack()
         {
@@ -487,6 +517,7 @@
             }
         }
 
+
         private static void PlayerAttackResult(int input)
         {
             int damaged = 0;
@@ -522,6 +553,33 @@
 
             
         }
+
+        private static void Skill()
+        {
+            Console.Clear();
+            ShowHighlightedText("Battle!!");
+            Console.WriteLine();
+            for (int i = 0; i < monsterPool.Count; i++)
+            {
+                monsterPool[i].MonsterInfo(true, i + 1);
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("[내정보]");
+            _player.PlayerInfo();
+
+            Console.WriteLine();
+            Console.WriteLine("0. 취소");
+
+
+
+
+ 
+            
+        }
+
+ 
 
         private static void MonsterTurn()
         {
@@ -697,6 +755,7 @@
             PrintTextWithHighlights("공격력 : ", $"{_player.Atk.ToString()}");
             PrintTextWithHighlights("방어력 : ", $"{_player.Def.ToString()}");
             PrintTextWithHighlights("체력 : ", $"{_player.Hp.ToString()}");
+            PrintTextWithHighlights("마력 : ", $"{_player.Mp.ToString()}");
 
             #region 예전 코드
             //int bonusAtk = getSumBonusAtk();
