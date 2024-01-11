@@ -10,14 +10,16 @@
             Mage = 3        //마법사
         }
         public string Name { get; set; }
-        public String Job{ get; set; }
+        public string Job{ get; set; }
         public int Level { get; set; }
         public int Atk { get; set; }
         public int Def { get; set; }
         public int Hp { get; set; }
+        public int Mp { get; set; }//마나 추가
 
         public bool isDead { get; set; }
         public int currentHP { get; set; }
+        public int currentMP { get; set; }
         public int Gold { get; set; }
 
         public void CreatePlayer()     // 플레이어 생성
@@ -49,7 +51,9 @@
                     choice = ClassType.Knight;
                     Job = "전사";
                     Hp = 100;
+                    Mp = 30;
                     currentHP = Hp;
+                    currentMP = Mp;
                     Atk = 10;
                     Def = 20;
                     break;
@@ -57,6 +61,7 @@
                     choice = ClassType.Archer;
                     Job = "궁수";
                     Hp = 80;
+                    Mp = 40;
                     currentHP = Hp;
                     Atk = 15;
                     Def = 15;
@@ -65,7 +70,9 @@
                     choice = ClassType.Mage;
                     Job = "마법사";
                     Hp = 60;
+                    Mp = 80;                  
                     currentHP = Hp;
+                    currentMP = Mp;
                     Atk = 20;
                     Def = 8;
                     break;
