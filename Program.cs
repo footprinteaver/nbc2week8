@@ -342,7 +342,6 @@
             Console.WriteLine("스파르타 마을에 오신걸 환영합니다!");
             _player.CreatePlayer();
             
-
         }
 
         #region 아이템 추가 예전코드
@@ -626,7 +625,6 @@
                         if (inputKey == 0)
                         {
                             monsterPool.Clear();
-                            AddMonster();
                             startMenu();
                         }
 
@@ -659,7 +657,7 @@
                 _player.Gold += gold;
                 //_player.itemList += itemName;
             }
-            
+
         }
 
         private static int CheckValidInput(int min, int max)
