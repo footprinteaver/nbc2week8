@@ -126,6 +126,7 @@
             
             Console.WriteLine($"Lv.{Level.ToString("00")} {Name} ({Job})");
             Console.WriteLine($"HP {currentHP}/{Hp}");
+            Console.WriteLine($"Exp {Exp}");
         }
     }
 
@@ -242,7 +243,7 @@
         public int Def;
         public int Level;
         public int Gold;
-        public int exp;
+        public int Exp;
 
         public bool isDead; // 죽었니 살았니?
 
@@ -260,7 +261,7 @@
                     Atk = 3;
                     Def = 0;
                     Gold = 100;
-                    exp = 10;
+                    Exp = 10;
                     break;
                 case (int)MonsterType.MonYeongOh:
                     Name = "문영오 매니저";
@@ -270,7 +271,7 @@
                     Atk = 6;
                     Def = 1;
                     Gold = 150;
-                    exp = 20;
+                    Exp = 20;
                     break;
                 case (int)MonsterType.HanHyoseung:
                     Name = "한효승 매니저";
@@ -280,7 +281,7 @@
                     Atk = 9;
                     Def = 3;
                     Gold = 300;
-                    exp = 40;
+                    Exp = 40;
                     break;
             }
 
@@ -366,7 +367,9 @@
             }
         }
 
-        
+   
+
+
         private static void PrintStartLogo()
         {
             Console.WriteLine("====================================================================");
@@ -612,18 +615,9 @@
                         Console.WriteLine($"Lv.{_player.Level} {_player.Name}");
                         Console.WriteLine($"HP {_player.Hp} -> {_player.currentHP}");
 
-                        ShowHighlightedText("[ 획득 아이템 ]");
+                        ShowHighlightedText("[ 전리품 획득!! ]");
 
-                        for(i = 0; i < monsterPool.Count; i++)
-                        {
-                            Console.WriteLine("exp : {monster[i].exp}");
-                            Console.WriteLine("{monster[i].gold}  Gold");
-                            Console.WriteLine("{itemName} - {count}");
-                            Console.WriteLine();
-                            Console.WriteLine();
-
-                            looting();
-                        }
+                        looting();
 
                         Console.WriteLine("0. 돌아가기");
 
@@ -647,9 +641,25 @@
 
         private static void looting()
         {
-            //_player.Exp += monster[i].Exp;
-            //_player.Gold += monster[i].gold;
-            //_playter.itemList += itemName;
+            for (int i = 0; i < monsterPool.Count; i++)
+            {
+                Random rand = new Random();
+                int randomGold = rand.Next(-50, 51);
+
+                Monster lootingMonster = monsterPool[i];
+                int gold = lootingMonster.Gold + randomGold;
+
+                Console.WriteLine($"exp : {monsterPool[i].Exp}");
+                Console.WriteLine($"{monsterPool[i].Gold}  Gold");
+                //Console.WriteLine("{itemName} - {count}");
+                Console.WriteLine();
+                Console.WriteLine();
+
+                _player.Exp += monsterPool[i].Exp;
+                _player.Gold += gold;
+                //_player.itemList += itemName;
+            }
+            
         }
 
         private static int CheckValidInput(int min, int max)
@@ -728,6 +738,7 @@
             PrintTextWithHighlights("방어력 : ", $"{_player.Def.ToString()}");
             PrintTextWithHighlights("체력 : ", $"{_player.Hp.ToString()}");
 
+
             #region 예전 코드
             //int bonusAtk = getSumBonusAtk();
             //PrintTextWithHighlights("공격력 : ", (_player.Atk + bonusAtk).ToString(), bonusAtk > 0 ? string.Format(" (+{0})", bonusAtk) : "");
@@ -741,6 +752,7 @@
 
 
             PrintTextWithHighlights("골드 : ", _player.Gold.ToString());
+            PrintTextWithHighlights("경험치 : ", $"{_player.Exp.ToString()}");
             Console.WriteLine();
             Console.WriteLine("0. 뒤로 가기");
             Console.WriteLine();
