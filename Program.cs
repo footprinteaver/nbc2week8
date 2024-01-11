@@ -19,6 +19,7 @@
         public bool isDead { get; set; }
         public int currentHP { get; set; }
         public int Gold { get; set; }
+        public int Exp { get; set; }
 
         public void CreatePlayer()     // 플레이어 생성
         {
@@ -52,6 +53,7 @@
                     currentHP = Hp;
                     Atk = 10;
                     Def = 20;
+                    Exp = 0;
                     break;
                 case 2:
                     choice = ClassType.Archer;
@@ -60,6 +62,7 @@
                     currentHP = Hp;
                     Atk = 15;
                     Def = 15;
+                    Exp = 0;
                     break;
                 case 3:
                     choice = ClassType.Mage;
@@ -68,11 +71,12 @@
                     currentHP = Hp;
                     Atk = 20;
                     Def = 8;
+                    Exp = 0;
                     break;
                 default:
                     Console.Clear();
                     ChoiceClass();
-                    break;
+                    break; 
 
             }
             return choice;    
@@ -121,7 +125,7 @@
         {
             
             Console.WriteLine($"Lv.{Level.ToString("00")} {Name} ({Job})");
-            Console.WriteLine($"HP {Hp}/{currentHP}");
+            Console.WriteLine($"HP {currentHP}/{Hp}");
         }
     }
 
@@ -237,6 +241,8 @@
         public int Atk;
         public int Def;
         public int Level;
+        public int Gold;
+        public int exp;
 
         public bool isDead; // 죽었니 살았니?
 
@@ -253,6 +259,8 @@
                     currentHp = Hp;
                     Atk = 3;
                     Def = 0;
+                    Gold = 100;
+                    exp = 10;
                     break;
                 case (int)MonsterType.MonYeongOh:
                     Name = "문영오 매니저";
@@ -261,6 +269,8 @@
                     currentHp = Hp;
                     Atk = 6;
                     Def = 1;
+                    Gold = 150;
+                    exp = 20;
                     break;
                 case (int)MonsterType.HanHyoseung:
                     Name = "한효승 매니저";
@@ -269,6 +279,8 @@
                     currentHp = Hp;
                     Atk = 9;
                     Def = 3;
+                    Gold = 300;
+                    exp = 40;
                     break;
             }
 
@@ -326,7 +338,6 @@
         private static void GameDataSetting()
         {
             Console.Clear();
-            AddMonster();
             Console.WriteLine("스파르타 마을에 오신걸 환영합니다!");
             _player.CreatePlayer();
             
@@ -345,7 +356,6 @@
         //    Item.ItemCnt++;
         //}
         #endregion
-
         static void AddMonster()
         {
             Random rand = new Random();
@@ -354,8 +364,8 @@
             {
                 monsterPool.Add(new Monster());
             }
-           
         }
+
         
         private static void PrintStartLogo()
         {
@@ -383,6 +393,8 @@
 
         static void startMenu()
         {
+            AddMonster();
+
             Console.Clear();
             Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
             Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.");
@@ -423,11 +435,16 @@
             _player.PlayerInfo();
             Console.WriteLine();
 
+            Console.WriteLine("0. 도망가기");
             Console.WriteLine("1. 공격");
             Console.WriteLine();
 
-            switch(CheckValidInput(1,1))
-            {
+            switch(CheckValidInput(0,1))
+            { 
+                case 0:
+                    monsterPool.Clear();
+                    startMenu();
+                    break;
                 case 1:
                     // 공격
                     Attack();
@@ -452,7 +469,7 @@
             _player.PlayerInfo();
 
             Console.WriteLine();
-            Console.WriteLine("0. 취소");
+            Console.WriteLine("0. 도망가기");
 
             int input = CheckValidInput(0, monsterPool.Count);
             switch (input)
@@ -585,6 +602,7 @@
                     if(deadCount == monsterPool.Count)
                     {
                         Console.Clear();
+                        ShowHighlightedText("Battle!! - Result");
                         ShowHighlightedText("■ Victory :) ■");
 
                         Console.WriteLine();
@@ -594,8 +612,20 @@
                         Console.WriteLine($"Lv.{_player.Level} {_player.Name}");
                         Console.WriteLine($"HP {_player.Hp} -> {_player.currentHP}");
 
-                        Console.WriteLine();
-                        Console.WriteLine("0. 다음");
+                        ShowHighlightedText("[ 획득 아이템 ]");
+
+                        for(i = 0; i < monsterPool.Count; i++)
+                        {
+                            Console.WriteLine("exp : {monster[i].exp}");
+                            Console.WriteLine("{monster[i].gold}  Gold");
+                            Console.WriteLine("{itemName} - {count}");
+                            Console.WriteLine();
+                            Console.WriteLine();
+
+                            looting();
+                        }
+
+                        Console.WriteLine("0. 돌아가기");
 
                         int inputKey = CheckValidInput(0, 0);
 
@@ -613,6 +643,13 @@
             }
 
             Attack();
+        }
+
+        private static void looting()
+        {
+            //_player.Exp += monster[i].Exp;
+            //_player.Gold += monster[i].gold;
+            //_playter.itemList += itemName;
         }
 
         private static int CheckValidInput(int min, int max)
