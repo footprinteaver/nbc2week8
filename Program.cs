@@ -90,20 +90,27 @@ namespace _5week_assignment
             int minAtk = Atk - (int)Math.Ceiling(Atk * 0.1);
             int maxAtk = Atk + (int)Math.Ceiling(Atk * 0.1);
             int attack = rand.Next(minAtk, maxAtk + 1);
-            //10%확률
+
+            //160% 크리티컬
+            int critical = rand.Next(1, 101);
+            if (critical <= 15)
+            {
+                attack = (int)Math.Ceiling(attack * 1.6);
+            }
+
+            // 10% 확률로 공격이 빗나감
             int hit = rand.Next(1, 101);
             if (hit <= 90)
-            { 
-                attack = 0;
-                damaged = attack;
+            {
+                damaged = 0;
             }
             else
             {
                 monster.currentHp -= attack;
                 damaged = attack;
-                //치명타코드
-                
             }
+
+
 
         }
 
