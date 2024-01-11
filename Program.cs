@@ -1,4 +1,8 @@
-﻿namespace _5week_assignment
+﻿using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+
+namespace _5week_assignment
 {
     //lee
     public class Character
@@ -11,7 +15,7 @@
             Mage = 3        //마법사
         }
         public string Name { get; set; }
-        public String Job{ get; set; }
+        public string Job{ get; set; }
         public int Level { get; set; }
         public int Atk { get; set; }
         public int Def { get; set; }
@@ -79,15 +83,28 @@
             return choice;    
         }
 
+        //playerattackdamage
         public void PlayerAttack(Monster monster, out int damaged)
         {
             Random rand = new Random();
             int minAtk = Atk - (int)Math.Ceiling(Atk * 0.1);
             int maxAtk = Atk + (int)Math.Ceiling(Atk * 0.1);
             int attack = rand.Next(minAtk, maxAtk + 1);
-            monster.currentHp -= attack;
+            //10%확률
+            int hit = rand.Next(1, 101);
+            if (hit <= 90)
+            { 
+                attack = 0;
+                damaged = attack;
+            }
+            else
+            {
+                monster.currentHp -= attack;
+                damaged = attack;
+                //치명타코드
+                
+            }
 
-            damaged = attack;
         }
 
         private int CheckValidInput(int min, int max)
@@ -120,12 +137,42 @@
 
         public void PlayerInfo()
         {
-            
+
             Console.WriteLine($"Lv.{Level.ToString("00")} {Name} ({Job})");
             Console.WriteLine($"HP {Hp}/{currentHP}");
         }
+
+        #region 회피코드였던것
+        //int num = rand.Next(0, 101);
+        //float[] p = { 10f, 15f, 75f };
+
+        //float cumulative = 0f;
+        //int target = -1;
+        //for (int i = 0; i < 3; i++)
+        //{
+        //    cumulative += p[i];
+        //    if (num <= cumulative)
+        //    {
+        //        target = 2 - i;
+        //        break;
+        //    }
+        //}
+        //switch(target)
+        //{
+        //    case 0:
+        //        int nodamage = 0;
+        //        damaged = nodamage;
+        //        break;
+        //    case 1:
+        //        //치명타
+        //    case 2:
+        //        damaged = attack;
+        //        break;
+        //}
+        #endregion
     }
 
+    
     #region 아이템
     //public class Item
     //{
@@ -303,11 +350,21 @@
             int minAtk = Atk - (int)Math.Ceiling(Atk * 0.1);
             int maxAtk = Atk + (int)Math.Ceiling(Atk * 0.1);
             int attack = rand.Next(minAtk, maxAtk + 1);
-            character.currentHP -= attack;
 
-            damaged = attack;
+            //10%확률
+            int hit = rand.Next(1, 101);
+            if (hit <= 90)
+            {
+                attack = 0;
+                damaged = attack;
+            }
+            else
+            {
+                character.currentHP -= attack;
+                damaged = attack;
+                //치명타코드
+            }
         }
-
     }
 
     internal class Program
@@ -487,13 +544,19 @@
 
             ShowHighlightedText("■ PlayerTurn ■");
             Console.WriteLine();
-
             _player.PlayerAttack(monsterPool[input],out damaged);
-
             Console.WriteLine($"{_player.Name} 의 공격!");
-            Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
-            Console.WriteLine($" [데미지 : {damaged}]");
 
+            if(damaged == 0)
+            {
+                Console.WriteLine($"{monsterPool[input].Name} 을 공격했지만 회피하였습니다.");
+            }
+            else
+            {
+                Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
+                Console.WriteLine($" [데미지 : {damaged}]");
+            }
+            
             if (monsterPool[input].currentHp <= 0)
             {
                 monsterPool[input].isDead = true;
@@ -529,13 +592,19 @@
 
                 if (!monsterPool[i].isDead)
                 {
-
                     monsterPool[i].MonsterAttack(_player,out int damaged);
-
                     Console.WriteLine($"Lv.{monsterPool[i].Level} {monsterPool[i].Name} 의 공격!");
-                    Console.WriteLine($"{_player.Name} ({_player.Job})을(를) 맞췄습니다.  [데미지 : {damaged}]");
-                    Console.WriteLine();
 
+                    if(damaged ==0)
+                    {
+                        Console.WriteLine($"{_player.Name} 을 공격했지만 회피하였습니다.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{_player.Name} ({_player.Job})을(를) 맞췄습니다.  [데미지 : {damaged}]");
+                    }
+                    
+                    Console.WriteLine();
                     Console.WriteLine($"Lv. {_player.Level} {_player.Name} {_player.Job}");
                     Console.WriteLine($"HP {beforeHitHP} -> {_player.currentHP}");
 
@@ -606,7 +675,6 @@
                             AddMonster();
                             startMenu();
                         }
-
 
 
                     }
