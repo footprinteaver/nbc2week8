@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 
@@ -92,20 +93,21 @@ namespace _5week_assignment
             int attack = rand.Next(minAtk, maxAtk + 1);
 
             //160% 크리티컬
-            int critical = rand.Next(1, 101);
-            if (critical <= 15)
+        
+
+            // 10% 확률로 공격이 빗나감
+            int hit = rand.Next(1, 101);
+            if (hit <= 10)
+            {
+                damaged = 0;
+            }
+            else if (hit <= 25)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\r\n크리티컬발동!!");
                 Console.ResetColor();
                 attack = (int)Math.Ceiling(attack * 1.6);
-            }
-
-            // 10% 확률로 공격이 빗나감
-            int hit = rand.Next(1, 101);
-            if (hit <= 90)
-            {
-                damaged = 0;
+                damaged = attack;
             }
             else
             {
@@ -373,7 +375,7 @@ namespace _5week_assignment
 
             // 10% 확률로 공격이 빗나감
             int hit = rand.Next(1, 101);
-            if (hit <= 90)
+            if (hit <= 10)
             {
                 damaged = 0;
             }
