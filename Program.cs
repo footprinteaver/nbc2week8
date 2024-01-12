@@ -95,7 +95,9 @@ namespace _5week_assignment
             int critical = rand.Next(1, 101);
             if (critical <= 15)
             {
-                Console.WriteLine("크리티컬발동!!");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\r\n크리티컬발동!!");
+                Console.ResetColor();
                 attack = (int)Math.Ceiling(attack * 1.6);
             }
 
@@ -363,7 +365,9 @@ namespace _5week_assignment
             int critical = rand.Next(1, 101);
             if (critical <= 15)
             {
-                Console.WriteLine("크리티컬발동!!");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\r\n크리티컬발동!!");
+                Console.ResetColor();
                 attack = (int)Math.Ceiling(attack * 1.6);
             }
 
