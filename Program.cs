@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.ExceptionServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 
@@ -25,7 +26,6 @@ namespace _5week_assignment
             Console.WriteLine("스파르타 마을에 오신걸 환영합니다!");
             _player.CreatePlayer();
             
-
         }
 
         #region 아이템 추가 예전코드
@@ -45,7 +45,25 @@ namespace _5week_assignment
         {
             Random rand = new Random();
             int summonCnt = rand.Next(1, 5);
-            for(int i = 0;  i < summonCnt; i++)
+
+            #region 만약에 Stage기능이 만들어 진다면?
+            //if(stage == 1)
+            //{
+            //    summonCnt = rand.Next(1, 5);  // 1단계에선 1마리 ~ 4마리까지의 몬스터가 등장하게끔
+            //}
+            //else if(stage == 2)
+            //{
+            //    summonCnt = rand.Next(1, 6); // 2단계에서 1마리 ~ 5마리까지의 몬스터가 등장하게끔
+            //}
+            //else if(stage == 3)
+            //{
+            //    summonCnt = rand.Next(2, 6); // 3단계에서 2마리 ~ 5마리의 몬스터가 등장하게끔
+            //}
+            
+            #endregion
+
+
+            for (int i = 0;  i < summonCnt; i++)
             {
                 monsterPool.Add(new Monster());
             }
@@ -121,8 +139,13 @@ namespace _5week_assignment
             Console.WriteLine("1. 공격");
             Console.WriteLine();
 
-            switch(CheckValidInput(1,1))
+            Console.WriteLine("0. 도망치기");
+            Console.WriteLine();
+            switch (CheckValidInput(0,1))
             {
+                case 0:
+                    startMenu(); // 도망치기
+                    break;
                 case 1:
                     // 공격
                     Attack();
@@ -149,12 +172,9 @@ namespace _5week_assignment
             Console.WriteLine();
             Console.WriteLine("0. 취소");
 
-
+            First:                                                      //goto :  First
             int input = CheckValidInput(0, monsterPool.Count);
-            while (monsterPool[input-1].isDead)
-            {
-                input = CheckValidInput(0,monsterPool.Count);
-            }
+            
             switch (input)
             {
                 case 0:
@@ -162,19 +182,43 @@ namespace _5week_assignment
                     BattleStart();
                     break;
                 case 1:
+                    if (monsterPool[input - 1].isDead)                  // 내가 고른 번호의 몬스터가 이미 죽은 몬스터라면?
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        Console.WriteLine();
+                        goto First;                                     // First로 돌아가 input값을 다시 받는다.
+                    }
                     Console.Clear();
                     PlayerAttackResult(input - 1);
                     break;
                 case 2:
                     Console.Clear();
+                    if (monsterPool[input - 1].isDead)
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        Console.WriteLine();
+                        goto First;
+                    }
                     PlayerAttackResult(input - 1);
                     break;
                 case 3:
                     Console.Clear();
+                    if (monsterPool[input - 1].isDead)
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        Console.WriteLine();
+                        goto First;
+                    }
                     PlayerAttackResult(input - 1);
                     break;
                 case 4:
                     Console.Clear();
+                    if (monsterPool[input - 1].isDead)              
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        Console.WriteLine();
+                        goto First;
+                    }
                     PlayerAttackResult(input - 1);
                     break;
             }
@@ -186,6 +230,7 @@ namespace _5week_assignment
 
             ShowHighlightedText("■ PlayerTurn ■");
             Console.WriteLine();
+
             _player.PlayerAttack(monsterPool[input],out damaged);
             Console.WriteLine($"{_player.Name} 의 공격!");
 
@@ -227,6 +272,7 @@ namespace _5week_assignment
             int deadCount = 0;
 
             ShowHighlightedText("■ MonsterTurn ■");
+            Console.WriteLine();
 
             for (int i = 0; i < monsterPool.Count; i++)
             {

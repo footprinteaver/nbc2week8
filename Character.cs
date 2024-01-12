@@ -85,26 +85,37 @@ namespace _5week_assignment
             return choice;
         }
 
-        //playerattackdamage
-        public void PlayerAttack(Monster monster, out int damaged)
+
+        public void PlayerAttack(Monster monster, out int damaged)  // 플레이어 공격기능
         {
             Random rand = new Random();
-            int minAtk = Atk - (int)Math.Ceiling(Atk * 0.1);
-            int maxAtk = Atk + (int)Math.Ceiling(Atk * 0.1);
+            int minAtk = (int)Math.Ceiling(Atk * 0.9);
+            int maxAtk = (int)Math.Ceiling(Atk * 1.1);
             int attack = rand.Next(minAtk, maxAtk + 1);
-            //10%확률
+
+
             int hit = rand.Next(1, 101);
             if (hit <= 10)
             {
+                // 회피
                 attack = 0;
+                damaged = attack;
+            }
+            else if(hit <= 25)
+            {
+                // 치명타
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\r\n크리티컬 발동!!");
+                Console.ResetColor();
+                attack = (int)Math.Ceiling(attack * 1.6);
+                monster.currentHp -= attack;
                 damaged = attack;
             }
             else
             {
+                //일반
                 monster.currentHp -= attack;
                 damaged = attack;
-                //치명타코드
-
             }
         }
 
@@ -137,7 +148,7 @@ namespace _5week_assignment
             }
         }
 
-        public void PlayerInfo()
+        public void PlayerInfo()        // 전투모드 돌입시 Player의 정보 표시
         {
 
             Console.WriteLine($"Lv.{Level.ToString("00")} {Name} ({Job})");
