@@ -130,101 +130,99 @@
         }
     }
 
-    #region 아이템
-    //public class Item
-    //{
-    //    public string Name { get; }
-    //    public string Description { get; }
-    //    public int Type { get; }
-    //    public int Atk { get; }
-    //    public int Def { get; }
-    //    public int Hp { get; }
-    //    public bool isEquipped { get; set; }
+    public class Item
+    {
+        public string Name { get; }
+        public string Description { get; }
+        public int Type { get; }
+        public int Atk { get; }
+        public int Def { get; }
+        public int Hp { get; }
+        public bool isEquipped { get; set; }
 
-    //    public Item(string name, string description, int type, int atk, int def, int hp, bool isEquipped = false)
-    //    {
-    //        Name = name;
-    //        Description = description;
-    //        Type = type;
-    //        Atk = atk;
-    //        Def = def;
-    //        Hp = hp;
-    //        isEquipped = isEquipped;
-    //    }
+        public Item(string name, string description, int type, int atk, int def, int hp, bool isEquipped = false)
+        {
+            Name = name;
+            Description = description;
+            Type = type;
+            Atk = atk;
+            Def = def;
+            Hp = hp;
+            isEquipped = isEquipped;
+        }
 
-    //    public static int ItemCnt = 0;
+        public static int ItemCnt = 0;
 
-    //    public void PrintItemStatDescription(bool withNumber = false, int idx = 0)
-    //    {
-    //        Console.Write("- ");
+        public void PrintItemStatDescription(bool withNumber = false, int idx = 0)
+        {
+            Console.Write("- ");
 
-    //        if (withNumber)
-    //        {
-    //            Console.ForegroundColor = ConsoleColor.DarkMagenta;
-    //            Console.Write("{0} ", idx);
-    //            Console.ResetColor();
-    //        }
+            if (withNumber)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                Console.Write("{0} ", idx);
+                Console.ResetColor();
+            }
 
-    //        if (isEquipped)
-    //        {
-    //            Console.Write("[");
-    //            Console.ForegroundColor = ConsoleColor.Cyan;
-    //            Console.Write("E");
-    //            Console.ResetColor();
-    //            Console.Write("]");
-    //        }
-    //        else
-    //        {
-    //            Console.Write(PadRightForMixedText(Name, 12));
-    //        }
+            if (isEquipped)
+            {
+                Console.Write("[");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write("E");
+                Console.ResetColor();
+                Console.Write("]");
+            }
+            else
+            {
+                Console.Write(PadRightForMixedText(Name, 12));
+            }
 
-    //        Console.Write(" | ");
+            Console.Write(" | ");
 
-    //        if (Atk != 0)
-    //        {
-    //            Console.Write($"Atk {(Atk >= 0 ? "+" : "")}{Atk}");
-    //        }
-    //        if (Def != 0)
-    //        {
-    //            Console.Write($"Def {(Def >= 0 ? "+" : "")}{Def}");
-    //        }
-    //        if (Hp != 0)
-    //        {
-    //            Console.Write($"Hp {(Hp >= 0 ? "+" : "")}{Hp}");
-    //        }
+            if (Atk != 0)
+            {
+                Console.Write($"Atk {(Atk >= 0 ? "+" : "")}{Atk}");
+            }
+            if (Def != 0)
+            {
+                Console.Write($"Def {(Def >= 0 ? "+" : "")}{Def}");
+            }
+            if (Hp != 0)
+            {
+                Console.Write($"Hp {(Hp >= 0 ? "+" : "")}{Hp}");
+            }
 
-    //        Console.Write(" | ");
+            Console.Write(" | ");
 
-    //        Console.WriteLine(Description);
+            Console.WriteLine(Description);
 
-    //    }
+        }
 
-    //    public static int GetPrintableLength(string str)
-    //    {
-    //        int length = 0;
-    //        foreach (char c in str)
-    //        {
-    //            if (char.GetUnicodeCategory(c) == System.Globalization.UnicodeCategory.OtherLetter)
-    //            {
-    //                length += 2;
-    //            }
-    //            else
-    //            {
-    //                length += 1;
-    //            }
-    //        }
+        public static int GetPrintableLength(string str)
+        {
+            int length = 0;
+            foreach (char c in str)
+            {
+                if (char.GetUnicodeCategory(c) == System.Globalization.UnicodeCategory.OtherLetter)
+                {
+                    length += 2;
+                }
+                else
+                {
+                    length += 1;
+                }
+            }
 
-    //        return length;
-    //    }
+            return length;
+        }
 
-    //    public static string PadRightForMixedText(string str, int totalLength)
-    //    {
-    //        int currentLength = GetPrintableLength(str);
-    //        int padding = totalLength - currentLength;
-    //        return str.PadRight(str.Length + padding);
-    //    }
-    //}
-    #endregion
+        public static string PadRightForMixedText(string str, int totalLength)
+        {
+            int currentLength = GetPrintableLength(str);
+            int padding = totalLength - currentLength;
+            return str.PadRight(str.Length + padding);
+        }
+    }
 
     public class Monster
     {
@@ -245,6 +243,8 @@
         public int Gold;
         public int Exp;
 
+        public List<Item> monsterDropItem = new List<Item>();
+
         public bool isDead; // 죽었니 살았니?
 
         public Monster()
@@ -262,6 +262,7 @@
                     Def = 0;
                     Gold = 100;
                     Exp = 10;
+                    MonsterDropItem((int)MonsterType.LeeHanSol);
                     break;
                 case (int)MonsterType.MonYeongOh:
                     Name = "문영오 매니저";
@@ -272,6 +273,7 @@
                     Def = 1;
                     Gold = 150;
                     Exp = 20;
+                    MonsterDropItem((int)MonsterType.MonYeongOh);
                     break;
                 case (int)MonsterType.HanHyoseung:
                     Name = "한효승 매니저";
@@ -282,6 +284,7 @@
                     Def = 3;
                     Gold = 300;
                     Exp = 40;
+                    MonsterDropItem((int)MonsterType.HanHyoseung);
                     break;
             }
 
@@ -320,12 +323,53 @@
             damaged = attack;
         }
 
+
+
+
+        public void MonsterDropItem(int type)
+        {
+            Random rand = new Random();
+            int dropPercentage = rand.Next(0, 100);
+
+            switch (type)
+            {
+                case (int)MonsterType.LeeHanSol:
+                    
+                    break;
+                case (int)MonsterType.MonYeongOh:
+                    monsterDropItem.Add(new Item("아이템", "공격 아이템", 0, 3, 0, 0));
+                    break;
+                case (int)MonsterType.HanHyoseung:
+                    monsterDropItem.Add(new Item("아이템", "공격 아이템", 0, 3, 0, 0));
+                    break;
+            }
+        }
+
+        public void MonsterDropItemPercentage()
+        {
+            Random rand = new Random();
+            int dropPercentage = rand.Next(0, 100);
+
+            if (dropPercentage < 5)
+            {
+                monsterDropItem.Add(new Item("아이템", "공격 아이템", 0, 3, 0, 0));
+            }
+            else if (dropPercentage >= 5 && dropPercentage < 20)
+            {
+                monsterDropItem.Add(new Item("아이템", "방어 아이템", 0, 3, 0, 0));
+            }
+            else
+            {
+                monsterDropItem.Add(new Item("아이템", "회복 아이템", 0, 3, 0, 0));
+            }
+        }
     }
 
     internal class Program
     {
         private static Character _player = new Character();
         private static List<Monster> monsterPool = new List<Monster>();
+        private static List<Item> playerInventory = new List<Item>();
 
         static void Main(string[] args)
         {
@@ -341,32 +385,25 @@
             Console.Clear();
             Console.WriteLine("스파르타 마을에 오신걸 환영합니다!");
             _player.CreatePlayer();
-            
+
         }
 
-        #region 아이템 추가 예전코드
-        //static void AddItem(Item item)
-        //{
-        //    if (Item.ItemCnt == 10)
-        //    {
-        //        return;
-        //    }
+        static void AddItem(Item item)
+        {
+            playerInventory.Add(item);
+        }
 
-        //    _items[Item.ItemCnt] = item;
-        //    Item.ItemCnt++;
-        //}
-        #endregion
         static void AddMonster()
         {
             Random rand = new Random();
             int summonCnt = rand.Next(1, 5);
-            for(int i = 0;  i < summonCnt; i++)
+            for (int i = 0; i < summonCnt; i++)
             {
                 monsterPool.Add(new Monster());
             }
         }
 
-   
+
 
 
         private static void PrintStartLogo()
@@ -425,7 +462,7 @@
             ShowHighlightedText("Battle!!");
             Console.WriteLine();
 
-            for(int i = 0; i < monsterPool.Count; i++)
+            for (int i = 0; i < monsterPool.Count; i++)
             {
                 monsterPool[i].MonsterInfo();
             }
@@ -441,8 +478,8 @@
             Console.WriteLine("1. 공격");
             Console.WriteLine();
 
-            switch(CheckValidInput(0,1))
-            { 
+            switch (CheckValidInput(0, 1))
+            {
                 case 0:
                     monsterPool.Clear();
                     startMenu();
@@ -462,7 +499,7 @@
 
             for (int i = 0; i < monsterPool.Count; i++)
             {
-                monsterPool[i].MonsterInfo(true,i+1);
+                monsterPool[i].MonsterInfo(true, i + 1);
             }
             Console.WriteLine();
             Console.WriteLine();
@@ -506,7 +543,7 @@
             ShowHighlightedText("■ PlayerTurn ■");
             Console.WriteLine();
 
-            _player.PlayerAttack(monsterPool[input],out damaged);
+            _player.PlayerAttack(monsterPool[input], out damaged);
 
             Console.WriteLine($"{_player.Name} 의 공격!");
             Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
@@ -518,7 +555,7 @@
             }
 
             Console.WriteLine();
-            
+
 
             Console.WriteLine();
             Console.WriteLine("0. 다음");
@@ -532,7 +569,7 @@
                 MonsterTurn();
             }
 
-            
+
         }
 
         private static void MonsterTurn()
@@ -548,7 +585,7 @@
                 if (!monsterPool[i].isDead)
                 {
 
-                    monsterPool[i].MonsterAttack(_player,out int damaged);
+                    monsterPool[i].MonsterAttack(_player, out int damaged);
 
                     Console.WriteLine($"Lv.{monsterPool[i].Level} {monsterPool[i].Name} 의 공격!");
                     Console.WriteLine($"{_player.Name} ({_player.Job})을(를) 맞췄습니다.  [데미지 : {damaged}]");
@@ -562,14 +599,14 @@
                     Console.WriteLine();
 
 
-                    
-                    
+
+
                     if (_player.currentHP <= 0)
                     {
                         _player.currentHP = 0;
                         _player.isDead = true;
 
-                        if(_player.isDead)
+                        if (_player.isDead)
                         {
                             Console.Clear();
 
@@ -601,7 +638,7 @@
                 else
                 {
                     deadCount++;
-                    if(deadCount == monsterPool.Count)
+                    if (deadCount == monsterPool.Count)
                     {
                         Console.Clear();
                         ShowHighlightedText("Battle!! - Result");
@@ -655,7 +692,7 @@
 
                 _player.Exp += monsterPool[i].Exp;
                 _player.Gold += gold;
-                //_player.itemList += itemName;
+                //AddItem(monsterPool[].item);
             }
 
         }
@@ -755,7 +792,7 @@
             Console.WriteLine("0. 뒤로 가기");
             Console.WriteLine();
 
-            
+
 
             switch (CheckValidInput(0, 0))
             {
@@ -803,75 +840,74 @@
         //    }
         //    return sum;
         //}
-
-        //private static void InventoryMenu()
-        //{
-        //    Console.Clear();
-
-        //    ShowHighlightedText("인 벤  토 리");
-        //    Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
-        //    Console.WriteLine("");
-        //    Console.WriteLine("[아이템 목록]");
-
-        //    for (int i = 0; i < Item.ItemCnt; i++)
-        //    {
-        //        _items[i].PrintItemStatDescription();
-        //    }
-        //    Console.WriteLine("");
-        //    Console.WriteLine("0. 나가기");
-        //    Console.WriteLine("1. 장착관리");
-        //    Console.WriteLine("");
-
-        //    switch (CheckValidInput(0, 1))
-        //    {
-        //        case 0:
-        //            startMenu();
-        //            break;
-        //        case 1:
-        //            EquipMenu();
-        //            break;
-        //    }
-        //}
-
-        //private static void EquipMenu()
-        //{
-        //    Console.Clear();
-
-        //    ShowHighlightedText("인 벤  토 리 - 장 착  관 리");
-        //    Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
-        //    Console.WriteLine("");
-        //    Console.WriteLine("[아이템 목록]");
-
-        //    for (int i = 0; i < Item.ItemCnt; i++)
-        //    {
-        //        _items[i].PrintItemStatDescription(true, i + 1);
-        //    }
-
-        //    Console.WriteLine("");
-        //    Console.WriteLine("0. 나가기");
-
-        //    int keyInput = CheckValidInput(0, Item.ItemCnt);
-
-        //    switch (keyInput)
-        //    {
-        //        case 0:
-        //            InventoryMenu();
-        //            break;
-        //        default:
-        //            ToggleEquipStatus(keyInput - 1);
-        //            EquipMenu();
-        //            break;
-        //    }
-        //}
-
-        //private static void ToggleEquipStatus(int idx)
-        //{
-        //    _items[idx].isEquipped = !_items[idx].isEquipped;
-        //}
         #endregion
+
+        //    private static void InventoryMenu()
+        //    {
+        //        Console.Clear();
+
+        //        ShowHighlightedText("인 벤  토 리");
+        //        Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
+        //        Console.WriteLine("");
+        //        Console.WriteLine("[아이템 목록]");
+
+        //        playerInventory.PrintItemStatDescription();
+
+        //        Console.WriteLine("");
+        //        Console.WriteLine("0. 나가기");
+        //        Console.WriteLine("1. 장착관리");
+        //        Console.WriteLine("");
+
+        //        switch (CheckValidInput(0, 1))
+        //        {
+        //            case 0:
+        //                startMenu();
+        //                break;
+        //            case 1:
+        //                EquipMenu();
+        //                break;
+        //        }
+        //    }
+
+        //    private static void EquipMenu()
+        //    {
+        //        Console.Clear();
+
+        //        ShowHighlightedText("인 벤  토 리 - 장 착  관 리");
+        //        Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
+        //        Console.WriteLine("");
+        //        Console.WriteLine("[아이템 목록]");
+
+        //        for (int i = 0; i < Item.ItemCnt; i++)
+        //        {
+        //            _items[i].PrintItemStatDescription(true, i + 1);
+        //        }
+
+        //        Console.WriteLine("");
+        //        Console.WriteLine("0. 나가기");
+
+        //        int keyInput = CheckValidInput(0, Item.ItemCnt);
+
+        //        switch (keyInput)
+        //        {
+        //            case 0:
+        //                InventoryMenu();
+        //                break;
+        //            default:
+        //                ToggleEquipStatus(keyInput - 1);
+        //                EquipMenu();
+        //                break;
+        //        }
+        //    }
+
+        //    private static void ToggleEquipStatus(int idx)
+        //    {
+        //        _items[idx].isEquipped = !_items[idx].isEquipped;
+        //    }
+
+        //}
+
+
     }
-
-
-
 
 }
