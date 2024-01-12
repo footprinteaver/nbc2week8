@@ -422,12 +422,30 @@ namespace _5week_assignment
             static void AddMonster()
             {
                 Random rand = new Random();
-                int summonCnt = rand.Next(1, 5);
-                for (int i = 0; i < summonCnt; i++)
+                if(currentstage <= 5)
                 {
-                    monsterPool.Add(new Monster());
+                    int summonCnt = rand.Next(1, 5);
+                    for (int i = 0; i < summonCnt; i++)
+                    {
+                        monsterPool.Add(new Monster());
+                    }
                 }
-
+                else if(currentstage <= 10)
+                {
+                    int summonCnt = rand.Next(4, 9);
+                    for (int i = 0; i < summonCnt; i++)
+                    {
+                        monsterPool.Add(new Monster());
+                    }
+                }
+                else
+                {
+                    int summonCnt = rand.Next(7, 13);
+                    for (int i = 0; i < summonCnt; i++)
+                    {
+                        monsterPool.Add(new Monster());
+                    }
+                }
             }
 
             private static void PrintStartLogo()
@@ -462,6 +480,7 @@ namespace _5week_assignment
                 Console.WriteLine();
                 Console.WriteLine("1. 상태 보기");
                 Console.WriteLine("2. 전투 시작");
+                Console.WriteLine($"현재 스테이지 { currentstage} ");
                 Console.WriteLine();
 
 
@@ -482,6 +501,7 @@ namespace _5week_assignment
             {
                 Console.Clear();
                 ShowHighlightedText("Battle!!");
+                Console.WriteLine($"Stage {currentstage}");
                 Console.WriteLine();
 
                 for (int i = 0; i < monsterPool.Count; i++)
@@ -595,6 +615,8 @@ namespace _5week_assignment
 
             }
 
+
+            public static int currentstage = 1; //current stage
             private static void MonsterTurn()
             {
                 int deadCount = 0;
@@ -679,8 +701,11 @@ namespace _5week_assignment
                             Console.WriteLine($"Lv.{_player.Level} {_player.Name}");
                             Console.WriteLine($"HP {_player.Hp} -> {_player.currentHP}");
 
+                            Console.WriteLine($"Stage {currentstage} clear");
+                            currentstage++;
+
                             Console.WriteLine();
-                            Console.WriteLine("0. 다음");
+                            Console.WriteLine("0. 다음스테이지");
 
                             int inputKey = CheckValidInput(0, 0);
 
