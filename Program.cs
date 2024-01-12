@@ -446,7 +446,7 @@ namespace _5week_assignment
 
             PrintTextWithHighlights("공격력 : ", $"{_player.Atk.ToString()}");
             PrintTextWithHighlights("방어력 : ", $"{_player.Def.ToString()}");
-            PrintTextWithHighlights("체력 : ", $"{_player.Hp.ToString()}");
+            PrintTextWithHighlights("체력 : ", $"{_player.currentHP.ToString()}");
 
             #region 예전 코드
             //int bonusAtk = getSumBonusAtk();
