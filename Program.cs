@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace _5week_assignment
@@ -12,6 +14,7 @@ namespace _5week_assignment
             Archer = 2,     // 궁수
             Mage = 3        //마법사
         }
+
 
         public string Name { get; set; }
         public string Job{ get; set; }
@@ -137,23 +140,70 @@ namespace _5week_assignment
             Console.WriteLine($"HP {Hp}/{currentHP}");
             Console.WriteLine($"MP{Mp}/{currentMP}");
         }
+        //public List<playerSkill> jobSkills = new List<playerSkill>();
+
+        //public void GetSkills()
+        //{
+        //    // 각 직업에 따른 스킬 조건을 만족하는 경우에만 스킬을 리스트에 추가
+        //    if (Class == ClassType.Knight)
+        //    {
+        //        jobSkills.Add(new KnightSkill());
+        //    }
+        //    else if (Class == ClassType.Archer)
+        //    {
+        //        jobSkills.Add(new ArcherSkill());
+        //    }
+        //    else if (Class == ClassType.Mage)
+        //    {
+        //        jobSkills.Add(new MageSkill());
+        //    }
+        //    else { 
+        //    }
+        //} 쿨래스별 스킬구현은 잠시 보류
     }
 
     public class playerSkill
     {
         enum SkillType
         {
-            none =0,
+            none = 0,
             Attack = 1,
             Heal = 2,
             Buff = 3,
         }
-
+        public int Number { get; set; }
         public string Name { get; set; }
+        public int Cost { get; set; }
+        public int SkillDmg { get; set; }
         public string Description { get; set; }
 
- 
+        public playerSkill( string name, int cost, int skillDmg, string description)
+        {
+            Name = name;
+            Cost = cost;
+            SkillDmg = skillDmg;
+            Description = description;
 
+        }
+
+        public void UseMp( Character player)
+        {
+            player.currentMP -= Cost;
+        }
+
+        public void SkillInfo(bool Number = false, int index = 0)
+        {
+            Console.Write("- ");
+
+            if (Number)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.Write($"{index} ");
+                Console.ResetColor();
+            }
+
+            Console.WriteLine($"{Name} {Description}");
+        }
 
     }
 
@@ -346,6 +396,7 @@ namespace _5week_assignment
     {
         private static Character _player = new Character();
         private static List<Monster> monsterPool = new List<Monster>();
+        private static List<playerSkill> skillPool = new List<playerSkill>();
 
         static void Main(string[] args)
         {
@@ -360,6 +411,7 @@ namespace _5week_assignment
         {
             Console.Clear();
             AddMonster();
+            GetSkill();
             Console.WriteLine("스파르타 마을에 오신걸 환영합니다!");
             _player.CreatePlayer();
             
@@ -388,6 +440,14 @@ namespace _5week_assignment
                 monsterPool.Add(new Monster());
             }
            
+        }
+        static void GetSkill()
+        {
+            getskill = new List<playerSkill>();
+            {
+                new playerSkill("강화공격", 15, 2, "테스트용 스킬1");
+                new playerSkill("랜덤스킬", 20, 3, "테스트용 스킬2");
+            }
         }
         
         private static void PrintStartLogo()
@@ -571,11 +631,11 @@ namespace _5week_assignment
 
             Console.WriteLine();
             Console.WriteLine("0. 취소");
-
-
-
-
- 
+            for (int i = 0; i < skillPool; i++)
+            {
+                [i].SkillInfo(true, i + 1);
+            }
+           
             
         }
 
@@ -670,9 +730,6 @@ namespace _5week_assignment
                             AddMonster();
                             startMenu();
                         }
-
-
-
                     }
                 }
             }
