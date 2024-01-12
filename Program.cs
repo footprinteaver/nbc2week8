@@ -426,7 +426,7 @@ namespace _5week_assignment
             static void AddMonster()
             {
                 Random rand = new Random();
-                if(currentstage == 1)
+                if(currentstage <= 5)
                 {
                     int summonCnt = rand.Next(1, 5);
                     for (int i = 0; i < summonCnt; i++)
@@ -434,9 +434,9 @@ namespace _5week_assignment
                         monsterPool.Add(new Monster());
                     }
                 }
-                else if(currentstage == 2)
+                else if(currentstage <= 10)
                 {
-                    int summonCnt = rand.Next(3, 9);
+                    int summonCnt = rand.Next(4, 9);
                     for (int i = 0; i < summonCnt; i++)
                     {
                         monsterPool.Add(new Monster());
@@ -444,7 +444,7 @@ namespace _5week_assignment
                 }
                 else
                 {
-                    int summonCnt = rand.Next(5, 11);
+                    int summonCnt = rand.Next(7, 13);
                     for (int i = 0; i < summonCnt; i++)
                     {
                         monsterPool.Add(new Monster());
@@ -619,12 +619,8 @@ namespace _5week_assignment
 
             }
 
-<<<<<<< Updated upstream
-            public static int currentstage = 1; //current stage
 
-=======
-            private static int currentstage = 1;//현재 스테이지
->>>>>>> Stashed changes
+            public static int currentstage = 1; //current stage
             private static void MonsterTurn()
             {
                 int deadCount = 0;
@@ -709,32 +705,18 @@ namespace _5week_assignment
                             Console.WriteLine($"Lv.{_player.Level} {_player.Name}");
                             Console.WriteLine($"HP {_player.Hp} -> {_player.currentHP}");
 
-<<<<<<< Updated upstream
                             Console.WriteLine($"Stage {currentstage} clear");
                             currentstage++;
 
                             Console.WriteLine();
                             Console.WriteLine("0. 다음스테이지");
-=======
-                            Console.WriteLine($"Stage {currentstage} Clear");
-                            currentstage++;
-
-                            Console.WriteLine();
-                            Console.WriteLine("0. 다음 스테이지");
->>>>>>> Stashed changes
 
                             int inputKey = CheckValidInput(0, 0);
 
                             if (inputKey == 0)
                             {
                                 monsterPool.Clear();
-<<<<<<< Updated upstream
-                                
                                 AddMonster();
-=======
-                                Stageup();
-                                //AddMonster();
->>>>>>> Stashed changes
                                 startMenu();
                             }
 
@@ -746,21 +728,6 @@ namespace _5week_assignment
                 Attack();
             }
 
-<<<<<<< Updated upstream
-            public static void Stageupgrade()
-            {
-
-            }
-
-=======
-            public static void Stageup()
-            {
-                //업데이트 된 몬스터
-
-            }
-
-
->>>>>>> Stashed changes
             private static int CheckValidInput(int min, int max)
             {
                 int keyInput;
