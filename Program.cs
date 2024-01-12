@@ -619,8 +619,12 @@ namespace _5week_assignment
 
             }
 
+<<<<<<< Updated upstream
             public static int currentstage = 1; //current stage
 
+=======
+            private static int currentstage = 1;//현재 스테이지
+>>>>>>> Stashed changes
             private static void MonsterTurn()
             {
                 int deadCount = 0;
@@ -705,19 +709,32 @@ namespace _5week_assignment
                             Console.WriteLine($"Lv.{_player.Level} {_player.Name}");
                             Console.WriteLine($"HP {_player.Hp} -> {_player.currentHP}");
 
+<<<<<<< Updated upstream
                             Console.WriteLine($"Stage {currentstage} clear");
                             currentstage++;
 
                             Console.WriteLine();
                             Console.WriteLine("0. 다음스테이지");
+=======
+                            Console.WriteLine($"Stage {currentstage} Clear");
+                            currentstage++;
+
+                            Console.WriteLine();
+                            Console.WriteLine("0. 다음 스테이지");
+>>>>>>> Stashed changes
 
                             int inputKey = CheckValidInput(0, 0);
 
                             if (inputKey == 0)
                             {
                                 monsterPool.Clear();
+<<<<<<< Updated upstream
                                 
                                 AddMonster();
+=======
+                                Stageup();
+                                //AddMonster();
+>>>>>>> Stashed changes
                                 startMenu();
                             }
 
@@ -729,11 +746,21 @@ namespace _5week_assignment
                 Attack();
             }
 
+<<<<<<< Updated upstream
             public static void Stageupgrade()
             {
 
             }
 
+=======
+            public static void Stageup()
+            {
+                //업데이트 된 몬스터
+
+            }
+
+
+>>>>>>> Stashed changes
             private static int CheckValidInput(int min, int max)
             {
                 int keyInput;
