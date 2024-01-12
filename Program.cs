@@ -96,7 +96,7 @@ namespace _5week_assignment
             if (critical <= 15)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\r\n크리티컬발동!!");
+                Console.WriteLine("\r\n크리티컬 발동!!");
                 Console.ResetColor();
                 attack = (int)Math.Ceiling(attack * 1.6);
             }
@@ -366,7 +366,7 @@ namespace _5week_assignment
             if (critical <= 15)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\r\n크리티컬발동!!");
+                Console.WriteLine("\r\n크리티컬 발동!!");
                 Console.ResetColor();
                 attack = (int)Math.Ceiling(attack * 1.6);
             }
