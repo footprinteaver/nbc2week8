@@ -1,4 +1,6 @@
-﻿namespace _5week_assignment
+﻿using _5week_assignment;
+
+namespace _5week_assignment
 {
     public class Character
     {
@@ -151,8 +153,6 @@
             isEquipped = isEquipped;
         }
 
-        public static int ItemCnt = 0;
-
         public void PrintItemStatDescription(bool withNumber = false, int idx = 0)
         {
             Console.Write("- ");
@@ -243,7 +243,8 @@
         public int Gold;
         public int Exp;
 
-        public List<Item> monsterDropItem = new List<Item>();
+        public List<Item> monsterDropItem;
+        public List<int> monsterDropRate;
 
         public bool isDead; // 죽었니 살았니?
 
@@ -262,7 +263,7 @@
                     Def = 0;
                     Gold = 100;
                     Exp = 10;
-                    MonsterDropItem((int)MonsterType.LeeHanSol);
+                    DropItem((int)MonsterType.LeeHanSol);
                     break;
                 case (int)MonsterType.MonYeongOh:
                     Name = "문영오 매니저";
@@ -273,7 +274,7 @@
                     Def = 1;
                     Gold = 150;
                     Exp = 20;
-                    MonsterDropItem((int)MonsterType.MonYeongOh);
+                    DropItem((int)MonsterType.MonYeongOh);
                     break;
                 case (int)MonsterType.HanHyoseung:
                     Name = "한효승 매니저";
@@ -284,7 +285,7 @@
                     Def = 3;
                     Gold = 300;
                     Exp = 40;
-                    MonsterDropItem((int)MonsterType.HanHyoseung);
+                    DropItem((int)MonsterType.HanHyoseung);
                     break;
             }
 
@@ -323,24 +324,32 @@
             damaged = attack;
         }
 
-
-
-
-        public void MonsterDropItem(int type)
+        public void DropItem(int type)
         {
-            Random rand = new Random();
-            int dropPercentage = rand.Next(0, 100);
-
+            //Dictionary<Item>
+            //    key = int;
+            //    value = Item;
             switch (type)
             {
                 case (int)MonsterType.LeeHanSol:
-                    
+                    monsterDropItem = new List<Item>
+                    {
+                        new Item("아이템", "공격 아이템", 0, 3, 0, 0),
+                        new Item("아이템", "공격 아이템", 0, 3, 0, 0),
+                        new Item("아이템", "공격 아이템", 0, 3, 0, 0)
+                    };
+                    monsterDropRate = new List<int> 
+                    {
+                        25,
+                        35,
+                        40
+                    };
                     break;
                 case (int)MonsterType.MonYeongOh:
-                    monsterDropItem.Add(new Item("아이템", "공격 아이템", 0, 3, 0, 0));
+                    MonsterDropItemPercentage();
                     break;
                 case (int)MonsterType.HanHyoseung:
-                    monsterDropItem.Add(new Item("아이템", "공격 아이템", 0, 3, 0, 0));
+                    MonsterDropItemPercentage();
                     break;
             }
         }
@@ -350,20 +359,36 @@
             Random rand = new Random();
             int dropPercentage = rand.Next(0, 100);
 
-            if (dropPercentage < 5)
-            {
-                monsterDropItem.Add(new Item("아이템", "공격 아이템", 0, 3, 0, 0));
-            }
-            else if (dropPercentage >= 5 && dropPercentage < 20)
-            {
-                monsterDropItem.Add(new Item("아이템", "방어 아이템", 0, 3, 0, 0));
-            }
-            else
-            {
-                monsterDropItem.Add(new Item("아이템", "회복 아이템", 0, 3, 0, 0));
-            }
+
         }
+        public Item looting()
+        {
+            Item item = null;
+            //유니티 가중치 랜덤 적용 생각해보기
+            //if (monsterDropRate)
+            //    monsterDropItem = new Item("아이템", "공격 아이템", 0, 3, 0, 0);
+            
+            return item;
+        }
+
     }
+
+
+
+
+    //    if (dropPercentage< 5)
+    //            {
+    //                monsterDropItem.Add(new Item("아이템", "공격 아이템", 0, 3, 0, 0));
+    //            }
+    //            else if (dropPercentage >= 5 && dropPercentage < 20)
+    //{
+    //    monsterDropItem.Add(new Item("아이템", "방어 아이템", 0, 3, 0, 0));
+    //    monsterDropItem.Add(new Item("아이템", "회복 아이템", 0, 3, 0, 0));
+    //}
+    //else
+    //{
+    //    monsterDropItem.Add(new Item("아이템", "회복 아이템", 0, 3, 0, 0));
+    //}
 
     internal class Program
     {
