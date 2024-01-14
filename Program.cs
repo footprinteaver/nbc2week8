@@ -12,7 +12,7 @@ namespace _5week_assignment
             Mage = 3        //마법사
         }
         public string Name { get; set; }
-        public String Job{ get; set; }
+        public string Job{ get; set; }
         public int Level { get; set; }
         public int Atk { get; set; }
         public int Def { get; set; }
@@ -243,16 +243,19 @@ namespace _5week_assignment
         public int Gold;
         public int Exp;
 
-        public List<Item> monsterDropItem;
+        public List<Item> monsterItem;
         public List<int> monsterDropRate;
+
+        public Item monsterDropItem;
+        
 
         public bool isDead; // 죽었니 살았니?
 
         public Monster()
         {
             Random rand = new Random();
-            int randMonster = rand.Next(1,4);
-            switch(randMonster)
+            int randMonster = rand.Next(1, 4);
+            switch (randMonster)
             {
                 case (int)MonsterType.LeeHanSol:
                     Name = "이한솔 매니저";
@@ -263,7 +266,7 @@ namespace _5week_assignment
                     Def = 0;
                     Gold = 100;
                     Exp = 10;
-                    DropItem((int)MonsterType.LeeHanSol);
+                    monsterDropItem = DropItem((int)MonsterType.LeeHanSol);
                     break;
                 case (int)MonsterType.MonYeongOh:
                     Name = "문영오 매니저";
@@ -274,7 +277,7 @@ namespace _5week_assignment
                     Def = 1;
                     Gold = 150;
                     Exp = 20;
-                    DropItem((int)MonsterType.MonYeongOh);
+                    monsterDropItem = DropItem((int)MonsterType.MonYeongOh);
                     break;
                 case (int)MonsterType.HanHyoseung:
                     Name = "한효승 매니저";
@@ -285,7 +288,7 @@ namespace _5week_assignment
                     Def = 3;
                     Gold = 300;
                     Exp = 40;
-                    DropItem((int)MonsterType.HanHyoseung);
+                    monsterDropItem = DropItem((int)MonsterType.HanHyoseung);
                     break;
             }
 
@@ -294,8 +297,8 @@ namespace _5week_assignment
         public void MonsterInfo(bool withNumber = false, int index = 0)
         {
             Console.Write("- ");
-            
-            if(isDead)
+
+            if (isDead)
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine($"Lv.{Level.ToString("00")} {Name}  Dead");
@@ -310,10 +313,10 @@ namespace _5week_assignment
             {
                 Console.WriteLine($"Lv.{Level.ToString("00")} {Name} HP {currentHp}");
             }
-            
+
         }
 
-        public void MonsterAttack(Character character,out int damaged)
+        public void MonsterAttack(Character character, out int damaged)
         {
             Random rand = new Random();
             int minAtk = Atk - (int)Math.Ceiling(Atk * 0.1);
@@ -324,71 +327,78 @@ namespace _5week_assignment
             damaged = attack;
         }
 
-        public void DropItem(int type)
+        public Item DropItem(int type)
         {
-            //Dictionary<Item>
-            //    key = int;
-            //    value = Item;
+            Random rand = new Random();
+            int dropRate = rand.Next(0, 100);
+
+            int count = 0;
+            int sum = 0;
+
             switch (type)
             {
                 case (int)MonsterType.LeeHanSol:
-                    monsterDropItem = new List<Item>
+                    monsterItem = new List<Item>
                     {
-                        new Item("아이템", "공격 아이템", 0, 3, 0, 0),
-                        new Item("아이템", "공격 아이템", 0, 3, 0, 0),
-                        new Item("아이템", "공격 아이템", 0, 3, 0, 0)
+                        new Item("핸드백", "작은 크기지만 그 무엇보다 많은게 들어있습니다", 0, 4, 0, 0),
+                        new Item("프랜치 코트", "방어구보단 패션 아이템 같습니다", 0, 0, 1, 0),
+                        new Item("상처치료연고", "체력 10 회복", 0, 0, 0, 10)
                     };
-                    monsterDropRate = new List<int> 
+                    monsterDropRate = new List<int>
                     {
-                        25,
-                        35,
+                        30,
+                        30,
                         40
                     };
                     break;
                 case (int)MonsterType.MonYeongOh:
-                    MonsterDropItemPercentage();
+                    monsterItem = new List<Item>
+                    {
+                        new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", 0, 7, 0, 0),
+                        new Item("가죽 자켓", "좋은 브랜드라 약간의 방어력을 기대해도 될 것 같습니다", 0, 0, 3, 0),
+                        new Item("압박붕대", "체력 15 회복", 0, 0, 0, 15)
+                    };
+                    monsterDropRate = new List<int>
+                    {
+                        15,
+                        25,
+                        60
+                    };
                     break;
                 case (int)MonsterType.HanHyoseung:
-                    MonsterDropItemPercentage();
+                    monsterItem = new List<Item>
+                    {
+                        new Item("마우스", "\"딸깍\"", 0, 10, 0, 0),
+                        new Item("롱패딩", "전신을 감싸지만 실상은 얇은 재질입니다", 0, 0, 4, 0),
+                        new Item("봉합술 키트", "체력 25 회복", 0, 0, 0, 25)
+                    };
+                    monsterDropRate = new List<int>
+                    {
+                        10,
+                        10,
+                        80
+                    };
                     break;
             }
-        }
 
-        public void MonsterDropItemPercentage()
-        {
-            Random rand = new Random();
-            int dropPercentage = rand.Next(0, 100);
+            for (int i = 0; i < monsterDropRate.Count; i++)
+            {
+                sum += monsterDropRate[i];
 
+                if (dropRate <= sum)
+                {
+                    break;
+                }
+                else
+                {
+                    count++;
+                }
+            }
 
-        }
-        public Item looting()
-        {
-            Item item = null;
-            //유니티 가중치 랜덤 적용 생각해보기
-            //if (monsterDropRate)
-            //    monsterDropItem = new Item("아이템", "공격 아이템", 0, 3, 0, 0);
-            
-            return item;
+            return monsterItem[count];
         }
 
     }
-
-
-
-
-    //    if (dropPercentage< 5)
-    //            {
-    //                monsterDropItem.Add(new Item("아이템", "공격 아이템", 0, 3, 0, 0));
-    //            }
-    //            else if (dropPercentage >= 5 && dropPercentage < 20)
-    //{
-    //    monsterDropItem.Add(new Item("아이템", "방어 아이템", 0, 3, 0, 0));
-    //    monsterDropItem.Add(new Item("아이템", "회복 아이템", 0, 3, 0, 0));
-    //}
-    //else
-    //{
-    //    monsterDropItem.Add(new Item("아이템", "회복 아이템", 0, 3, 0, 0));
-    //}
 
     internal class Program
     {
@@ -464,16 +474,20 @@ namespace _5week_assignment
             Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("1. 상태 보기");
-            Console.WriteLine("2. 전투 시작");
+            Console.WriteLine("2. 인벤토리 열기");
+            Console.WriteLine("3. 전투 시작");
             Console.WriteLine();
 
 
-            switch (CheckValidInput(1, 2))
+            switch (CheckValidInput(1, 3))
             {
                 case 1:
                     StatusMenu();
                     break;
                 case 2:
+                    InventoryMenu();
+                    break;
+                case 3:
                     BattleStart();
                     break;
             }
@@ -711,29 +725,21 @@ namespace _5week_assignment
 
                 Console.WriteLine($"exp : {monsterPool[i].Exp}");
                 Console.WriteLine($"{monsterPool[i].Gold}  Gold");
-                //Console.WriteLine("{itemName} - {count}");
+                Console.WriteLine($"{monsterPool[i].monsterDropItem.Name}");
                 Console.WriteLine();
                 Console.WriteLine();
 
                 _player.Exp += monsterPool[i].Exp;
                 _player.Gold += gold;
-                //AddItem(monsterPool[].item);
-            }
-
+                AddItem(monsterPool[i].monsterDropItem);
         }
 
-        private static int CheckValidInput(int min, int max)
+    }
+
+    private static int CheckValidInput(int min, int max)
         {
             int keyInput;
             bool result;
-
-            #region 이전코드
-            //do
-            //{
-            //    Console.WriteLine("원하시는 행동을 입력해주세요.");
-            //    result = int.TryParse(Console.ReadLine(), out keyInput);
-            //} while (result == false || CheckIfValid(keyInput, min, max) == false);
-            #endregion
 
             Console.WriteLine("원하시는 행동을 입력하세요");
             Console.Write(">>");
@@ -794,22 +800,14 @@ namespace _5week_assignment
             Console.WriteLine();
             Console.WriteLine("{0} ( {1} )", _player.Name, _player.Job);
 
-            PrintTextWithHighlights("공격력 : ", $"{_player.Atk.ToString()}");
-            PrintTextWithHighlights("방어력 : ", $"{_player.Def.ToString()}");
-            PrintTextWithHighlights("체력 : ", $"{_player.Hp.ToString()}");
+            int bonusAtk = getSumBonusAtk();
+            PrintTextWithHighlights("공격력 : ", (_player.Atk + bonusAtk).ToString(), bonusAtk > 0 ? string.Format(" (+{0})", bonusAtk) : "");
 
+            int bonusDef = getSumBonusDef();
+            PrintTextWithHighlights("방어력 : ", (_player.Def + bonusDef).ToString(), bonusDef > 0 ? string.Format(" (+{0})", bonusDef) : "");
 
-            #region 예전 코드
-            //int bonusAtk = getSumBonusAtk();
-            //PrintTextWithHighlights("공격력 : ", (_player.Atk + bonusAtk).ToString(), bonusAtk > 0 ? string.Format(" (+{0})", bonusAtk) : "");
-
-            //int bonusDef = getSumBonusDef();
-            //PrintTextWithHighlights("방어력 : ", (_player.Def + bonusDef).ToString(), bonusDef > 0 ? string.Format(" (+{0})", bonusDef) : "");
-
-            //int bonusHp = getSumBonusHp();
-            //PrintTextWithHighlights("체력 : ", (_player.Hp + bonusHp).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
-            #endregion
-
+            int bonusHp = getSumBonusHp();
+            PrintTextWithHighlights("체력 : ", (_player.Hp + bonusHp).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
 
             PrintTextWithHighlights("골드 : ", _player.Gold.ToString());
             PrintTextWithHighlights("경험치 : ", $"{_player.Exp.ToString()}");
@@ -826,112 +824,112 @@ namespace _5week_assignment
                     break;
             }
         }
-        #region 예전 코드
-        //private static int getSumBonusAtk()
-        //{
-        //    int sum = 0;
-        //    for (int i = 0; i < Item.ItemCnt; i++)
-        //    {
-        //        if (_items[i].isEquipped)
-        //        {
-        //            sum += _items[i].Atk;
-        //        }
-        //    }
-        //    return sum;
-        //}
+        private static int getSumBonusAtk()
+        {
+            int sum = 0;
+            for (int i = 0; i < playerInventory.Count; i++)
+            {
+                if (playerInventory[i].isEquipped)
+                {
+                    sum += playerInventory[i].Atk;
+                }
+            }
+            return sum;
+        }
 
-        //private static int getSumBonusDef()
-        //{
-        //    int sum = 0;
-        //    for (int i = 0; i < Item.ItemCnt; i++)
-        //    {
-        //        if (_items[i].isEquipped)
-        //        {
-        //            sum += _items[i].Def;
-        //        }
-        //    }
-        //    return sum;
-        //}
+        private static int getSumBonusDef()
+        {
+            int sum = 0;
+            for (int i = 0; i < playerInventory.Count; i++)
+            {
+                if (playerInventory[i].isEquipped)
+                {
+                    sum += playerInventory[i].Def;
+                }
+            }
+            return sum;
+        }
 
-        //private static int getSumBonusHp()
-        //{
-        //    int sum = 0;
-        //    for (int i = 0; i < Item.ItemCnt; i++)
-        //    {
-        //        if (_items[i].isEquipped)
-        //        {
-        //            sum += _items[i].Hp;
-        //        }
-        //    }
-        //    return sum;
-        //}
-        #endregion
 
-        //    private static void InventoryMenu()
-        //    {
-        //        Console.Clear();
+        private static int getSumBonusHp()
+        {
+            int sum = 0;
+            for (int i = 0; i < playerInventory.Count; i++)
+            {
+                if (playerInventory[i].isEquipped)
+                {
+                    sum += playerInventory[i].Hp;
+                }
+            }
+            return sum;
+        }
 
-        //        ShowHighlightedText("인 벤  토 리");
-        //        Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
-        //        Console.WriteLine("");
-        //        Console.WriteLine("[아이템 목록]");
 
-        //        playerInventory.PrintItemStatDescription();
+        private static void InventoryMenu()
+        {
+            Console.Clear();
 
-        //        Console.WriteLine("");
-        //        Console.WriteLine("0. 나가기");
-        //        Console.WriteLine("1. 장착관리");
-        //        Console.WriteLine("");
+            ShowHighlightedText("인 벤  토 리");
+            Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
+            Console.WriteLine();
+            Console.WriteLine("[아이템 목록]");
 
-        //        switch (CheckValidInput(0, 1))
-        //        {
-        //            case 0:
-        //                startMenu();
-        //                break;
-        //            case 1:
-        //                EquipMenu();
-        //                break;
-        //        }
-        //    }
+            for (int i = 0; i < playerInventory.Count; i++)
+            {
+                playerInventory[i].PrintItemStatDescription(true, i + 1);
+            }
 
-        //    private static void EquipMenu()
-        //    {
-        //        Console.Clear();
+            Console.WriteLine("");
+            Console.WriteLine("0. 나가기");
+            Console.WriteLine("1. 장착관리");
+            Console.WriteLine("");
 
-        //        ShowHighlightedText("인 벤  토 리 - 장 착  관 리");
-        //        Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
-        //        Console.WriteLine("");
-        //        Console.WriteLine("[아이템 목록]");
+            switch (CheckValidInput(0, 1))
+            {
+                case 0:
+                    startMenu();
+                    break;
+                case 1:
+                    EquipMenu();
+                    break;
+            }
+        }
 
-        //        for (int i = 0; i < Item.ItemCnt; i++)
-        //        {
-        //            _items[i].PrintItemStatDescription(true, i + 1);
-        //        }
+        private static void EquipMenu()
+        {
+            Console.Clear();
 
-        //        Console.WriteLine("");
-        //        Console.WriteLine("0. 나가기");
+            ShowHighlightedText("인 벤  토 리 - 장 착  관 리");
+            Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
+            Console.WriteLine("");
+            Console.WriteLine("[아이템 목록]");
 
-        //        int keyInput = CheckValidInput(0, Item.ItemCnt);
+            for (int i = 0; i < playerInventory.Count; i++)
+            {
+                playerInventory[i].PrintItemStatDescription(true, i + 1);
+            }
 
-        //        switch (keyInput)
-        //        {
-        //            case 0:
-        //                InventoryMenu();
-        //                break;
-        //            default:
-        //                ToggleEquipStatus(keyInput - 1);
-        //                EquipMenu();
-        //                break;
-        //        }
-        //    }
+            Console.WriteLine("");
+            Console.WriteLine("0. 나가기");
 
-        //    private static void ToggleEquipStatus(int idx)
-        //    {
-        //        _items[idx].isEquipped = !_items[idx].isEquipped;
-        //    }
+            int keyInput = CheckValidInput(0, playerInventory.Count);
 
-        //}
+            switch (keyInput)
+            {
+                case 0:
+                    InventoryMenu();
+                    break;
+                default:
+                    ToggleEquipStatus(keyInput - 1);
+                    EquipMenu();
+                    break;
+            }
+        }
 
+        private static void ToggleEquipStatus(int idx)
+        {
+            playerInventory[idx].isEquipped = !playerInventory[idx].isEquipped;
+        }
 
     }
 
