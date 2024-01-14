@@ -407,7 +407,6 @@ namespace _5week_assignment
         private static Character _player = new Character();
         private static List<Monster> monsterPool = new List<Monster>();
         private static List<Item> playerInventory = new List<Item>();
-        private static Item _nullItem = new Item("", "", 3, 0, 0, 0, false);
 
         static void Main(string[] args)
         {
