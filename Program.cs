@@ -808,27 +808,7 @@ namespace _5week_assignment
             PrintTextWithHighlights("공격력 : ", (bonusStat[0]).ToString(), bonusStat[0] - _player.Atk > 0 ? string.Format(" (+{0})", bonusStat[0] - _player.Atk) : "");
             PrintTextWithHighlights("방어력 : ", (bonusStat[1]).ToString(), bonusStat[1] - _player.Def > 0 ? string.Format(" (+{0})", bonusStat[1] - _player.Def) : "");
 
-            //int bonusHp = getSumBonusHp();
-            //if(_player.Job == "전사" && _player.currentHP + bonusHp >= 100)
-            //{
-            //    int hpAfterUseItem = 100;
-            //    _player.currentHP += bonusHp;
-            //    PrintTextWithHighlights("체력 : ", (hpAfterUseItem).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
-            //}
-            //else if(_player.Job == "궁수" && _player.currentHP + bonusHp >= 80)
-            //{
-            //    int hpAfterUseItem = 80;
-            //    PrintTextWithHighlights("체력 : ", (hpAfterUseItem).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
-            //}
-            //else if(_player.Job == "마법사" && _player.currentHP + bonusHp >= 60)
-            //{
-            //    int hpAfterUseItem = 60;
-            //    PrintTextWithHighlights("체력 : ", (hpAfterUseItem).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
-            //}
-            //else
-            //{
-            //    PrintTextWithHighlights("체력 : ", (_player.currentHP + bonusHp).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
-            //}
+            PrintTextWithHighlights("체력 : ", $"{_player.currentHP.ToString()} / {_player.Hp.ToString()}");
 
             PrintTextWithHighlights("골드 : ", _player.Gold.ToString());
             PrintTextWithHighlights("경험치 : ", $"{_player.Exp.ToString()}");
@@ -862,25 +842,6 @@ namespace _5week_assignment
 
             return bonusStat;
         }
-
-        //private static int getSumBonusHp()
-        //{
-        //    int sum = 0;
-        //    for (int i = 0; i < playerInventory.Count; i++)
-        //    {
-        //        if (playerInventory[i].isEquipped && playerInventory[i].Hp > 0)
-        //        {
-        //            sum += playerInventory[i].Hp;
-        //            if (i < playerInventory.Count - 1)
-        //            {
-        //                playerInventory[i] = playerInventory[i + 1];
-        //            }
-        //            playerInventory[playerInventory.Count - 1] = _nullItem;
-                    
-        //        }
-        //    }
-        //    return sum;
-        //}
 
 
         private static void InventoryMenu()
@@ -957,7 +918,27 @@ namespace _5week_assignment
                 }
             }
 
+            if (playerInventory[idx].Type == 2)
+            {
+                _player.currentHP += playerInventory[idx].Hp;
+
+                if(_player.currentHP > _player.Hp)
+                {
+                    _player.currentHP = _player.Hp;
+                }
+
+                playerInventory.RemoveAt(idx);
+
+                return;
+            }
+
+            if (playerInventory[idx] == null)
+            {
+                return;
+            }
+
             playerInventory[idx].isEquipped = !playerInventory[idx].isEquipped;
+
         }
 
     }
