@@ -1,4 +1,6 @@
 ﻿using _5week_assignment;
+using System.Numerics;
+using static _5week_assignment.Character;
 
 namespace _5week_assignment
 {
@@ -341,8 +343,8 @@ namespace _5week_assignment
                     monsterItem = new List<Item>
                     {
                         new Item("핸드백", "작은 크기지만 그 무엇보다 많은게 들어있습니다", 0, 4, 0, 0),
-                        new Item("프랜치 코트", "방어구보단 패션 아이템 같습니다", 0, 0, 1, 0),
-                        new Item("상처치료연고", "체력 10 회복", 0, 0, 0, 10)
+                        new Item("프랜치 코트", "방어구보단 패션 아이템 같습니다", 1, 0, 1, 0),
+                        new Item("상처치료연고", "체력 10 회복", 2, 0, 0, 10)
                     };
                     monsterDropRate = new List<int>
                     {
@@ -355,8 +357,8 @@ namespace _5week_assignment
                     monsterItem = new List<Item>
                     {
                         new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", 0, 7, 0, 0),
-                        new Item("가죽 자켓", "좋은 브랜드라 약간의 방어력을 기대해도 될 것 같습니다", 0, 0, 3, 0),
-                        new Item("압박붕대", "체력 15 회복", 0, 0, 0, 15)
+                        new Item("가죽 자켓", "좋은 브랜드라 약간의 방어력을 기대해도 될 것 같습니다", 1, 0, 3, 0),
+                        new Item("압박붕대", "체력 15 회복", 2, 0, 0, 15)
                     };
                     monsterDropRate = new List<int>
                     {
@@ -369,8 +371,8 @@ namespace _5week_assignment
                     monsterItem = new List<Item>
                     {
                         new Item("마우스", "\"딸깍\"", 0, 10, 0, 0),
-                        new Item("롱패딩", "전신을 감싸지만 실상은 얇은 재질입니다", 0, 0, 4, 0),
-                        new Item("봉합술 키트", "체력 25 회복", 0, 0, 0, 25)
+                        new Item("롱패딩", "전신을 감싸지만 실상은 얇은 재질입니다", 1, 0, 4, 0),
+                        new Item("봉합술 키트", "체력 25 회복", 2, 0, 0, 25)
                     };
                     monsterDropRate = new List<int>
                     {
@@ -405,6 +407,7 @@ namespace _5week_assignment
         private static Character _player = new Character();
         private static List<Monster> monsterPool = new List<Monster>();
         private static List<Item> playerInventory = new List<Item>();
+        private static Item _nullItem = new Item("", "", 3, 0, 0, 0, false);
 
         static void Main(string[] args)
         {
@@ -664,6 +667,7 @@ namespace _5week_assignment
                             if (inputKey2 == 0)
                             {
                                 monsterPool.Clear();
+                                playerInventory.Clear();
                                 GameDataSetting();
                                 startMenu();
                             }
@@ -800,14 +804,31 @@ namespace _5week_assignment
             Console.WriteLine();
             Console.WriteLine("{0} ( {1} )", _player.Name, _player.Job);
 
-            int bonusAtk = getSumBonusAtk();
-            PrintTextWithHighlights("공격력 : ", (_player.Atk + bonusAtk).ToString(), bonusAtk > 0 ? string.Format(" (+{0})", bonusAtk) : "");
+            int[] bonusStat = getSumBonusStat();
+            PrintTextWithHighlights("공격력 : ", (bonusStat[0]).ToString(), bonusStat[0] - _player.Atk > 0 ? string.Format(" (+{0})", bonusStat[0] - _player.Atk) : "");
+            PrintTextWithHighlights("방어력 : ", (bonusStat[1]).ToString(), bonusStat[1] - _player.Def > 0 ? string.Format(" (+{0})", bonusStat[1] - _player.Def) : "");
 
-            int bonusDef = getSumBonusDef();
-            PrintTextWithHighlights("방어력 : ", (_player.Def + bonusDef).ToString(), bonusDef > 0 ? string.Format(" (+{0})", bonusDef) : "");
-
-            int bonusHp = getSumBonusHp();
-            PrintTextWithHighlights("체력 : ", (_player.Hp + bonusHp).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
+            //int bonusHp = getSumBonusHp();
+            //if(_player.Job == "전사" && _player.currentHP + bonusHp >= 100)
+            //{
+            //    int hpAfterUseItem = 100;
+            //    _player.currentHP += bonusHp;
+            //    PrintTextWithHighlights("체력 : ", (hpAfterUseItem).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
+            //}
+            //else if(_player.Job == "궁수" && _player.currentHP + bonusHp >= 80)
+            //{
+            //    int hpAfterUseItem = 80;
+            //    PrintTextWithHighlights("체력 : ", (hpAfterUseItem).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
+            //}
+            //else if(_player.Job == "마법사" && _player.currentHP + bonusHp >= 60)
+            //{
+            //    int hpAfterUseItem = 60;
+            //    PrintTextWithHighlights("체력 : ", (hpAfterUseItem).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
+            //}
+            //else
+            //{
+            //    PrintTextWithHighlights("체력 : ", (_player.currentHP + bonusHp).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
+            //}
 
             PrintTextWithHighlights("골드 : ", _player.Gold.ToString());
             PrintTextWithHighlights("경험치 : ", $"{_player.Exp.ToString()}");
@@ -824,45 +845,42 @@ namespace _5week_assignment
                     break;
             }
         }
-        private static int getSumBonusAtk()
+        private static int[] getSumBonusStat()
         {
-            int sum = 0;
+            int Atk = 0;
+            int Def = 0;
             for (int i = 0; i < playerInventory.Count; i++)
             {
                 if (playerInventory[i].isEquipped)
                 {
-                    sum += playerInventory[i].Atk;
+                    Atk += playerInventory[i].Atk;
+                    Def += playerInventory[i].Def;
                 }
             }
-            return sum;
+
+            int[] bonusStat = {_player.Atk + Atk, _player.Def + Def };
+
+            return bonusStat;
         }
 
-        private static int getSumBonusDef()
-        {
-            int sum = 0;
-            for (int i = 0; i < playerInventory.Count; i++)
-            {
-                if (playerInventory[i].isEquipped)
-                {
-                    sum += playerInventory[i].Def;
-                }
-            }
-            return sum;
-        }
-
-
-        private static int getSumBonusHp()
-        {
-            int sum = 0;
-            for (int i = 0; i < playerInventory.Count; i++)
-            {
-                if (playerInventory[i].isEquipped)
-                {
-                    sum += playerInventory[i].Hp;
-                }
-            }
-            return sum;
-        }
+        //private static int getSumBonusHp()
+        //{
+        //    int sum = 0;
+        //    for (int i = 0; i < playerInventory.Count; i++)
+        //    {
+        //        if (playerInventory[i].isEquipped && playerInventory[i].Hp > 0)
+        //        {
+        //            sum += playerInventory[i].Hp;
+        //            if (i < playerInventory.Count - 1)
+        //            {
+        //                playerInventory[i] = playerInventory[i + 1];
+        //            }
+        //            playerInventory[playerInventory.Count - 1] = _nullItem;
+                    
+        //        }
+        //    }
+        //    return sum;
+        //}
 
 
         private static void InventoryMenu()
@@ -928,6 +946,17 @@ namespace _5week_assignment
 
         private static void ToggleEquipStatus(int idx)
         {
+            for (int i = 0; i < playerInventory.Count;i++)
+            {
+                if(playerInventory[i].isEquipped == true)
+                {
+                    if (playerInventory[i].Type == playerInventory[idx].Type && i != idx)
+                    {
+                        playerInventory[i].isEquipped = !playerInventory[i].isEquipped;
+                    }
+                }
+            }
+
             playerInventory[idx].isEquipped = !playerInventory[idx].isEquipped;
         }
 
