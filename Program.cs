@@ -411,7 +411,7 @@ namespace _5week_assignment
                 }
             }
 
-            Attack();
+            BattleStart();
         }
 
         private static void looting() //아이템 루팅 함수
@@ -705,6 +705,7 @@ namespace _5week_assignment
                         _player.Gold -= merchantItem[keyInput - 1].Gold;
                         playerInventory.Add(merchantItem[keyInput - 1]);
                     }
+
                     Console.ReadKey();
 
                     BuyItem();
@@ -738,8 +739,8 @@ namespace _5week_assignment
                     merchantMenu();
                     break;
                 default:
-                    playerInventory.RemoveAt(keyInput - 1);
                     _player.Gold += (int)(playerInventory[keyInput - 1].Gold / 3);
+                    playerInventory.RemoveAt(keyInput - 1);
 
                     SalesItem();
                     break;

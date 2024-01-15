@@ -188,7 +188,7 @@ namespace _5week_assignment
                     {
                         new Item("고장난 키보드", "무기로 쓰기에 적합한 키보드", Item.itemType.Weapon, 15, 0, 0, 850),
                         new Item("발가락 수면양말", "굉장히 편안한 수면양말", Item.itemType.Armor, 0, 7, 0, 830),
-                        new Item("회복 촉진제", "체력 50 회복", Item.itemType.Restore, 0, 0, 25, 500),
+                        new Item("회복 촉진제", "체력 50 회복", Item.itemType.Restore, 0, 0, 50, 500),
                         null
                     };
                     monsterDropRate = new List<int>
@@ -203,8 +203,8 @@ namespace _5week_assignment
                     monsterItem = new List<Item>
                     {
                         new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", Item.itemType.Weapon, 7, 0, 0, 950),
-                        new Item("발가락 수면양말", "굉장히 편안한 수면양말", Item.itemType.Armor, 0, 7, 0, 930),
-                        new Item("줄기 세포 배양술", "체력 80 회복", Item.itemType.Restore, 0, 0, 25, 600),
+                        new Item("탈모방지 모자", "통풍이 잘 되고 머리 건강에 좋습니다.", Item.itemType.Armor, 0, 7, 0, 930),
+                        new Item("줄기 세포 배양술", "체력 80 회복", Item.itemType.Restore, 0, 0, 80, 600),
                         null
                     };
                     monsterDropRate = new List<int>
@@ -219,8 +219,8 @@ namespace _5week_assignment
                     monsterItem = new List<Item>
                     {
                         new Item("커피 보틀", "모서리에 맞으면 아픈 보틀", Item.itemType.Weapon, 9, 0, 0, 1050),
-                        new Item("발가락 수면양말", "굉장히 편안한 수면양말", Item.itemType.Armor, 0, 7, 0, 1030),
-                        new Item("나노 로봇", "체력 100 회복", Item.itemType.Restore, 0, 0, 25, 800),
+                        new Item("인형탈", "그 무엇도 내부에 침범할 수 없습니다", Item.itemType.Armor, 0, 7, 0, 1030),
+                        new Item("나노 로봇", "체력 100 회복", Item.itemType.Restore, 0, 0, 100, 800),
                         null
                     };
                     monsterDropRate = new List<int>
