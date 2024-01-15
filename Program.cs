@@ -508,8 +508,8 @@ namespace _5week_assignment
             Console.WriteLine("{0} ( {1} )", _player.Name, _player.Job);
 
             int[] bonusStat = getSumBonusStat();
-            PrintTextWithHighlights("공격력 : ", (bonusStat[0]).ToString(), bonusStat[0] - _player.Atk > 0 ? string.Format(" (+{0})", bonusStat[0] - _player.Atk) : "");
-            PrintTextWithHighlights("방어력 : ", (bonusStat[1]).ToString(), bonusStat[1] - _player.Def > 0 ? string.Format(" (+{0})", bonusStat[1] - _player.Def) : "");
+            PrintTextWithHighlights("공격력 : ", (_player.Atk).ToString(), bonusStat[0] + _player.Atk > 0 ? string.Format(" (+{0})", bonusStat[0]) : "");
+            PrintTextWithHighlights("방어력 : ", (_player.Def).ToString(), bonusStat[1] + _player.Def > 0 ? string.Format(" (+{0})", bonusStat[1]) : "");
 
             PrintTextWithHighlights("체력 : ", $"{_player.currentHP.ToString()} / {_player.Hp.ToString()}");
 
@@ -534,6 +534,7 @@ namespace _5week_assignment
         {
             int Atk = 0;
             int Def = 0;
+
             for (int i = 0; i < playerInventory.Count; i++)
             {
                 if (playerInventory[i].isEquipped)
@@ -543,7 +544,7 @@ namespace _5week_assignment
                 }
             }
 
-            int[] bonusStat = { _player.Atk + Atk, _player.Def + Def };
+            int[] bonusStat = { Atk, Def };
 
             return bonusStat;
         }
@@ -626,6 +627,9 @@ namespace _5week_assignment
                     if (playerInventory[i].Type == playerInventory[idx].Type && i != idx)
                     {
                         playerInventory[i].isEquipped = !playerInventory[i].isEquipped;
+
+                        _player.Atk -= playerInventory[i].Atk;
+                        _player.Def -= playerInventory[i].Def;
                     }
                 }
             }
@@ -650,6 +654,18 @@ namespace _5week_assignment
             }
 
             playerInventory[idx].isEquipped = !playerInventory[idx].isEquipped;
+
+            if(playerInventory[idx].isEquipped == true)
+            {
+                _player.Atk += playerInventory[idx].Atk;
+                _player.Def += playerInventory[idx].Def;
+            }
+            else if(playerInventory[idx].isEquipped == false)
+            {
+                _player.Atk -= playerInventory[idx].Atk;
+                _player.Def -= playerInventory[idx].Def;
+            }
+            
 
         }
 
