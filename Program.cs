@@ -7,6 +7,8 @@ namespace _5week_assignment
 {
     internal class Program
     {
+        static bool isBattle = false;
+
         private static Character _player = new Character();
         private static List<Monster> monsterPool = new List<Monster>();
         private static List<Item> playerInventory = new List<Item>();
@@ -104,18 +106,21 @@ namespace _5week_assignment
 
         static void startMenu()
         {
+            isBattle = false;
+
             Console.Clear();
             Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
             Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("1. 상태 보기");
             Console.WriteLine("2. 인벤토리");
-            Console.Write("3. 전투 시작");
+            Console.WriteLine("3. 상점 방문");
+            Console.Write("4. 전투 시작");
             Console.WriteLine($" (현재 진행 : {currentStage}층)");
             Console.WriteLine();
 
 
-            switch (CheckValidInput(1, 3))
+            switch (CheckValidInput(1, 4))
             {
                 case 1:
                     StatusMenu();
@@ -124,6 +129,9 @@ namespace _5week_assignment
                     InventoryMenu();
                     break;
                 case 3:
+                    merchantMenu();
+                    break;
+                case 4:
                     BattleStart();
                     break;
             }
@@ -153,9 +161,12 @@ namespace _5week_assignment
             Console.WriteLine("1. 공격");
             Console.WriteLine();
 
+            Console.WriteLine("2. 인벤토리");
+            Console.WriteLine();
+
             Console.WriteLine("0. 도망치기");
             Console.WriteLine();
-            switch (CheckValidInput(0,1))
+            switch (CheckValidInput(0,2))
             {
                 case 0:
                     startMenu(); // 도망치기
@@ -163,6 +174,11 @@ namespace _5week_assignment
                 case 1:
                     // 공격
                     Attack();
+                    break;
+                case 2:
+                    // 인벤토리
+                    isBattle = true;
+                    InventoryMenu();
                     break;
             }
         }
@@ -557,7 +573,14 @@ namespace _5week_assignment
             switch (CheckValidInput(0, 1))
             {
                 case 0:
-                    startMenu();
+                    if(isBattle == false)
+                    {
+                        startMenu();
+                    }
+                    else
+                    {
+                        BattleStart();
+                    }
                     break;
                 case 1:
                     EquipMenu();
@@ -631,6 +654,13 @@ namespace _5week_assignment
             playerInventory[idx].isEquipped = !playerInventory[idx].isEquipped;
 
         }
+
+        private static void merchantMenu()
+        {
+            throw new NotImplementedException();
+        }
+
+
 
     }
 }
