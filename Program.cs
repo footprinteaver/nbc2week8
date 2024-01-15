@@ -384,7 +384,7 @@ namespace _5week_assignment
                 Console.WriteLine("\r\n크리티컬 발동!!");
                 Console.ResetColor();
                 Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
-                Console.WriteLine($" [데미지 : {damaged * 1.6}]");
+                Console.WriteLine($" [데미지 : {(int)(damaged * 1.6f)}]");
             }
             else
             {
@@ -739,10 +739,9 @@ namespace _5week_assignment
             Console.WriteLine();
             Console.WriteLine("{0} ( {1} )", _player.Name, _player.Job);
 
-            int[] bonusStat = getSumBonusStat();
-            PrintTextWithHighlights("공격력 : ", (bonusStat[0]).ToString(), bonusStat[0] - _player.Atk > 0 ? string.Format(" (+{0})", bonusStat[0] - _player.Atk) : "");
-            PrintTextWithHighlights("방어력 : ", (bonusStat[1]).ToString(), bonusStat[1] - _player.Def > 0 ? string.Format(" (+{0})", bonusStat[1] - _player.Def) : "");
-
+            Console.WriteLine($"Atk : {_player.Atk}");
+            Console.WriteLine($"Def : {_player.Def}");
+       
             PrintTextWithHighlights("체력 : ", $"{_player.currentHP.ToString()} / {_player.Hp.ToString()}");
             PrintTextWithHighlights("마나 : ", $"{_player.currentMP.ToString()} / {_player.Mp.ToString()}");
 
@@ -763,23 +762,6 @@ namespace _5week_assignment
             }
         }
         
-        private static int[] getSumBonusStat() //아이템 장착 시, 해당 아이템의 스텟 추가
-        {
-            int Atk = 0;
-            int Def = 0;
-            for (int i = 0; i < playerInventory.Count; i++)
-            {
-                if (playerInventory[i].isEquipped)
-                {
-                    Atk += playerInventory[i].Atk;
-                    Def += playerInventory[i].Def;
-                }
-            }
-
-            int[] bonusStat = { _player.Atk + Atk, _player.Def + Def };
-
-            return bonusStat;
-        }
 
 
         private static void InventoryMenu() //인벤토리 화면
@@ -859,6 +841,9 @@ namespace _5week_assignment
                     if (playerInventory[i].Type == playerInventory[idx].Type && i != idx)
                     {
                         playerInventory[i].isEquipped = !playerInventory[i].isEquipped;
+
+                        _player.Atk -= playerInventory[i].Atk;
+                        _player.Def -= playerInventory[i].Def;
                     }
                 }
             }
@@ -883,6 +868,17 @@ namespace _5week_assignment
             }
 
             playerInventory[idx].isEquipped = !playerInventory[idx].isEquipped;
+
+            if (playerInventory[idx].isEquipped == true)
+            {
+                _player.Atk += playerInventory[idx].Atk;
+                _player.Def += playerInventory[idx].Def;
+            }
+            else if (playerInventory[idx].isEquipped == false)
+            {
+                _player.Atk -= playerInventory[idx].Atk;
+                _player.Def -= playerInventory[idx].Def;
+            }
 
         }
 
