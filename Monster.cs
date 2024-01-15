@@ -43,27 +43,27 @@ namespace _5week_assignment
             switch (randMonster)
             {
                 case (int)MonsterType.LeeHanSol:
-                    MonsterSetting("이한솔 매니저", 10, 3, 0, 2, 100, 2);
+                    MonsterSetting("이한솔 매니저", 10, 3, 0, 2, 100,2);
                     monsterDropItem = DropItem((int)MonsterType.LeeHanSol);
                     break;
                 case (int)MonsterType.MonYeongOh:
-                    MonsterSetting("문영오 매니저", 15, 3, 1, 3, 150, 4);
+                    MonsterSetting("문영오 매니저", 15, 3, 1, 3, 150, 3);
                     monsterDropItem = DropItem((int)MonsterType.MonYeongOh);
                     break;
                 case (int)MonsterType.HanHyoseung:
-                    MonsterSetting("한효승 매니저", 25, 9, 3, 5, 300, 8);
+                    MonsterSetting("한효승 매니저", 25, 9, 3, 5, 300, 5);
                     monsterDropItem = DropItem((int)MonsterType.HanHyoseung);
                     break;
                 case (int)MonsterType.LeeHanbyeol:
-                    MonsterSetting("이한솔 튜터", 30, 3, 5, 5, 350, 15);
+                    MonsterSetting("이한솔 튜터", 30, 3, 5, 7, 350, 7);
                     monsterDropItem = DropItem((int)MonsterType.LeeHanbyeol);
                     break;
                 case (int)MonsterType.KimHyunjeong:
-                    MonsterSetting("김현정 튜터", 60, 10, 7, 7,400,30);
+                    MonsterSetting("김현정 튜터", 60, 10, 7, 9,400,9);
                     monsterDropItem = DropItem((int)MonsterType.KimHyunjeong);
                     break;
                 case (int)MonsterType.KimYeongHo:
-                    MonsterSetting("김영호 튜터", 100, 15, 15, 10, 600, 40);
+                    MonsterSetting("김영호 튜터", 100, 15, 15, 12, 600, 12);
                     monsterDropItem = DropItem((int)MonsterType.KimYeongHo);
                     break;
                     

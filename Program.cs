@@ -51,13 +51,13 @@ namespace _5week_assignment
         {
             skillPool = new List<playerSkill>();
             {
-                skillPool.Add(new playerSkill("강화공격", 15, "직업의 특징을 살려 공격합니다", 2));
+                skillPool.Add(new playerSkill("강화공격", 15, "직업의 특징을 살려 공격합니다",2));
                 skillPool.Add(new playerSkill("더블어택", 20, "무작위로 두번 공격합니다", 1.5));
             }
 
         }
 
-        static void AddMonster()
+        static void AddMonster() 
         {
             Random rand = new Random();
             int summonCnt;
@@ -362,7 +362,7 @@ namespace _5week_assignment
 
         }
 
-        private static void PlayerSkillAttackResult(int input, int damaged) //플레이어 공격 결과
+        private static void PlayerSkillAttackResult(int input, int damaged, playerSkill skill) //플레이어 공격 결과
         {
             
 
@@ -370,10 +370,10 @@ namespace _5week_assignment
             Console.WriteLine();
 
             // MP 차감
-            _player.currentMP -= skillPool[input].Cost;
+            _player.currentMP -= skill.Cost;
 
             monsterPool[input].currentHp -= damaged;
-            Console.WriteLine($"{_player.Name} 의 {skillPool[input].Name}! ");
+            Console.WriteLine($"{_player.Name} 의 {skill.Name}! ");
 
             Random rand = new Random();
             int criProbability = rand.Next(1, 101);
@@ -497,7 +497,7 @@ namespace _5week_assignment
                         goto SkillAttackisDead;                         // 몬스터가 이미 죽었다면 SkillAttackisDead: 로 돌아가 input값을 다시 받음
                     }
                     Console.Clear();
-                    PlayerSkillAttackResult(input - 1, damaged);
+                    PlayerSkillAttackResult(input - 1, damaged,skill);
                     break;
                 case 2:
                     Console.Clear();
@@ -507,7 +507,7 @@ namespace _5week_assignment
                         Console.WriteLine();
                         goto SkillAttackisDead;
                     }
-                    PlayerSkillAttackResult(input - 1, damaged);
+                    PlayerSkillAttackResult(input - 1, damaged, skill);
                     break;
                 case 3:
                     Console.Clear();
@@ -517,7 +517,7 @@ namespace _5week_assignment
                         Console.WriteLine();
                         goto SkillAttackisDead;
                     }
-                    PlayerSkillAttackResult(input - 1, damaged);
+                    PlayerSkillAttackResult(input - 1, damaged, skill);
                     break;
                 case 4:
                     Console.Clear();
@@ -527,7 +527,7 @@ namespace _5week_assignment
                         Console.WriteLine();
 
                     }
-                    PlayerSkillAttackResult(input - 1, damaged);
+                    PlayerSkillAttackResult(input - 1, damaged,skill);
                     break;
             }
 
@@ -653,6 +653,21 @@ namespace _5week_assignment
             BattleStart();
         }
 
+        public static int ExperienceRequiredForLevelUp(int level)
+        {
+            int arithmetic = 15;
+            int commonDifference = 5;
+
+            int _playerNeededExp = 10;
+
+            for (int i = 2; i <= level; i++)
+            {
+                _playerNeededExp += arithmetic + (commonDifference * (level - 1));
+            }
+
+            return _playerNeededExp;
+        }
+
         private static void looting() //아이템 루팅 함수
         {
             for (int i = 0; i < monsterPool.Count; i++)
@@ -675,6 +690,38 @@ namespace _5week_assignment
                 Console.WriteLine();
 
                 _player.Exp += monsterPool[i].Exp;
+
+                if (_player.Exp >= _player.MaxExp)
+                {
+                    _player.Exp -= _player.MaxExp;
+                    _player.Level++;
+
+                    switch (_player.Job)
+                    {
+                        case "전사":
+                            _player.Hp += 20;
+                            _player.currentHP = _player.Hp;
+                            _player.Atk += 1;
+                            _player.Def += 3;
+                            break;
+                        case "궁수":
+                            _player.Hp += 15;
+                            _player.currentHP = _player.Hp;
+                            _player.Atk += 2;
+                            _player.Def += 2;
+                            break;
+                        case "마법사":
+                            _player.Hp += 10;
+                            _player.currentHP = _player.Hp;
+                            _player.Atk += 3;
+                            _player.Def += 1;
+                            break;
+                    }
+
+                    Console.WriteLine($"축하합니다! {_player.Level - 1} -> {_player.Level} 로 레벨업 하였습니다.");
+
+                }
+
                 _player.Gold += gold;
                 
             }
@@ -701,7 +748,7 @@ namespace _5week_assignment
 
 
             PrintTextWithHighlights("골드 : ", _player.Gold.ToString());
-            PrintTextWithHighlights("경험치 : ", $"{_player.Exp.ToString()}");
+            PrintTextWithHighlights("경험치 : ", $"{_player.Exp.ToString()} / {_player.MaxExp.ToString()}");
             Console.WriteLine();
             Console.WriteLine("0. 뒤로 가기");
             Console.WriteLine();
@@ -923,7 +970,7 @@ namespace _5week_assignment
 
                 merchantItem[i].PrintItemStatDescription(true, i + 1);
             }
-
+            Console.WriteLine();
             Console.WriteLine("0. 나가기");
             Console.WriteLine("");
 
@@ -967,11 +1014,13 @@ namespace _5week_assignment
                 playerInventory[i].PrintItemStatDescription(true, i + 1);
             }
 
-            int keyInput = CheckValidInput(0, playerInventory.Count);
-
-
+            Console.WriteLine();
             Console.WriteLine("0. 나가기");
             Console.WriteLine("");
+
+            int keyInput = CheckValidInput(0, playerInventory.Count);
+
+            
 
             switch (keyInput)
             {
