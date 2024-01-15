@@ -138,85 +138,97 @@ namespace _5week_assignment
                 case (int)MonsterType.LeeHanSol:
                     monsterItem = new List<Item>
                     {
-                        new Item("핸드백", "작은 크기지만 그 무엇보다 많은게 들어있습니다", 0, 4, 0, 0),
-                        new Item("프랜치 코트", "방어구보단 패션 아이템 같습니다", 1, 0, 1, 0),
-                        new Item("상처치료연고", "체력 10 회복", 2, 0, 0, 10)
+                        new Item("핸드백", "작은 크기지만 그 무엇보다 많은게 들어있습니다", Item.itemType.Weapon, 4, 0, 0, 150),
+                        new Item("프랜치 코트", "방어구보단 패션 아이템 같습니다", Item.itemType.Armor, 0, 1, 0, 130),
+                        new Item("상처치료연고", "체력 10 회복", Item.itemType.Restore, 0, 0, 10, 100),
+                        null
                     };
                     monsterDropRate = new List<int>
                     {
                         30,
                         30,
-                        40
+                        30,
+                        10
                     };
                     break;
                 case (int)MonsterType.MonYeongOh:
                     monsterItem = new List<Item>
                     {
-                        new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", 0, 7, 0, 0),
-                        new Item("가죽 자켓", "좋은 브랜드라 약간의 방어력을 기대해도 될 것 같습니다", 1, 0, 3, 0),
-                        new Item("압박붕대", "체력 15 회복", 2, 0, 0, 15)
+                        new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", Item.itemType.Weapon, 7, 0, 0, 250),
+                        new Item("가죽 자켓", "좋은 브랜드라 약간의 방어력을 기대해도 될 것 같습니다", Item.itemType.Armor, 0, 3, 0, 230),
+                        new Item("압박붕대", "체력 15 회복", Item.itemType.Restore, 0, 0, 15, 200),
+                        null
                     };
                     monsterDropRate = new List<int>
                     {
-                        15,
+                        20,
+                        20,
                         25,
-                        60
+                        35
                     };
                     break;
                 case (int)MonsterType.HanHyoseung:
                     monsterItem = new List<Item>
                     {
-                        new Item("마우스", "\"딸깍\"", 0, 10, 0, 0),
-                        new Item("롱패딩", "전신을 감싸지만 실상은 얇은 재질입니다", 1, 0, 4, 0),
-                        new Item("봉합술 키트", "체력 25 회복", 2, 0, 0, 25)
+                        new Item("마우스", "\"딸깍\"", Item.itemType.Weapon, 10, 0, 0, 350),
+                        new Item("롱패딩", "전신을 감싸지만 실상은 얇은 재질입니다", Item.itemType.Armor, 0, 4, 0, 330),
+                        new Item("봉합술 키트", "체력 25 회복", Item.itemType.Restore, 0, 0, 25, 300),
+                        null
                     };
                     monsterDropRate = new List<int>
                     {
-                        10,
-                        10,
-                        80
+                        15,
+                        15,
+                        20,
+                        50
                     };
                     break;       
                 case (int)MonsterType.LeeHanbyeol:
                     monsterItem = new List<Item>
                     {
-                        new Item("고장난 키보드", "무기로 쓰기에 적합한 키보드", 0, 15, 0, 0),
-                        new Item("발가락 수면양말", "굉장히 편안한 수면양말", 1, 0, 7, 0),
-                        new Item("봉합술 키트", "체력 25 회복", 2, 0, 0, 25)
+                        new Item("고장난 키보드", "무기로 쓰기에 적합한 키보드", Item.itemType.Weapon, 15, 0, 0, 850),
+                        new Item("발가락 수면양말", "굉장히 편안한 수면양말", Item.itemType.Armor, 0, 7, 0, 830),
+                        new Item("회복 촉진제", "체력 50 회복", Item.itemType.Restore, 0, 0, 25, 500),
+                        null
                     };
                     monsterDropRate = new List<int>
                     {
                         10,
                         10,
-                        80
+                        20,
+                        60
                     };
                     break;
                 case (int)MonsterType.KimHyunjeong:
                     monsterItem = new List<Item>
                     {
-                        new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", 0, 7, 0, 0),
-                        new Item("고장난 키보드", "무기로 쓰기에 적합한 키보드", 0, 15, 0, 0),
-                        new Item("봉합술 키트", "체력 25 회복", 2, 0, 0, 25)
+                        new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", Item.itemType.Weapon, 7, 0, 0, 950),
+                        new Item("발가락 수면양말", "굉장히 편안한 수면양말", Item.itemType.Armor, 0, 7, 0, 930),
+                        new Item("줄기 세포 배양술", "체력 80 회복", Item.itemType.Restore, 0, 0, 25, 600),
+                        null
                     };
                     monsterDropRate = new List<int>
                     {
                         10,
                         10,
-                        80
+                        20,
+                        60
                     };
                     break;
                 case (int)MonsterType.KimYeongHo:
                     monsterItem = new List<Item>
                     {
-                        new Item("커피 보틀", "모서리에 맞으면 아픈 보틀", 0, 9, 0, 0),
-                        new Item("고장난 키보드", "무기로 쓰기에 적합한 키보드", 0, 15, 0, 0),
-                        new Item("봉합술 키트", "체력 25 회복", 2, 0, 0, 25)
+                        new Item("커피 보틀", "모서리에 맞으면 아픈 보틀", Item.itemType.Weapon, 9, 0, 0, 1050),
+                        new Item("발가락 수면양말", "굉장히 편안한 수면양말", Item.itemType.Armor, 0, 7, 0, 1030),
+                        new Item("나노 로봇", "체력 100 회복", Item.itemType.Restore, 0, 0, 25, 800),
+                        null
                     };
                     monsterDropRate = new List<int>
                     {
                         10,
                         10,
-                        80
+                        20,
+                        60
                     };
                     break;
             }

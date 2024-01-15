@@ -8,15 +8,24 @@ namespace _5week_assignment
 {
     public class Item
     {
+        public enum itemType
+        {
+            None,
+            Weapon,
+            Armor,
+            Restore
+        }
         public string Name { get; }
         public string Description { get; }
-        public int Type { get; }
+        public itemType Type { get; }
         public int Atk { get; }
         public int Def { get; }
         public int Hp { get; }
+        public int Gold {  get; }
         public bool isEquipped { get; set; }
+        public bool isMerchant { get; set; }
 
-        public Item(string name, string description, int type, int atk, int def, int hp, bool isEquipped = false)
+        public Item(string name, string description, itemType type, int atk, int def, int hp, int gold, bool isEquipped = false)
         {
             Name = name;
             Description = description;
@@ -24,6 +33,7 @@ namespace _5week_assignment
             Atk = atk;
             Def = def;
             Hp = hp;
+            Gold = gold;
             isEquipped = isEquipped;
         }
 
@@ -45,11 +55,11 @@ namespace _5week_assignment
                 Console.Write("E");
                 Console.ResetColor();
                 Console.Write("]  ");
-                Console.Write(PadRightForMixedText(Name, 12));
+                Console.Write(PadRightForMixedText(Name, 18));
             }
             else
             {
-                Console.Write(PadRightForMixedText(Name, 12));
+                Console.Write(PadRightForMixedText(Name, 18));
             }
 
             Console.Write(" | ");
@@ -67,7 +77,10 @@ namespace _5week_assignment
                 Console.Write($"Hp {(Hp >= 0 ? "+" : "")}{Hp}");
             }
 
-            Console.Write(" | ");
+            Console.Write(" |   ");
+
+            Console.Write($"{PadRightForMixedText(Gold.ToString(), 5)}Gold    ");
+            
 
             Console.WriteLine(Description);
 
