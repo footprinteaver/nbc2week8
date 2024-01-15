@@ -294,7 +294,6 @@ namespace _5week_assignment
                     monsterDropItem = DropItem((int)MonsterType.HanHyoseung);
                     break;
             }
-
         }
 
         public void MonsterInfo(bool withNumber = false, int index = 0)
@@ -345,13 +344,15 @@ namespace _5week_assignment
                     {
                         new Item("핸드백", "작은 크기지만 그 무엇보다 많은게 들어있습니다", 0, 4, 0, 0),
                         new Item("프랜치 코트", "방어구보단 패션 아이템 같습니다", 1, 0, 1, 0),
-                        new Item("상처치료연고", "체력 10 회복", 2, 0, 0, 10)
+                        new Item("상처치료연고", "체력 10 회복", 2, 0, 0, 10),
+                        null
                     };
                     monsterDropRate = new List<int>
                     {
+                        20,
+                        20,
                         30,
-                        30,
-                        40
+                        30
                     };
                     break;
                 case (int)MonsterType.MonYeongOh:
@@ -359,13 +360,16 @@ namespace _5week_assignment
                     {
                         new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", 0, 7, 0, 0),
                         new Item("가죽 자켓", "좋은 브랜드라 약간의 방어력을 기대해도 될 것 같습니다", 1, 0, 3, 0),
-                        new Item("압박붕대", "체력 15 회복", 2, 0, 0, 15)
+                        new Item("압박붕대", "체력 15 회복", 2, 0, 0, 15),
+                        null
                     };
                     monsterDropRate = new List<int>
                     {
                         15,
+                        15,
                         25,
-                        60
+                        45
+
                     };
                     break;
                 case (int)MonsterType.HanHyoseung:
@@ -373,13 +377,15 @@ namespace _5week_assignment
                     {
                         new Item("마우스", "\"딸깍\"", 0, 10, 0, 0),
                         new Item("롱패딩", "전신을 감싸지만 실상은 얇은 재질입니다", 1, 0, 4, 0),
-                        new Item("봉합술 키트", "체력 25 회복", 2, 0, 0, 25)
+                        new Item("봉합술 키트", "체력 25 회복", 2, 0, 0, 25),
+                        null
                     };
                     monsterDropRate = new List<int>
                     {
                         10,
                         10,
-                        80
+                        20,
+                        60
                     };
                     break;
             }
@@ -414,8 +420,6 @@ namespace _5week_assignment
             PrintStartLogo();
             GameDataSetting();
             startMenu();
-
-
         }
 
 
@@ -727,14 +731,19 @@ namespace _5week_assignment
                 int gold = lootingMonster.Gold + randomGold;
 
                 Console.WriteLine($"exp : {monsterPool[i].Exp}");
-                Console.WriteLine($"{monsterPool[i].Gold}  Gold");
-                Console.WriteLine($"{monsterPool[i].monsterDropItem.Name}");
+                Console.WriteLine($"{gold}  Gold");
+
+                if(monsterPool[i].monsterDropItem != null)
+                {
+                    Console.WriteLine($"{monsterPool[i].monsterDropItem.Name}");
+                    AddItem(monsterPool[i].monsterDropItem);
+                }
+                
                 Console.WriteLine();
                 Console.WriteLine();
 
                 _player.Exp += monsterPool[i].Exp;
                 _player.Gold += gold;
-                AddItem(monsterPool[i].monsterDropItem);
         }
 
     }
