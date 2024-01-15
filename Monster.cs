@@ -15,7 +15,7 @@ namespace _5week_assignment
             MonYeongOh,
             HanHyoseung,          // <--------------- 여기까지가 1단계에서 등장할 몬스터 목록
             LeeHanbyeol,          // <---------------- 6~10단계에 추가로 등장하는 몬스터
-            KimHunjeong,          // <---------------- 11~15단계에 추가로 등장하는 몬스터
+            KimHyunjeong,          // <---------------- 11~15단계에 추가로 등장하는 몬스터
             KimYeongHo            // <---------------- 4단계에 추가로 등장하는 몬스터
         }
 
@@ -25,6 +25,13 @@ namespace _5week_assignment
         public int Atk;
         public int Def;
         public int Level;
+        public int Gold;
+        public int Exp;
+
+        public List<Item> monsterItem;
+        public List<int> monsterDropRate;
+
+        public Item monsterDropItem;
 
         public bool isDead; // 죽었니 살았니?
 
@@ -35,22 +42,28 @@ namespace _5week_assignment
             switch (randMonster)
             {
                 case (int)MonsterType.LeeHanSol:
-                    MonsterSetting("이한솔 매니저", 10, 3, 0, 2);
+                    MonsterSetting("이한솔 매니저", 10, 3, 0, 2, 100, 2);
+                    monsterDropItem = DropItem((int)MonsterType.LeeHanSol);
                     break;
                 case (int)MonsterType.MonYeongOh:
-                    MonsterSetting("문영오 매니저", 15, 3, 1, 3);
+                    MonsterSetting("문영오 매니저", 15, 3, 1, 3, 150, 4);
+                    monsterDropItem = DropItem((int)MonsterType.MonYeongOh);
                     break;
                 case (int)MonsterType.HanHyoseung:
-                    MonsterSetting("한효승 매니저", 25, 9, 3, 5);
+                    MonsterSetting("한효승 매니저", 25, 9, 3, 5, 300, 8);
+                    monsterDropItem = DropItem((int)MonsterType.HanHyoseung);
                     break;
                 case (int)MonsterType.LeeHanbyeol:
-                    MonsterSetting("이한솔 튜터", 30, 3, 5, 5);
+                    MonsterSetting("이한솔 튜터", 30, 3, 5, 5, 350, 15);
+                    monsterDropItem = DropItem((int)MonsterType.LeeHanbyeol);
                     break;
-                case (int)MonsterType.KimHunjeong:
-                    MonsterSetting("김현정 튜터", 60, 10, 7, 7);
+                case (int)MonsterType.KimHyunjeong:
+                    MonsterSetting("김현정 튜터", 60, 10, 7, 7,400,30);
+                    monsterDropItem = DropItem((int)MonsterType.KimHyunjeong);
                     break;
                 case (int)MonsterType.KimYeongHo:
-                    MonsterSetting("김영호 튜터", 100, 15, 15, 10);
+                    MonsterSetting("김영호 튜터", 100, 15, 15, 10, 600, 40);
+                    monsterDropItem = DropItem((int)MonsterType.KimYeongHo);
                     break;
                     
             }
@@ -112,7 +125,121 @@ namespace _5week_assignment
             }
         }
 
-        #region 스테이지 기능이 추가되면 주석을 풀고 추가할 메서드
+        public Item DropItem(int type)          //몬스터 별 드롭 아이템 설정
+        {
+            Random rand = new Random();
+            int dropRate = rand.Next(0, 100);
+
+            int count = 0;
+            int sum = 0;
+
+            switch (type)
+            {
+                case (int)MonsterType.LeeHanSol:
+                    monsterItem = new List<Item>
+                    {
+                        new Item("핸드백", "작은 크기지만 그 무엇보다 많은게 들어있습니다", 0, 4, 0, 0),
+                        new Item("프랜치 코트", "방어구보단 패션 아이템 같습니다", 1, 0, 1, 0),
+                        new Item("상처치료연고", "체력 10 회복", 2, 0, 0, 10)
+                    };
+                    monsterDropRate = new List<int>
+                    {
+                        30,
+                        30,
+                        40
+                    };
+                    break;
+                case (int)MonsterType.MonYeongOh:
+                    monsterItem = new List<Item>
+                    {
+                        new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", 0, 7, 0, 0),
+                        new Item("가죽 자켓", "좋은 브랜드라 약간의 방어력을 기대해도 될 것 같습니다", 1, 0, 3, 0),
+                        new Item("압박붕대", "체력 15 회복", 2, 0, 0, 15)
+                    };
+                    monsterDropRate = new List<int>
+                    {
+                        15,
+                        25,
+                        60
+                    };
+                    break;
+                case (int)MonsterType.HanHyoseung:
+                    monsterItem = new List<Item>
+                    {
+                        new Item("마우스", "\"딸깍\"", 0, 10, 0, 0),
+                        new Item("롱패딩", "전신을 감싸지만 실상은 얇은 재질입니다", 1, 0, 4, 0),
+                        new Item("봉합술 키트", "체력 25 회복", 2, 0, 0, 25)
+                    };
+                    monsterDropRate = new List<int>
+                    {
+                        10,
+                        10,
+                        80
+                    };
+                    break;       
+                case (int)MonsterType.LeeHanbyeol:
+                    monsterItem = new List<Item>
+                    {
+                        new Item("고장난 키보드", "무기로 쓰기에 적합한 키보드", 0, 15, 0, 0),
+                        new Item("발가락 수면양말", "굉장히 편안한 수면양말", 1, 0, 7, 0),
+                        new Item("봉합술 키트", "체력 25 회복", 2, 0, 0, 25)
+                    };
+                    monsterDropRate = new List<int>
+                    {
+                        10,
+                        10,
+                        80
+                    };
+                    break;
+                case (int)MonsterType.KimHyunjeong:
+                    monsterItem = new List<Item>
+                    {
+                        new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", 0, 7, 0, 0),
+                        new Item("고장난 키보드", "무기로 쓰기에 적합한 키보드", 0, 15, 0, 0),
+                        new Item("봉합술 키트", "체력 25 회복", 2, 0, 0, 25)
+                    };
+                    monsterDropRate = new List<int>
+                    {
+                        10,
+                        10,
+                        80
+                    };
+                    break;
+                case (int)MonsterType.KimYeongHo:
+                    monsterItem = new List<Item>
+                    {
+                        new Item("커피 보틀", "모서리에 맞으면 아픈 보틀", 0, 9, 0, 0),
+                        new Item("고장난 키보드", "무기로 쓰기에 적합한 키보드", 0, 15, 0, 0),
+                        new Item("봉합술 키트", "체력 25 회복", 2, 0, 0, 25)
+                    };
+                    monsterDropRate = new List<int>
+                    {
+                        10,
+                        10,
+                        80
+                    };
+                    break;
+            }
+
+            for (int i = 0; i < monsterDropRate.Count; i++)
+            {
+                sum += monsterDropRate[i];
+
+                if (dropRate <= sum)
+                {
+                    break;
+                }
+                else
+                {
+                    count++;
+                }
+            }
+
+            return monsterItem[count];
+        }
+
+
+
         private int SummonByStage(int currentStage)             // 스테이지 별 캐릭터 소환메서드
         {
             Random rand = new Random();
@@ -135,9 +262,8 @@ namespace _5week_assignment
             }
             return randMonster;
         }
-        #endregion
 
-        private void MonsterSetting(string _Name, int _Hp, int _Atk, int _Def, int _Level) // 몬스터 옵션 세팅
+        private void MonsterSetting(string _Name, int _Hp, int _Atk, int _Def, int _Level,int _Gold,int _Exp) // 몬스터 옵션 세팅
         {
             Name = _Name;
             Hp = _Hp;
@@ -145,6 +271,8 @@ namespace _5week_assignment
             Atk = _Atk;
             Def = _Def;
             Level = _Level;
+            Gold = _Gold;
+            Exp = _Exp;
         }
     }
 }

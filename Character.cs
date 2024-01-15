@@ -26,6 +26,7 @@ namespace _5week_assignment
         public bool isDead { get; set; }
         public int currentHP { get; set; }
         public int Gold { get; set; }
+        public int Exp { get; set; }
 
         public void CreatePlayer()     // 플레이어 생성
         {
@@ -37,6 +38,7 @@ namespace _5week_assignment
             Gold = 1500;
             isDead = false;
             Level = 1;
+            Exp = 0;
             Console.Clear();
             ChoiceClass();
             Console.Clear();
@@ -153,6 +155,7 @@ namespace _5week_assignment
 
             Console.WriteLine($"Lv.{Level.ToString("00")} {Name} ({Job})");
             Console.WriteLine($"HP {Hp}/{currentHP}");
+            Console.WriteLine($"Exp : {Exp}");
         }
     }
 }

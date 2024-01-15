@@ -27,8 +27,6 @@ namespace _5week_assignment
             isEquipped = isEquipped;
         }
 
-        public static int ItemCnt = 0;
-
         public void PrintItemStatDescription(bool withNumber = false, int idx = 0)
         {
             Console.Write("- ");
@@ -46,7 +44,8 @@ namespace _5week_assignment
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.Write("E");
                 Console.ResetColor();
-                Console.Write("]");
+                Console.Write("]  ");
+                Console.Write(PadRightForMixedText(Name, 12));
             }
             else
             {
