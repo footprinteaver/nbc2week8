@@ -93,14 +93,13 @@ namespace _5week_assignment
             return choice;    
         }
 
-        public void PlayerAttack(Monster monster, out int damaged)
+        public void PlayerAttack(Monster monster, out int damaged, double skillDmg)
         {
             Random rand = new Random();
             int minAtk = Atk - (int)Math.Ceiling(Atk * 0.1);
             int maxAtk = Atk + (int)Math.Ceiling(Atk * 0.1);
             int attack = rand.Next(minAtk, maxAtk + 1);
             monster.currentHp -= attack;
-
             damaged = attack;
         }
         
@@ -164,45 +163,41 @@ namespace _5week_assignment
 
     public class playerSkill
     {
-        enum SkillType
+        enum Type
         {
             none = 0,
             Attack = 1,
             Heal = 2,
             Buff = 3,
         }
-        public int Number { get; set; }
+        public int SkillNum { get; set; }
         public string Name { get; set; }
         public int Cost { get; set; }
-        public int SkillDmg { get; set; }
+        public double SkillDmg { get; set; } =  1.0;
         public string Description { get; set; }
+        public bool IsAbailable { get; set; }
 
-        public playerSkill( string name, int cost, int skillDmg, string description)
+        public playerSkill( string name, int cost, string description, double skillDmg)
         {
             Name = name;
             Cost = cost;
-            SkillDmg = skillDmg;
             Description = description;
-
+            SkillDmg = skillDmg;
         }
 
-        public void UseMp( Character player)
-        {
-            player.currentMP -= Cost;
-        }
 
-        public void SkillInfo(bool Number = false, int index = 0)
+        public void SkillInfo(bool skillNum = false, int index = 0)
         {
             Console.Write("- ");
 
-            if (Number)
+            if (skillNum)
             {
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.Write($"{index} ");
                 Console.ResetColor();
             }
 
-            Console.WriteLine($"{Name} {Description}");
+            Console.WriteLine($"{Name} mp.{Cost} {Description} 위력보정:{SkillDmg}");
         }
 
     }
@@ -443,11 +438,12 @@ namespace _5week_assignment
         }
         static void GetSkill()
         {
-            getskill = new List<playerSkill>();
+            skillPool = new List<playerSkill>();
             {
-                new playerSkill("강화공격", 15, 2, "테스트용 스킬1");
-                new playerSkill("랜덤스킬", 20, 3, "테스트용 스킬2");
+                skillPool.Add(new playerSkill("강화공격", 15, "직업의 특징을 살려 공격합니다",2));
+                skillPool.Add(new playerSkill("더블어택", 20, "무작위로 두번 공격합니다", 1.5));
             }
+    
         }
         
         private static void PrintStartLogo()
@@ -585,7 +581,7 @@ namespace _5week_assignment
             ShowHighlightedText("■ PlayerTurn ■");
             Console.WriteLine();
 
-            _player.PlayerAttack(monsterPool[input],out damaged);
+            _player.PlayerAttack(monsterPool[input],out damaged, input);
 
             Console.WriteLine($"{_player.Name} 의 공격!");
             Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
@@ -611,7 +607,7 @@ namespace _5week_assignment
                 MonsterTurn();
             }
 
-            
+
         }
 
         private static void Skill()
@@ -631,15 +627,65 @@ namespace _5week_assignment
 
             Console.WriteLine();
             Console.WriteLine("0. 취소");
-            for (int i = 0; i < skillPool; i++)
+            for (int i = 0; i < skillPool.Count; i++)
             {
-                [i].SkillInfo(true, i + 1);
+                skillPool[i].SkillInfo(true, i + 1);
             }
-           
-            
+            int input = CheckValidInput(0, skillPool.Count);
+
+            if (input == 0)
+            {
+                Console.Clear();
+                BattleStart();
+            }
+            else
+            {
+                UseSkill(skillPool[input - 1]);
+            }
+
+
         }
 
- 
+        private static void UseSkill(playerSkill skill)
+        {
+            // 스킬을 사용하기 전에 MP 체크
+            if (_player.currentMP < skill.Cost)
+            {
+                Console.WriteLine("MP가 부족하여 스킬을 사용할 수 없습니다.");
+                
+                Console.Clear();
+                BattleStart();
+            }
+            else
+            {
+                Console.Clear();
+                ShowHighlightedText("■ PlayerTurn ■");
+                Console.WriteLine();
+                // MP 차감
+                _player.currentMP -= skill.Cost;
+                Console.WriteLine($"{_player.Name} 의 {skill.Name}! ");
+                int damaged = 0;
+
+                // 스킬에 따라 데미지 계산
+                _player.PlayerAttack(monsterPool[0], out damaged, skill.SkillDmg);
+                Console.Write($"Lv.{monsterPool[0].Level} {monsterPool[0].Name} 를 맞췄습니다.");
+                Console.WriteLine($" [데미지 : {damaged}]");
+                if (monsterPool[0].currentHp <= 0)
+                {
+                monsterPool[0].isDead = true;
+                }
+            Console.WriteLine();
+            Console.WriteLine("0. 다음");
+
+            int inputKey = CheckValidInput(0, 0);
+
+            if (inputKey == 0)
+            {
+                Console.Clear();
+                MonsterTurn();
+            }
+        }
+     }
 
         private static void MonsterTurn()
         {
@@ -680,7 +726,7 @@ namespace _5week_assignment
                             Console.Clear();
 
                             Console.Clear();
-                            ShowHighlightedText("■ You Lose :( ■");
+                            ShowHighlightedText("■ 전투에 패배하였습니다 ■");
 
                             Console.WriteLine();
                             Console.WriteLine($"Lv.{_player.Level} {_player.Name}");
