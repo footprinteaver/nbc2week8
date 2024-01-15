@@ -71,6 +71,7 @@ namespace _5week_assignment
                     Hp = 80;
                     Mp = 40;
                     currentHP = Hp;
+                    currentMP = Mp;
                     Atk = 15;
                     Def = 15;
                     break;
@@ -99,6 +100,7 @@ namespace _5week_assignment
             int minAtk = Atk - (int)Math.Ceiling(Atk * 0.1);
             int maxAtk = Atk + (int)Math.Ceiling(Atk * 0.1);
             int attack = rand.Next(minAtk, maxAtk + 1);
+
             monster.currentHp -= attack;
             damaged = attack;
         }
@@ -137,7 +139,7 @@ namespace _5week_assignment
             
             Console.WriteLine($"Lv.{Level.ToString("00")} {Name} ({Job})");
             Console.WriteLine($"HP {Hp}/{currentHP}");
-            Console.WriteLine($"MP{Mp}/{currentMP}");
+            Console.WriteLine($"MP {Mp}/{currentMP}");
         }
         //public List<playerSkill> jobSkills = new List<playerSkill>();
 
@@ -173,7 +175,7 @@ namespace _5week_assignment
         public int SkillNum { get; set; }
         public string Name { get; set; }
         public int Cost { get; set; }
-        public double SkillDmg { get; set; } =  1.0;
+        public double SkillDmg { get; set; } 
         public string Description { get; set; }
         public bool IsAbailable { get; set; }
 
@@ -197,7 +199,8 @@ namespace _5week_assignment
                 Console.ResetColor();
             }
 
-            Console.WriteLine($"{Name} mp.{Cost} {Description} 위력보정:{SkillDmg}");
+            Console.WriteLine($"{Name} mp.{Cost}");
+            Console.WriteLine($"{Description} 위력보정:{SkillDmg}");
         }
 
     }
@@ -640,24 +643,29 @@ namespace _5week_assignment
             }
             else
             {
-                UseSkill(skillPool[input - 1]);
-            }
+                // 필요한 MP를 확인
+                int requiredMP = skillPool[input - 1].Cost;
 
+                // MP 체크
+                if (_player.currentMP < requiredMP)
+                {
+                    Console.WriteLine("MP가 부족하여 스킬을 사용할 수 없습니다.");
+                    Console.WriteLine("아무키나 눌러 돌아갑니다");
+                    // 사용자가 확인하기 전까지 대기
+                    Console.ReadKey();
+                    Console.Clear();
+                    Skill(); // 스킬 선택으로 돌아감
+                }
+                else
+                {
+                    UseSkill(skillPool[input - 1]);
+                }
+            }
 
         }
 
         private static void UseSkill(playerSkill skill)
-        {
-            // 스킬을 사용하기 전에 MP 체크
-            if (_player.currentMP < skill.Cost)
-            {
-                Console.WriteLine("MP가 부족하여 스킬을 사용할 수 없습니다.");
-                
-                Console.Clear();
-                BattleStart();
-            }
-            else
-            {
+        {   
                 Console.Clear();
                 ShowHighlightedText("■ PlayerTurn ■");
                 Console.WriteLine();
@@ -684,7 +692,7 @@ namespace _5week_assignment
                 Console.Clear();
                 MonsterTurn();
             }
-        }
+        
      }
 
         private static void MonsterTurn()
@@ -783,6 +791,7 @@ namespace _5week_assignment
             Attack();
         }
 
+
         private static int CheckValidInput(int min, int max)
         {
             int keyInput;
@@ -857,8 +866,8 @@ namespace _5week_assignment
 
             PrintTextWithHighlights("공격력 : ", $"{_player.Atk.ToString()}");
             PrintTextWithHighlights("방어력 : ", $"{_player.Def.ToString()}");
-            PrintTextWithHighlights("체력 : ", $"{_player.Hp.ToString()}");
-            PrintTextWithHighlights("마력 : ", $"{_player.Mp.ToString()}");
+            PrintTextWithHighlights("HP : ", $"{_player.Hp.ToString()}");
+            PrintTextWithHighlights("MP : ", $"{_player.Mp.ToString()}");
 
             #region 예전 코드
             //int bonusAtk = getSumBonusAtk();
