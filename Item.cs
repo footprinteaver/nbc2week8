@@ -8,7 +8,7 @@ namespace _5week_assignment
 {
     public class Item
     {
-        public enum itemType
+        public enum ItemType
         {
             None,
             Weapon,
@@ -17,7 +17,7 @@ namespace _5week_assignment
         }
         public string Name { get; }
         public string Description { get; }
-        public itemType Type { get; }
+        public ItemType Type { get; }
         public int Atk { get; }
         public int Def { get; }
         public int Hp { get; }
@@ -25,7 +25,7 @@ namespace _5week_assignment
         public bool isEquipped { get; set; }
         public bool isMerchant { get; set; }
 
-        public Item(string name, string description, itemType type, int atk, int def, int hp, int gold, bool isEquipped = false)
+        public Item(string name, string description, ItemType type, int atk, int def, int hp, int gold, bool isEquipped = false)
         {
             Name = name;
             Description = description;
@@ -34,7 +34,6 @@ namespace _5week_assignment
             Def = def;
             Hp = hp;
             Gold = gold;
-            isEquipped = isEquipped;
         }
 
         public void PrintItemStatDescription(bool withNumber = false, int idx = 0)
