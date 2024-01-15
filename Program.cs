@@ -677,10 +677,10 @@ namespace _5week_assignment
 
                             if (inputKey2 == 0)
                             {
+                                isBattle = false;
                                 playerInventory.Clear();
                                 GameDataSetting();
                                 startMenu();
-                                isBattle = false;
                             }
                         }
                     }
