@@ -148,8 +148,7 @@ namespace _5week_assignment
         {
             Name = name;
             Description = description;
-            Type = type;
-            Atk = atk;
+            Type = type; //무기 : 0, 방어구 : 1, 회복 : 2
             Def = def;
             Hp = hp;
             isEquipped = isEquipped;
@@ -369,7 +368,6 @@ namespace _5week_assignment
                         15,
                         25,
                         45
-
                     };
                     break;
                 case (int)MonsterType.HanHyoseung:
@@ -898,6 +896,7 @@ namespace _5week_assignment
 
             Console.WriteLine("");
             Console.WriteLine("0. 나가기");
+            
 
             int keyInput = CheckValidInput(0, playerInventory.Count);
 
