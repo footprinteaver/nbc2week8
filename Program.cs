@@ -665,8 +665,19 @@ namespace _5week_assignment
                         Console.WriteLine($"던전에서 몬스터 {deadCount}마리를 잡았습니다.");
 
                         Console.WriteLine();
-                        Console.WriteLine($"Lv.{_player.Level} {_player.Name}");
+                        Console.WriteLine($"Lv.{_player.Level} {_player.Name} -> Lv.{_player.Level} {_player.Name}");
                         Console.WriteLine($"HP {_player.Hp} -> {_player.currentHP}");
+                        
+                        int expGained = monsterPool[i].Level; // 몬스터 레벨 1당 1의 경험치
+                        _player.Experience += expGained;
+
+                        Console.WriteLine($"Exp: {expGained} -> {_player.Experience}");
+
+                        // 레벨업 체크
+                        while (_player.Experience >= _player.GetRequiredExperienceForNextLevel())
+                        {
+                            _player.LevelUp();
+                        }
 
                         Console.WriteLine();
                         Console.WriteLine("0. 다음");
