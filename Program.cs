@@ -2,6 +2,7 @@
 using System.Runtime.ExceptionServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using static _5week_assignment.Character;
 
 namespace _5week_assignment
 {
@@ -414,6 +415,21 @@ namespace _5week_assignment
             BattleStart();
         }
 
+        public int ExperienceRequiredForLevelUp(int level)
+        {
+            int arithmetic = 15;
+            int commonDifference = 5;
+
+            int _playerNeededExp = 10;
+
+            for(int i = 2; i <= level; i++)
+            {
+                _playerNeededExp += arithmetic + (commonDifference * (level - 1));
+            }
+            
+            return _playerNeededExp;
+        }
+
         private static void looting() //아이템 루팅 함수
         {
             for (int i = 0; i < monsterPool.Count; i++)
@@ -426,6 +442,7 @@ namespace _5week_assignment
 
                 Console.WriteLine($"exp : {monsterPool[i].Exp}");
                 Console.WriteLine($"{monsterPool[i].Gold}  Gold");
+
                 if (monsterPool[i].monsterDropItem != null)
                 {
                     Console.WriteLine($"{monsterPool[i].monsterDropItem.Name}");
@@ -436,9 +453,44 @@ namespace _5week_assignment
                 Console.WriteLine();
 
                 _player.Exp += monsterPool[i].Exp;
+
+                if (_player.Exp >= _player.MaxExp)
+                {
+                    _player.Exp -= _player.MaxExp;
+                    _player.Level++;
+
+                    switch (_player.Job)
+                    {
+                        case "전사":
+                            _player.Hp += 20;
+                            _player.currentHP = _player.Hp;
+                            _player.Atk += 1;
+                            _player.Def += 3;
+                            break;
+                        case "궁수":
+                            _player.Hp += 15;
+                            _player.currentHP = _player.Hp;
+                            _player.Atk += 2;
+                            _player.Def += 2;
+                            break;
+                        case "마법사":
+                            _player.Hp += 10;
+                            _player.currentHP = _player.Hp;
+                            _player.Atk += 3;
+                            _player.Def += 1;
+                            break;
+                    }
+
+                    Console.WriteLine($"축하합니다! {_player.Level - 1} -> {_player.Level} 로 레벨업 하였습니다.");
+
+                }
+
                 _player.Gold += gold;
                 
             }
+
+            
+
 
         }
 
