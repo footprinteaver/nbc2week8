@@ -38,7 +38,7 @@ namespace _5week_assignment
             Name = input;
             Gold = 1500;
             isDead = false;
-            Level = 1;
+            Level = 1;            
             Console.Clear();
             ChoiceClass();
             Console.Clear();
@@ -94,7 +94,7 @@ namespace _5week_assignment
             return choice;    
         }
 
-        public void PlayerAttack(Monster monster, out int damaged, double skillDmg)
+        public void PlayerAttack(Monster monster, out int damaged)
         {
             Random rand = new Random();
             int minAtk = Atk - (int)Math.Ceiling(Atk * 0.1);
@@ -584,7 +584,7 @@ namespace _5week_assignment
             ShowHighlightedText("■ PlayerTurn ■");
             Console.WriteLine();
 
-            _player.PlayerAttack(monsterPool[input],out damaged, input);
+            _player.PlayerAttack(monsterPool[input],out damaged);
 
             Console.WriteLine($"{_player.Name} 의 공격!");
             Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
@@ -649,7 +649,9 @@ namespace _5week_assignment
                 // MP 체크
                 if (_player.currentMP < requiredMP)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("MP가 부족하여 스킬을 사용할 수 없습니다.");
+                    Console.ResetColor();
                     Console.WriteLine("아무키나 눌러 돌아갑니다");
                     // 사용자가 확인하기 전까지 대기
                     Console.ReadKey();
@@ -672,10 +674,10 @@ namespace _5week_assignment
                 // MP 차감
                 _player.currentMP -= skill.Cost;
                 Console.WriteLine($"{_player.Name} 의 {skill.Name}! ");
-                int damaged = 0;
+                int damaged = (int)(_player.Atk * skill.SkillDmg);
 
-                // 스킬에 따라 데미지 계산
-                _player.PlayerAttack(monsterPool[0], out damaged, skill.SkillDmg);
+            // 스킬에 따라 데미지 계산
+            _player.PlayerAttack(monsterPool[0], out damaged);
                 Console.Write($"Lv.{monsterPool[0].Level} {monsterPool[0].Name} 를 맞췄습니다.");
                 Console.WriteLine($" [데미지 : {damaged}]");
                 if (monsterPool[0].currentHp <= 0)
@@ -720,10 +722,7 @@ namespace _5week_assignment
                     Console.WriteLine();
                     Console.WriteLine("0.다음");
                     Console.WriteLine();
-
-
-                    
-                    
+  
                     if (_player.currentHP <= 0)
                     {
                         _player.currentHP = 0;
@@ -787,8 +786,7 @@ namespace _5week_assignment
                     }
                 }
             }
-
-            Attack();
+            BattleStart();
         }
 
 
@@ -868,19 +866,6 @@ namespace _5week_assignment
             PrintTextWithHighlights("방어력 : ", $"{_player.Def.ToString()}");
             PrintTextWithHighlights("HP : ", $"{_player.Hp.ToString()}");
             PrintTextWithHighlights("MP : ", $"{_player.Mp.ToString()}");
-
-            #region 예전 코드
-            //int bonusAtk = getSumBonusAtk();
-            //PrintTextWithHighlights("공격력 : ", (_player.Atk + bonusAtk).ToString(), bonusAtk > 0 ? string.Format(" (+{0})", bonusAtk) : "");
-
-            //int bonusDef = getSumBonusDef();
-            //PrintTextWithHighlights("방어력 : ", (_player.Def + bonusDef).ToString(), bonusDef > 0 ? string.Format(" (+{0})", bonusDef) : "");
-
-            //int bonusHp = getSumBonusHp();
-            //PrintTextWithHighlights("체력 : ", (_player.Hp + bonusHp).ToString(), bonusHp > 0 ? string.Format(" (+{0})", bonusHp) : "");
-            #endregion
-
-
             PrintTextWithHighlights("골드 : ", _player.Gold.ToString());
             Console.WriteLine();
             Console.WriteLine("0. 뒤로 가기");
