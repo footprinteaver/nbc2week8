@@ -415,16 +415,16 @@ namespace _5week_assignment
             BattleStart();
         }
 
-        public int ExperienceRequiredForLevelUp(int level)
+         public static int ExperienceRequiredForLevelUp(int Level)
         {
             int arithmetic = 15;
             int commonDifference = 5;
 
             int _playerNeededExp = 10;
 
-            for(int i = 2; i <= level; i++)
+            for(int i = 2; i <= Level; i++)
             {
-                _playerNeededExp += arithmetic + (commonDifference * (level - 1));
+                _playerNeededExp += arithmetic + (commonDifference * (Level - 1));
             }
             
             return _playerNeededExp;
@@ -453,6 +453,8 @@ namespace _5week_assignment
                 Console.WriteLine();
 
                 _player.Exp += monsterPool[i].Exp;
+
+                _player.MaxExp = ExperienceRequiredForLevelUp(_player.Level);
 
                 if (_player.Exp >= _player.MaxExp)
                 {
