@@ -409,9 +409,12 @@ namespace _5week_assignment
 
     internal class Program
     {
+        static bool isBattle = false;
+
         private static Character _player = new Character();
         private static List<Monster> monsterPool = new List<Monster>();
         private static List<Item> playerInventory = new List<Item>();
+        private static List<Item> merchantItem = new List<Item>();
 
         static void Main(string[] args)
         {
@@ -444,9 +447,6 @@ namespace _5week_assignment
             }
         }
 
-
-
-
         private static void PrintStartLogo()
         {
             Console.WriteLine("====================================================================");
@@ -473,6 +473,7 @@ namespace _5week_assignment
 
         static void startMenu()
         {
+            isBattle = false;
             monsterPool.Clear();
             AddMonster();
 
@@ -482,11 +483,12 @@ namespace _5week_assignment
             Console.WriteLine();
             Console.WriteLine("1. 상태 보기");
             Console.WriteLine("2. 인벤토리 열기");
-            Console.WriteLine("3. 전투 시작");
+            Console.WriteLine("3. 상점");
+            Console.WriteLine("4. 전투 시작");
             Console.WriteLine();
 
 
-            switch (CheckValidInput(1, 3))
+            switch (CheckValidInput(1, 4))
             {
                 case 1:
                     StatusMenu();
@@ -495,11 +497,12 @@ namespace _5week_assignment
                     InventoryMenu();
                     break;
                 case 3:
+                    MerchantMenu();
+                    break;
+                case 4:
                     BattleStart();
                     break;
             }
-
-
         }
 
         private static void BattleStart()
@@ -522,9 +525,10 @@ namespace _5week_assignment
 
             Console.WriteLine("0. 도망가기");
             Console.WriteLine("1. 공격");
+            Console.WriteLine("2. 아이템 사용");
             Console.WriteLine();
 
-            switch (CheckValidInput(0, 1))
+            switch (CheckValidInput(0, 2))
             {
                 case 0:
                     startMenu();
@@ -532,6 +536,10 @@ namespace _5week_assignment
                 case 1:
                     // 공격
                     Attack();
+                    break;
+                case 2:
+                    isBattle = true;
+                    InventoryMenu();
                     break;
             }
         }
@@ -672,6 +680,7 @@ namespace _5week_assignment
                                 playerInventory.Clear();
                                 GameDataSetting();
                                 startMenu();
+                                isBattle = false;
                             }
                         }
                     }
@@ -706,6 +715,7 @@ namespace _5week_assignment
 
                         if (inputKey == 0)
                         {
+                            isBattle = false;
                             startMenu();
                         }
 
@@ -742,11 +752,11 @@ namespace _5week_assignment
 
                 _player.Exp += monsterPool[i].Exp;
                 _player.Gold += gold;
+            }
+
         }
 
-    }
-
-    private static int CheckValidInput(int min, int max)
+        private static int CheckValidInput(int min, int max)
         {
             int keyInput;
             bool result;
@@ -872,7 +882,14 @@ namespace _5week_assignment
             switch (CheckValidInput(0, 1))
             {
                 case 0:
-                    startMenu();
+                    if(isBattle == false)
+                    {
+                        startMenu();
+                    }
+                    else
+                    {
+                        BattleStart();
+                    }
                     break;
                 case 1:
                     EquipMenu();
@@ -896,7 +913,6 @@ namespace _5week_assignment
 
             Console.WriteLine("");
             Console.WriteLine("0. 나가기");
-            
 
             int keyInput = CheckValidInput(0, playerInventory.Count);
 
@@ -948,6 +964,55 @@ namespace _5week_assignment
 
         }
 
+        private static void MerchantMenu()
+        {
+            Console.Clear();
+
+            ShowHighlightedText("상        점");
+            Console.WriteLine("아이템을 판매 또는 구매할 수 있습니다.");
+            Console.WriteLine();
+            Console.WriteLine("[아이템 목록]");
+
+            AddMerchantItem();
+
+            for (int i = 0; i < merchantItem.Count; i++)
+            {
+                merchantItem[i].PrintItemStatDescription(true, i + 1);
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("0. 나가기");
+            Console.WriteLine("1. 아이템 구매");
+            Console.WriteLine("2. 아이템 판매");
+            Console.WriteLine("");
+
+            switch (CheckValidInput(0, 2))
+            {
+                case 0:
+                    startMenu();
+                    break;
+                case 1:
+                    buyMenu();
+                    break;
+                case 2:
+                    salesMenu();
+                    break;
+            }
+        }
+
+        private static void AddMerchantItem()
+        {
+        }
+
+        private static void buyMenu()
+        {
+
+        }
+
+        private static void salesMenu()
+        {
+
+        }
     }
 
 }
