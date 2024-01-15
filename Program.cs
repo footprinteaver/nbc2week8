@@ -172,7 +172,8 @@ namespace _5week_assignment
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.Write("E");
                 Console.ResetColor();
-                Console.Write("]");
+                Console.Write("]  ");
+                Console.Write(PadRightForMixedText(Name, 12));
             }
             else
             {
@@ -414,6 +415,7 @@ namespace _5week_assignment
             GameDataSetting();
             startMenu();
 
+
         }
 
 
@@ -469,6 +471,7 @@ namespace _5week_assignment
 
         static void startMenu()
         {
+            monsterPool.Clear();
             AddMonster();
 
             Console.Clear();
@@ -522,7 +525,6 @@ namespace _5week_assignment
             switch (CheckValidInput(0, 1))
             {
                 case 0:
-                    monsterPool.Clear();
                     startMenu();
                     break;
                 case 1:
@@ -665,7 +667,6 @@ namespace _5week_assignment
 
                             if (inputKey2 == 0)
                             {
-                                monsterPool.Clear();
                                 playerInventory.Clear();
                                 GameDataSetting();
                                 startMenu();
@@ -703,7 +704,6 @@ namespace _5week_assignment
 
                         if (inputKey == 0)
                         {
-                            monsterPool.Clear();
                             startMenu();
                         }
 
