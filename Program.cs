@@ -92,9 +92,7 @@ namespace _5week_assignment
             int maxAtk = Atk + (int)Math.Ceiling(Atk * 0.1);
             int attack = rand.Next(minAtk, maxAtk + 1);
 
-            //160% 크리티컬
-        
-
+     
             // 10% 확률로 공격이 빗나감
             int hit = rand.Next(1, 101);
             if (hit <= 10)
@@ -363,29 +361,26 @@ namespace _5week_assignment
             int maxAtk = Atk + (int)Math.Ceiling(Atk * 0.1);
             int attack = rand.Next(minAtk, maxAtk + 1);
 
-            //160% 크리티컬
-            int critical = rand.Next(1, 101);
-            if (critical <= 15)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\r\n크리티컬발동!!");
-                Console.ResetColor();
-                attack = (int)Math.Ceiling(attack * 1.6);
-            }
-
-            // 10% 확률로 공격이 빗나감
             int hit = rand.Next(1, 101);
             if (hit <= 10)
             {
                 damaged = 0;
             }
+            else if (hit <= 25)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\r\n크리티컬발동!!");
+                Console.ResetColor();
+                attack = (int)Math.Ceiling(attack * 1.6);
+                damaged = attack;
+            }
             else
             {
-                character.currentHP -= attack;
+                _player.currentHP -= attack;
                 damaged = attack;
             }
         }
-
+        private static Character _player = new Character();
         internal class Program
         {
             private static Character _player = new Character();
@@ -428,7 +423,7 @@ namespace _5week_assignment
                 Random rand = new Random();
                 if(currentstage <= 5)
                 {
-                    int summonCnt = rand.Next(1, 5);
+                    int summonCnt = rand.Next(1, 2);
                     for (int i = 0; i < summonCnt; i++)
                     {
                         monsterPool.Add(new Monster());
@@ -436,7 +431,7 @@ namespace _5week_assignment
                 }
                 else if(currentstage <= 10)
                 {
-                    int summonCnt = rand.Next(4, 9);
+                    int summonCnt = rand.Next(5, 9);
                     for (int i = 0; i < summonCnt; i++)
                     {
                         monsterPool.Add(new Monster());
@@ -709,7 +704,7 @@ namespace _5week_assignment
                             currentstage++;
 
                             Console.WriteLine();
-                            Console.WriteLine("0. 다음스테이지");
+                            Console.WriteLine($"0. 다음스테이지->{currentstage}");
 
                             int inputKey = CheckValidInput(0, 0);
 
