@@ -14,6 +14,7 @@ namespace _5week_assignment
         private static Character _player = new Character();
         private static List<Monster> monsterPool = new List<Monster>();
         private static List<Item> playerInventory = new List<Item>();
+        private static List<playerSkill> skillPool = new List<playerSkill>();
         private static List<Item> merchantItem;
         public static int currentStage;
 
@@ -21,6 +22,7 @@ namespace _5week_assignment
         {
             PrintStartLogo();
             GameDataSetting();
+            GetSkill();
             startMenu();
 
         }
@@ -43,6 +45,16 @@ namespace _5week_assignment
         static void AddItem(Item item)  // 플레이어 아이템 획득
         {
             playerInventory.Add(item);
+        }
+
+        static void GetSkill()
+        {
+            skillPool = new List<playerSkill>();
+            {
+                skillPool.Add(new playerSkill("강화공격", 15, "직업의 특징을 살려 공격합니다", 2));
+                skillPool.Add(new playerSkill("더블어택", 20, "무작위로 두번 공격합니다", 1.5));
+            }
+
         }
 
         static void AddMonster()
@@ -165,13 +177,14 @@ namespace _5week_assignment
             Console.WriteLine();
 
             Console.WriteLine("1. 공격");
-            Console.WriteLine("2. 인벤토리");
+            Console.WriteLine("2. 스킬");
+            Console.WriteLine("3. 인벤토리");
             Console.WriteLine();
 
             Console.WriteLine("0. 도망치기");
             Console.WriteLine();
 
-            switch (CheckValidInput(0,2))
+            switch (CheckValidInput(0,3))
             {
                 case 0:
                     Random rand = new Random();
@@ -198,6 +211,9 @@ namespace _5week_assignment
                     Attack();
                     break;
                 case 2:
+                    Skill();
+                    break;
+                case 3:
                     // 인벤토리
                     isBattle = true;
                     InventoryMenu();
@@ -208,7 +224,7 @@ namespace _5week_assignment
         private static void Attack() //플레이어 공격 선택
         {
             Console.Clear();
-            ShowHighlightedText("Battle!!");
+            ShowHighlightedText("■ Attack ■");
             Console.WriteLine();
 
             for (int i = 0; i < monsterPool.Count; i++)
@@ -275,6 +291,130 @@ namespace _5week_assignment
             }
         }
 
+        private static void Skill()
+        {
+            Console.Clear();
+            ShowHighlightedText("■ Skill ■");
+            Console.WriteLine("사용하실 스킬을 선택하세요!");
+            Console.WriteLine();
+
+            
+            for (int i = 0; i < skillPool.Count; i++)
+            {
+                skillPool[i].SkillInfo(true, i + 1);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("0. 취소");
+            Console.WriteLine();
+
+            int input = CheckValidInput(0, skillPool.Count);
+
+            if (input == 0)
+            {
+                Console.Clear();
+                BattleStart();
+            }
+            else if(input == 1)
+            {
+                // 필요한 MP를 확인
+                int requiredMP = skillPool[input - 1].Cost;
+
+                // MP 체크
+                if (_player.currentMP < requiredMP)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("MP가 부족하여 스킬을 사용할 수 없습니다.");
+                    Console.ResetColor();
+                    Console.WriteLine("아무키나 눌러 돌아갑니다");
+                    // 사용자가 확인하기 전까지 대기
+                    Console.ReadKey();
+                    Console.Clear();
+                    Skill(); // 스킬 선택으로 돌아감
+                }
+                else
+                {
+                    UseSkill(skillPool[input - 1],_player);
+                }
+            }
+            else
+            {
+                int requiredMP = skillPool[input - 1].Cost;
+
+                // MP 체크
+                if (_player.currentMP < requiredMP)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("MP가 부족하여 스킬을 사용할 수 없습니다.");
+                    Console.ResetColor();
+                    Console.WriteLine("아무키나 눌러 돌아갑니다");
+                    // 사용자가 확인하기 전까지 대기
+                    Console.ReadKey();
+                    Console.Clear();
+                    Skill(); // 스킬 선택으로 돌아감
+                }
+                else
+                {
+                    UseSkill(skillPool[input - 1],_player);
+                }
+            }
+   
+
+        }
+
+        private static void PlayerSkillAttackResult(int input, int damaged) //플레이어 공격 결과
+        {
+            
+
+            ShowHighlightedText("■ PlayerTurn ■");
+            Console.WriteLine();
+
+            // MP 차감
+            _player.currentMP -= skillPool[input].Cost;
+
+            monsterPool[input].currentHp -= damaged;
+            Console.WriteLine($"{_player.Name} 의 {skillPool[input].Name}! ");
+
+            Random rand = new Random();
+            int criProbability = rand.Next(1, 101);
+
+            if (criProbability <= 30)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\r\n크리티컬 발동!!");
+                Console.ResetColor();
+                Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
+                Console.WriteLine($" [데미지 : {damaged * 1.6}]");
+            }
+            else
+            {
+                Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
+                Console.WriteLine($" [데미지 : {damaged}]");
+            }
+
+            if (monsterPool[input].currentHp <= 0)
+            {
+                monsterPool[input].isDead = true;
+            }
+
+            Console.WriteLine();
+
+
+            Console.WriteLine();
+            Console.WriteLine("0. 다음");
+            Console.WriteLine();
+
+            int inputKey = CheckValidInput(0, 0);
+
+            if (inputKey == 0)
+            {
+                Console.Clear();
+                MonsterTurn();
+            }
+
+
+        }
+
         private static void PlayerAttackResult(int input) //플레이어 공격 결과
         {
             int damaged = 0;
@@ -316,6 +456,84 @@ namespace _5week_assignment
             }
 
             
+        }
+
+        private static void UseSkill(playerSkill skill, Character character)
+        {
+            Console.Clear();
+            ShowHighlightedText("■ SkillAttack ■");
+            Console.WriteLine();
+            
+            Console.WriteLine($"{character.Name} 의 {skill.Name}! ");
+            int damaged = (int)(character.Atk * skill.SkillDmg); // 스킬에 따라 데미지 계산
+
+            // 스킬로 때릴 몬스터를 골라야함
+            for(int i = 0; i < monsterPool.Count; i++)
+            {
+                monsterPool[i].MonsterInfo(true, i+1);
+            }
+
+            Console.WriteLine();
+
+            Console.WriteLine();
+            Console.WriteLine("[내정보]");
+            _player.PlayerInfo();
+            Console.WriteLine();
+
+        SkillAttackisDead:                                          // <--------------------  goto : SkillAttackisDead;
+            int input = CheckValidInput(0, monsterPool.Count);
+
+            switch (input)
+            {
+                case 0:
+                    Console.Clear();
+                    BattleStart();
+                    break;
+                case 1:
+                    if (monsterPool[input - 1].isDead)                  // 내가 고른 번호의 몬스터가 이미 죽은 몬스터라면?
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        Console.WriteLine();
+                        goto SkillAttackisDead;                         // 몬스터가 이미 죽었다면 SkillAttackisDead: 로 돌아가 input값을 다시 받음
+                    }
+                    Console.Clear();
+                    PlayerSkillAttackResult(input - 1, damaged);
+                    break;
+                case 2:
+                    Console.Clear();
+                    if (monsterPool[input - 1].isDead)
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        Console.WriteLine();
+                        goto SkillAttackisDead;
+                    }
+                    PlayerSkillAttackResult(input - 1, damaged);
+                    break;
+                case 3:
+                    Console.Clear();
+                    if (monsterPool[input - 1].isDead)
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        Console.WriteLine();
+                        goto SkillAttackisDead;
+                    }
+                    PlayerSkillAttackResult(input - 1, damaged);
+                    break;
+                case 4:
+                    Console.Clear();
+                    if (monsterPool[input - 1].isDead)
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        Console.WriteLine();
+
+                    }
+                    PlayerSkillAttackResult(input - 1, damaged);
+                    break;
+            }
+
+
+
+
         }
 
         private static void MonsterTurn() //몬스터 공격
@@ -432,7 +650,7 @@ namespace _5week_assignment
                 }
             }
 
-            Attack();
+            BattleStart();
         }
 
         private static void looting() //아이템 루팅 함수
@@ -479,6 +697,7 @@ namespace _5week_assignment
             PrintTextWithHighlights("방어력 : ", (bonusStat[1]).ToString(), bonusStat[1] - _player.Def > 0 ? string.Format(" (+{0})", bonusStat[1] - _player.Def) : "");
 
             PrintTextWithHighlights("체력 : ", $"{_player.currentHP.ToString()} / {_player.Hp.ToString()}");
+            PrintTextWithHighlights("마나 : ", $"{_player.currentMP.ToString()} / {_player.Mp.ToString()}");
 
 
             PrintTextWithHighlights("골드 : ", _player.Gold.ToString());
