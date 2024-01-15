@@ -739,9 +739,10 @@ namespace _5week_assignment
             Console.WriteLine();
             Console.WriteLine("{0} ( {1} )", _player.Name, _player.Job);
 
-            Console.WriteLine($"Atk : {_player.Atk}");
-            Console.WriteLine($"Def : {_player.Def}");
-       
+            int[] bonusStat = getSumBonusStat();
+            PrintTextWithHighlights("공격력 : ", (_player.Atk).ToString(), bonusStat[0] + _player.Atk > 0 ? string.Format(" (+{0})", bonusStat[0]) : "");
+            PrintTextWithHighlights("방어력 : ", (_player.Def).ToString(), bonusStat[1] + _player.Def > 0 ? string.Format(" (+{0})", bonusStat[1]) : "");
+
             PrintTextWithHighlights("체력 : ", $"{_player.currentHP.ToString()} / {_player.Hp.ToString()}");
             PrintTextWithHighlights("마나 : ", $"{_player.currentMP.ToString()} / {_player.Mp.ToString()}");
 
@@ -761,7 +762,24 @@ namespace _5week_assignment
                     break;
             }
         }
-        
+
+        private static int[] getSumBonusStat() //아이템 장착 시, 해당 아이템의 스텟 추가
+        {
+            int Atk = 0;
+            int Def = 0;
+            for (int i = 0; i < playerInventory.Count; i++)
+            {
+                if (playerInventory[i].isEquipped)
+                {
+                    Atk += playerInventory[i].Atk;
+                    Def += playerInventory[i].Def;
+                }
+            }
+
+            int[] bonusStat = {  Atk, Def };
+
+            return bonusStat;
+        }
 
 
         private static void InventoryMenu() //인벤토리 화면
