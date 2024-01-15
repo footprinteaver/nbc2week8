@@ -154,7 +154,7 @@ namespace _5week_assignment
         {
 
             Console.WriteLine($"Lv.{Level.ToString("00")} {Name} ({Job})");
-            Console.WriteLine($"HP {Hp}/{currentHP}");
+            Console.WriteLine($"HP {currentHP}/{Hp}");
             Console.WriteLine($"Exp : {Exp}");
         }
     }
