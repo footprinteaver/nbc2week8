@@ -31,6 +31,8 @@ namespace _5week_assignment
             Console.Clear();
             currentStage = 1;
             AddItem(new Item("상처치료연고", "체력 10 회복", Item.ItemType.Restore, 0, 0, 10, 100));
+            AddItem(new Item("상처치료연고", "체력 10 회복", Item.ItemType.Restore, 0, 0, 10, 100));
+            AddItem(new Item("상처치료연고", "체력 10 회복", Item.ItemType.Restore, 0, 0, 10, 100));
             AddMonster();
             Console.WriteLine("스파르타 마을에 오신걸 환영합니다!");
             _player.CreatePlayer();
@@ -163,8 +165,6 @@ namespace _5week_assignment
             Console.WriteLine();
 
             Console.WriteLine("1. 공격");
-            Console.WriteLine();
-
             Console.WriteLine("2. 인벤토리");
             Console.WriteLine();
 
