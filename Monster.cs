@@ -28,6 +28,7 @@ namespace _5week_assignment
         public int Gold;
         public int Exp;
 
+
         public List<Item> monsterItem;
         public List<int> monsterDropRate;
 

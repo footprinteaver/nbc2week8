@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Security;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.ExceptionServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
@@ -27,7 +29,8 @@ namespace _5week_assignment
         private static void GameDataSetting()
         {
             Console.Clear();
-            currentStage = 1;           
+            currentStage = 1;
+            AddItem(new Item("상처치료연고", "체력 10 회복", Item.ItemType.Restore, 0, 0, 10, 100));
             AddMonster();
             Console.WriteLine("스파르타 마을에 오신걸 환영합니다!");
             _player.CreatePlayer();
@@ -167,11 +170,29 @@ namespace _5week_assignment
 
             Console.WriteLine("0. 도망치기");
             Console.WriteLine();
+
             switch (CheckValidInput(0,2))
             {
                 case 0:
-                    startMenu(); // 도망치기
-                    break;
+                    Random rand = new Random();
+                    int randRun = rand.Next(1, 101);
+                    if(randRun <= 70)
+                    {
+                        Console.WriteLine("도망에 성공했습니다!");
+                        Thread.Sleep(1000);
+                        monsterPool.Clear();
+                        AddMonster();
+                        startMenu(); // 도망치기
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("도망칠수 없습니다!");
+                        Thread.Sleep(1000);
+                        MonsterTurn();
+                        break;
+                    }
+                    
                 case 1:
                     // 공격
                     Attack();
@@ -202,7 +223,6 @@ namespace _5week_assignment
 
             Console.WriteLine();
             Console.WriteLine("0. 취소");
-
             First:                                                      //goto :  First
             int input = CheckValidInput(0, monsterPool.Count);
             
@@ -393,6 +413,7 @@ namespace _5week_assignment
                         ShowHighlightedText("[ 전리품 획득 !! ]");
 
                         looting();
+
 
                         Console.WriteLine();
                         Console.WriteLine("0. 다음");
