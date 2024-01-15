@@ -674,8 +674,7 @@ namespace _5week_assignment
                 // MP 차감
                 _player.currentMP -= skill.Cost;
                 Console.WriteLine($"{_player.Name} 의 {skill.Name}! ");
-                int damaged = (int)(_player.Atk * skill.SkillDmg);
-
+            int damaged = (int)(_player.Atk * skill.SkillDmg);
             // 스킬에 따라 데미지 계산
             _player.PlayerAttack(monsterPool[0], out damaged);
                 Console.Write($"Lv.{monsterPool[0].Level} {monsterPool[0].Name} 를 맞췄습니다.");
