@@ -24,7 +24,10 @@ namespace _5week_assignment
         private static void GameDataSetting()
         {
             Console.Clear();
-            currentStage = 1;           
+            currentStage = 1;
+            AddItem(new Item("상처치료연고", "체력 10 회복", Item.ItemType.Potion, 0, 0, 10));
+            AddItem(new Item("상처치료연고", "체력 10 회복", Item.ItemType.Potion, 0, 0, 10));
+            AddItem(new Item("상처치료연고", "체력 10 회복", Item.ItemType.Potion, 0, 0, 10));
             AddMonster();
             Console.WriteLine("스파르타 마을에 오신걸 환영합니다!");
             _player.CreatePlayer();
@@ -151,11 +154,12 @@ namespace _5week_assignment
             Console.WriteLine();
 
             Console.WriteLine("1. 공격");
+            Console.WriteLine("2. 인벤토리");
             Console.WriteLine();
 
             Console.WriteLine("0. 도망치기");
             Console.WriteLine();
-            switch (CheckValidInput(0,1))
+            switch (CheckValidInput(0,2))
             {
                 case 0:
                     startMenu(); // 도망치기
@@ -163,6 +167,9 @@ namespace _5week_assignment
                 case 1:
                     // 공격
                     Attack();
+                    break;
+                case 2:
+                    InventoryMenu();
                     break;
             }
         }
@@ -187,7 +194,7 @@ namespace _5week_assignment
             Console.WriteLine("0. 취소");
 
             First:                                                      //goto :  First
-            int input = CheckValidInput(0, monsterPool.Count);
+            int input = CheckAttackValueInput(0, monsterPool.Count);
             
             switch (input)
             {
@@ -449,6 +456,30 @@ namespace _5week_assignment
 
         }
 
+        private static int CheckAttackValueInput(int min, int max)
+        {
+            int keyInput;
+            bool result;
+
+            Console.WriteLine("원하시는 대상을 지정해주세요");
+            Console.Write(">>");
+
+            do
+            {
+                result = int.TryParse(Console.ReadLine(), out keyInput);
+                if (!result)
+                {
+                    Console.WriteLine("다시 입력하세요");
+                    Console.Write(">>");
+                    continue;
+                }
+            }
+            while (result == false || CheckIfValid(keyInput, min, max) == false);
+
+            return keyInput;
+
+        }
+
         private static bool CheckIfValid(int keyInput, int min, int max)
         {
             if (min <= keyInput && keyInput <= max)
@@ -609,7 +640,7 @@ namespace _5week_assignment
                 }
             }
 
-            if (playerInventory[idx].Type == 2)
+            if (playerInventory[idx].Type == Item.ItemType.Potion)
             {
                 _player.currentHP += playerInventory[idx].Hp;
 

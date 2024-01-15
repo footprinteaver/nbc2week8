@@ -8,15 +8,21 @@ namespace _5week_assignment
 {
     public class Item
     {
+        public enum ItemType
+        {
+            Weopon,
+            Armor,
+            Potion
+        }
         public string Name { get; }
         public string Description { get; }
-        public int Type { get; }
+        public ItemType Type { get; }
         public int Atk { get; }
         public int Def { get; }
         public int Hp { get; }
         public bool isEquipped { get; set; }
 
-        public Item(string name, string description, int type, int atk, int def, int hp, bool isEquipped = false)
+        public Item(string name, string description, ItemType type, int atk, int def, int hp, bool isEquipped = false)
         {
             Name = name;
             Description = description;
