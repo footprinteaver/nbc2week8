@@ -9,6 +9,7 @@ namespace _5week_assignment
     {
         private static Character _player = new Character();
         private static List<Monster> monsterPool = new List<Monster>();
+        public static int currentStage;
 
         static void Main(string[] args)
         {
@@ -22,6 +23,7 @@ namespace _5week_assignment
         private static void GameDataSetting()
         {
             Console.Clear();
+            currentStage = 1;           
             AddMonster();
             Console.WriteLine("스파르타 마을에 오신걸 환영합니다!");
             _player.CreatePlayer();
@@ -44,28 +46,40 @@ namespace _5week_assignment
         static void AddMonster()
         {
             Random rand = new Random();
-            int summonCnt = rand.Next(1, 5);
-
-            #region 만약에 Stage기능이 만들어 진다면?
-            //if(stage == 1)
-            //{
-            //    summonCnt = rand.Next(1, 5);  // 1단계에선 1마리 ~ 4마리까지의 몬스터가 등장하게끔
-            //}
-            //else if(stage == 2)
-            //{
-            //    summonCnt = rand.Next(1, 6); // 2단계에서 1마리 ~ 5마리까지의 몬스터가 등장하게끔
-            //}
-            //else if(stage == 3)
-            //{
-            //    summonCnt = rand.Next(2, 6); // 3단계에서 2마리 ~ 5마리의 몬스터가 등장하게끔
-            //}
-            
-            #endregion
+            int summonCnt;
 
 
-            for (int i = 0;  i < summonCnt; i++)
+            if (currentStage <= 1)
             {
-                monsterPool.Add(new Monster());
+                summonCnt = rand.Next(1, 5);            // 1 ~ 5단계에선 1마리 ~ 4마리까지의 몬스터가 등장하게끔
+                for (int i = 0; i < summonCnt; i++)
+                {
+                    monsterPool.Add(new Monster(currentStage));
+                }
+            }
+            else if (currentStage <= 2)
+            {
+                summonCnt = rand.Next(2, 5);            // 6 ~ 10단계에서 1마리 ~ 5마리까지의 몬스터가 등장하게끔
+                for (int i = 0; i < summonCnt; i++)
+                {
+                    monsterPool.Add(new Monster(currentStage));
+                }
+            }
+            else if(currentStage <= 3)
+            {
+                summonCnt = rand.Next(2, 7);            // 7~ 단계에서 2마리 ~ 5마리의 몬스터가 등장하게끔
+                for (int i = 0; i < summonCnt; i++)
+                {
+                    monsterPool.Add(new Monster(currentStage));
+                }
+            }
+            else
+            {
+                summonCnt = rand.Next(3, 10);
+                for(int i = 0; i<summonCnt; i++)
+                {
+                    monsterPool.Add(new Monster(currentStage));
+                }
             }
            
         }
@@ -101,7 +115,8 @@ namespace _5week_assignment
             Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("1. 상태 보기");
-            Console.WriteLine("2. 전투 시작");
+            Console.Write("2. 전투 시작");
+            Console.WriteLine($" (현재 진행 : {currentStage}층)");
             Console.WriteLine();
 
 
@@ -123,7 +138,8 @@ namespace _5week_assignment
             Console.Clear();
             ShowHighlightedText("Battle!!");
             Console.WriteLine();
-
+            Console.WriteLine($"Stage : {currentStage}");
+            Console.WriteLine();
             for(int i = 0; i < monsterPool.Count; i++)
             {
                 monsterPool[i].MonsterInfo();
@@ -296,6 +312,7 @@ namespace _5week_assignment
                     Console.WriteLine($"Lv. {_player.Level} {_player.Name} {_player.Job}");
                     Console.WriteLine($"HP {beforeHitHP} -> {_player.currentHP}");
 
+
                     Console.WriteLine();
                     Console.WriteLine("0.다음");
                     Console.WriteLine();
@@ -351,6 +368,11 @@ namespace _5week_assignment
                         Console.WriteLine();
                         Console.WriteLine($"Lv.{_player.Level} {_player.Name}");
                         Console.WriteLine($"HP {_player.Hp} -> {_player.currentHP}");
+
+                        Console.WriteLine();
+                        ShowHighlightedText("Stage Clear");
+                        Console.WriteLine($"Stage : {currentStage} -> {currentStage + 1}");
+                        currentStage++;
 
                         Console.WriteLine();
                         Console.WriteLine("0. 다음");

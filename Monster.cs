@@ -14,11 +14,9 @@ namespace _5week_assignment
             LeeHanSol,
             MonYeongOh,
             HanHyoseung,          // <--------------- 여기까지가 1단계에서 등장할 몬스터 목록
-            #region stage기능이 추가되면 주석을 풀고 추가할 몬스터 타입
-            //LeeHanbyeol,       // <---------------- 2단계에 추가로 등장하는 몬스터
-            //KimHunjeong,       // <---------------- 3단계에 추가로 등장하는 몬스터
-            //KimYeongHo         // <---------------- 4단계에 추가로 등장하는 몬스터
-            #endregion
+            LeeHanbyeol,          // <---------------- 6~10단계에 추가로 등장하는 몬스터
+            KimHunjeong,          // <---------------- 11~15단계에 추가로 등장하는 몬스터
+            KimYeongHo            // <---------------- 4단계에 추가로 등장하는 몬스터
         }
 
         public string Name;
@@ -30,10 +28,10 @@ namespace _5week_assignment
 
         public bool isDead; // 죽었니 살았니?
 
-        public Monster()  // 몬스터 생성자
+        public Monster(int currentStage)  // 몬스터 생성자
         {
-            Random rand = new Random();
-            int randMonster = rand.Next(1, 4);
+            int randMonster = SummonByStage(currentStage);
+
             switch (randMonster)
             {
                 case (int)MonsterType.LeeHanSol:
@@ -45,6 +43,16 @@ namespace _5week_assignment
                 case (int)MonsterType.HanHyoseung:
                     MonsterSetting("한효승 매니저", 25, 9, 3, 5);
                     break;
+                case (int)MonsterType.LeeHanbyeol:
+                    MonsterSetting("이한솔 튜터", 30, 3, 5, 5);
+                    break;
+                case (int)MonsterType.KimHunjeong:
+                    MonsterSetting("김현정 튜터", 60, 10, 7, 7);
+                    break;
+                case (int)MonsterType.KimYeongHo:
+                    MonsterSetting("김영호 튜터", 100, 15, 15, 10);
+                    break;
+                    
             }
 
         }
@@ -105,31 +113,31 @@ namespace _5week_assignment
         }
 
         #region 스테이지 기능이 추가되면 주석을 풀고 추가할 메서드
-        private int SummonByStage(int Stage)             // 스테이지 별 캐릭터 소환메서드
+        private int SummonByStage(int currentStage)             // 스테이지 별 캐릭터 소환메서드
         {
-            //Random rand = new Random();
-            //int randMonster;
-            //if(Stage == 1)
-            //{
-            //    randMonster = rand.Next(1, 4);
-            //}
-            //else if(Stage == 2)
-            //{
-            //    randMonster = rand.Next(1, 6);
-            //}
-            //else if(stage == 3)
-            //{
-            //    randMonster = rand.Next(1, 7);
-            //}
-            //else
-            //{
-            //    randMonster = rand.Next(2, 7);
-            //}
-            return 0;
+            Random rand = new Random();
+            int randMonster;
+            if (currentStage <= 1)
+            {
+                randMonster = rand.Next(1, 4);
+            }
+            else if (currentStage <= 2)
+            {
+                randMonster = rand.Next(1, 6);
+            }
+            else if (currentStage <= 3)
+            {
+                randMonster = rand.Next(1, 7);
+            }
+            else
+            {
+                randMonster = rand.Next(2, 7);
+            }
+            return randMonster;
         }
         #endregion
 
-        private void MonsterSetting(string _Name, int _Hp, int _Atk, int _Def, int _Level) // 몬스터 옵션 세팅 메서드
+        private void MonsterSetting(string _Name, int _Hp, int _Atk, int _Def, int _Level) // 몬스터 옵션 세팅
         {
             Name = _Name;
             Hp = _Hp;
