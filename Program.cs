@@ -259,36 +259,7 @@ namespace _5week_assignment
                     Console.Clear();
                     PlayerAttackResult(input - 1);
                     break;
-                case 2:
-                    Console.Clear();
-                    if (monsterPool[input - 1].isDead)
-                    {
-                        Console.WriteLine("잘못된 입력입니다.");
-                        Console.WriteLine();
-                        goto First;
-                    }
-                    PlayerAttackResult(input - 1);
-                    break;
-                case 3:
-                    Console.Clear();
-                    if (monsterPool[input - 1].isDead)
-                    {
-                        Console.WriteLine("잘못된 입력입니다.");
-                        Console.WriteLine();
-                        goto First;
-                    }
-                    PlayerAttackResult(input - 1);
-                    break;
-                case 4:
-                    Console.Clear();
-                    if (monsterPool[input - 1].isDead)              
-                    {
-                        Console.WriteLine("잘못된 입력입니다.");
-                        Console.WriteLine();
-                        goto First;
-                    }
-                    PlayerAttackResult(input - 1);
-                    break;
+               
             }
         }
 
@@ -315,25 +286,6 @@ namespace _5week_assignment
             {
                 Console.Clear();
                 BattleStart();
-            }
-            else if(input == 1)
-            {
-                // 필요한 MP를 확인
-                int requiredMP = skillPool[input - 1].Cost;
-
-                // MP 체크
-                if (_player.currentMP < requiredMP)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("MP가 부족하여 스킬을 사용할 수 없습니다.");
-                    Console.ResetColor();
-                    Thread.Sleep(1000);
-                    Skill(); // 스킬 선택으로 돌아감
-                }
-                else
-                {
-                    UseSkill(skillPool[input - 1],_player);
-                }
             }
             else
             {
