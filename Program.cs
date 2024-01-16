@@ -248,7 +248,7 @@ namespace _5week_assignment
                     Console.Clear();
                     BattleStart();
                     break;
-                case 1:
+                default:
                     if (monsterPool[input - 1].isDead)                  // 내가 고른 번호의 몬스터가 이미 죽은 몬스터라면?
                     {
                         Console.WriteLine("잘못된 입력입니다.");
@@ -258,36 +258,7 @@ namespace _5week_assignment
                     Console.Clear();
                     PlayerAttackResult(input - 1);
                     break;
-                case 2:
-                    Console.Clear();
-                    if (monsterPool[input - 1].isDead)
-                    {
-                        Console.WriteLine("잘못된 입력입니다.");
-                        Console.WriteLine();
-                        goto First;
-                    }
-                    PlayerAttackResult(input - 1);
-                    break;
-                case 3:
-                    Console.Clear();
-                    if (monsterPool[input - 1].isDead)
-                    {
-                        Console.WriteLine("잘못된 입력입니다.");
-                        Console.WriteLine();
-                        goto First;
-                    }
-                    PlayerAttackResult(input - 1);
-                    break;
-                case 4:
-                    Console.Clear();
-                    if (monsterPool[input - 1].isDead)              
-                    {
-                        Console.WriteLine("잘못된 입력입니다.");
-                        Console.WriteLine();
-                        goto First;
-                    }
-                    PlayerAttackResult(input - 1);
-                    break;
+                
             }
         }
 
@@ -491,8 +462,9 @@ namespace _5week_assignment
             _player.PlayerInfo();
             Console.WriteLine();
 
-        SkillAttackisDead:                                          // <--------------------  goto : SkillAttackisDead;
-            int input = CheckValidInput(0, monsterPool.Count);
+        SkillAttackisDead:  // <--------------------  goto : SkillAttackisDead;
+            int input;
+            input = CheckValidInput(0, monsterPool.Count);
 
             switch (input)
             {
@@ -500,7 +472,7 @@ namespace _5week_assignment
                     Console.Clear();
                     BattleStart();
                     break;
-                case 1:
+                default:
                     if (monsterPool[input - 1].isDead)                  // 내가 고른 번호의 몬스터가 이미 죽은 몬스터라면?
                     {
                         Console.WriteLine("잘못된 입력입니다.");
@@ -510,40 +482,8 @@ namespace _5week_assignment
                     Console.Clear();
                     PlayerSkillAttackResult(input - 1, damaged,skill);
                     break;
-                case 2:
-                    Console.Clear();
-                    if (monsterPool[input - 1].isDead)
-                    {
-                        Console.WriteLine("잘못된 입력입니다.");
-                        Console.WriteLine();
-                        goto SkillAttackisDead;
-                    }
-                    PlayerSkillAttackResult(input - 1, damaged, skill);
-                    break;
-                case 3:
-                    Console.Clear();
-                    if (monsterPool[input - 1].isDead)
-                    {
-                        Console.WriteLine("잘못된 입력입니다.");
-                        Console.WriteLine();
-                        goto SkillAttackisDead;
-                    }
-                    PlayerSkillAttackResult(input - 1, damaged, skill);
-                    break;
-                case 4:
-                    Console.Clear();
-                    if (monsterPool[input - 1].isDead)
-                    {
-                        Console.WriteLine("잘못된 입력입니다.");
-                        Console.WriteLine();
-
-                    }
-                    PlayerSkillAttackResult(input - 1, damaged,skill);
-                    break;
+                
             }
-
-
-
 
         }
 
