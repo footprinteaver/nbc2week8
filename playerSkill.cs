@@ -20,13 +20,19 @@ namespace _5week_assignment
         public int Cost { get; set; }
         public double SkillDmg { get; set; }
         public string Description { get; set; }
+        public int Repeat { get; set; }
+        public bool Targeting { get; set; }
+        public int SkillRange { get; set; }
 
-        public playerSkill(string name, int cost, string description, double skillDmg)
+
+        public playerSkill(string name, int cost, string description, double skillDmg, int repeat, bool targeting)
         {
             Name = name;
             Cost = cost;
             Description = description;
             SkillDmg = skillDmg;
+            Repeat = repeat;
+            Targeting = targeting;
         }
 
 
