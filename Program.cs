@@ -35,6 +35,7 @@ namespace _5week_assignment
             AddItem(new Item("상처치료연고", "체력 10 회복", Item.ItemType.Restore, 0, 0, 10, 100));
             AddItem(new Item("상처치료연고", "체력 10 회복", Item.ItemType.Restore, 0, 0, 10, 100));
             AddItem(new Item("상처치료연고", "체력 10 회복", Item.ItemType.Restore, 0, 0, 10, 100));
+            AddItem(new Item("초심자 세트", "초심자를 위한 최고의 장비입니다", Item.ItemType.Weapon, 4, 2, 0, 100));
             AddMonster();
             Console.WriteLine("스파르타 마을에 오신걸 환영합니다!");
             _player.CreatePlayer();
@@ -51,8 +52,8 @@ namespace _5week_assignment
         {
             skillPool = new List<playerSkill>();
             {
-                skillPool.Add(new playerSkill("강화공격", 15, "직업의 특징을 살려 공격합니다",2));
-                skillPool.Add(new playerSkill("더블어택", 20, "무작위로 두번 공격합니다", 1.5));
+                skillPool.Add(new playerSkill("강화공격", 15, "직업의 특징을 살려 공격합니다", 2));
+                skillPool.Add(new playerSkill("더블어택", 20, "무작위로 두번 공격합니다", 1.3));
             }
 
         }
@@ -258,7 +259,36 @@ namespace _5week_assignment
                     Console.Clear();
                     PlayerAttackResult(input - 1);
                     break;
-                
+                case 2:
+                    Console.Clear();
+                    if (monsterPool[input - 1].isDead)
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        Console.WriteLine();
+                        goto First;
+                    }
+                    PlayerAttackResult(input - 1);
+                    break;
+                case 3:
+                    Console.Clear();
+                    if (monsterPool[input - 1].isDead)
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        Console.WriteLine();
+                        goto First;
+                    }
+                    PlayerAttackResult(input - 1);
+                    break;
+                case 4:
+                    Console.Clear();
+                    if (monsterPool[input - 1].isDead)              
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        Console.WriteLine();
+                        goto First;
+                    }
+                    PlayerAttackResult(input - 1);
+                    break;
             }
         }
 
@@ -335,16 +365,13 @@ namespace _5week_assignment
 
         private static void PlayerSkillAttackResult(int input, int damaged, playerSkill skill) //플레이어 공격 결과
         {
-            
-            
-
             ShowHighlightedText("■ PlayerTurn ■");
             Console.WriteLine();
 
             // MP 차감
             _player.currentMP -= skill.Cost;
 
-            monsterPool[input].currentHp -= damaged - monsterPool[input].Def;
+            
             Console.WriteLine($"{_player.Name} 의 {skill.Name}! ");
 
             Random rand = new Random();
@@ -356,22 +383,14 @@ namespace _5week_assignment
                 Console.WriteLine("\r\n크리티컬 발동!!");
                 Console.ResetColor();
                 Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
-                damaged = (int)(damaged * 1.6f) - monsterPool[input].Def;
-                if(damaged <= 0)
-                {
-                    damaged = 1;
-                }
-                Console.WriteLine($" [데미지 : {damaged}]");
+                Console.WriteLine($" [데미지 : {(int)(damaged * (5.0f / (monsterPool[input].Def + 5.0f)) * 1.6f)}]");
+                monsterPool[input].currentHp -= (int)(damaged * (5.0f / (monsterPool[input].Def + 5.0f)) * 1.6f);
             }
             else
             {
                 Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
-                damaged = damaged - monsterPool[input].Def;
-                if(damaged <= 0)
-                {
-                    damaged = 1;
-                }
-                Console.WriteLine($" [데미지 : {damaged}]");
+                Console.WriteLine($" [데미지 : {(int)(damaged * (5.0f / (monsterPool[input].Def + 5.0f)))}]");
+                monsterPool[input].currentHp -= (int)(damaged * (5.0f / (monsterPool[input].Def + 5.0f)));
             }
 
             if (monsterPool[input].currentHp <= 0)
@@ -473,17 +492,17 @@ namespace _5week_assignment
                     BattleStart();
                     break;
                 default:
-                    if (monsterPool[input - 1].isDead)                  // 내가 고른 번호의 몬스터가 이미 죽은 몬스터라면?
+                    Console.Clear();
+                    if (monsterPool[input - 1].isDead)
                     {
                         Console.WriteLine("잘못된 입력입니다.");
                         Console.WriteLine();
-                        goto SkillAttackisDead;                         // 몬스터가 이미 죽었다면 SkillAttackisDead: 로 돌아가 input값을 다시 받음
+                        goto SkillAttackisDead;
                     }
-                    Console.Clear();
-                    PlayerSkillAttackResult(input - 1, damaged,skill);
+                    PlayerSkillAttackResult(input - 1, damaged, skill);
                     break;
-                
             }
+
 
         }
 
@@ -651,20 +670,26 @@ namespace _5week_assignment
                     switch (_player.Job)
                     {
                         case "전사":
-                            _player.Hp += 20;
+                            _player.Hp += 10;
+                            _player.Mp += 5;
                             _player.currentHP = _player.Hp;
-                            _player.Atk += 1;
-                            _player.Def += 3;
-                            break;
-                        case "궁수":
-                            _player.Hp += 15;
-                            _player.currentHP = _player.Hp;
+                            _player.currentMP = _player.Mp;
                             _player.Atk += 2;
                             _player.Def += 2;
                             break;
-                        case "마법사":
-                            _player.Hp += 10;
+                        case "궁수":
+                            _player.Hp += 8;
+                            _player.Mp += 10;
                             _player.currentHP = _player.Hp;
+                            _player.currentMP = _player.Mp;
+                            _player.Atk += 3;
+                            _player.Def += 1;
+                            break;
+                        case "마법사":
+                            _player.Hp += 5;
+                            _player.Mp += 15;
+                            _player.currentHP = _player.Hp;
+                            _player.currentMP = _player.Mp;
                             _player.Atk += 3;
                             _player.Def += 1;
                             break;
@@ -894,28 +919,28 @@ namespace _5week_assignment
             merchantItem = new List<Item>
             {
                 //무기류
-                new Item("핸드백", "작은 크기지만 그 무엇보다 많은게 들어있습니다", Item.ItemType.Weapon, 4, 0, 0, 150),
-                new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", Item.ItemType.Weapon, 7, 0, 0, 250),
-                new Item("마우스", "\"딸깍\"", Item.ItemType.Weapon, 10, 0, 0, 350),
-                new Item("고장난 키보드", "무기로 쓰기에 적합한 키보드", Item.ItemType.Weapon, 15, 0, 0, 850),
-                new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", Item.ItemType.Weapon, 7, 0, 0, 950),
-                new Item("커피 보틀", "모서리에 맞으면 아픈 보틀", Item.ItemType.Weapon, 9, 0, 0, 1050),
+                new Item("핸드백", "작은 크기지만 그 무엇보다 많은게 들어있습니다", Item.ItemType.Weapon, 2, 0, 0, 300),
+                new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", Item.ItemType.Weapon, 5, 0, 0, 700),
+                new Item("마우스", "\"딸깍\"", Item.ItemType.Weapon, 7, 0, 0, 1600),
+                new Item("고장난 키보드", "무기로 쓰기에 적합한 키보드", Item.ItemType.Weapon, 9, 0, 0, 2600),
+                new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", Item.ItemType.Weapon, 13, 0, 0, 3700),
+                new Item("커피 보틀", "모서리에 맞으면 아픈 보틀", Item.ItemType.Weapon, 17, 0, 0, 5500),
 
                 //방어구류
-                new Item("프랜치 코트", "방어구보단 패션 아이템 같습니다", Item.ItemType.Armor, 0, 1, 0, 130),
-                new Item("가죽 자켓", "좋은 브랜드라 약간의 방어력을 기대해도 될 것 같습니다", Item.ItemType.Armor, 0, 3, 0, 230),
-                new Item("롱패딩", "전신을 감싸지만 실상은 얇은 재질입니다", Item.ItemType.Armor, 0, 4, 0, 330),
-                new Item("발가락 수면양말", "굉장히 편안한 수면양말", Item.ItemType.Armor, 0, 7, 0, 830),
-                new Item("발가락 수면양말", "굉장히 편안한 수면양말", Item.ItemType.Armor, 0, 7, 0, 930),
-                new Item("발가락 수면양말", "굉장히 편안한 수면양말", Item.ItemType.Armor, 0, 7, 0, 1030),
+                new Item("프랜치 코트", "방어구보단 패션 아이템 같습니다", Item.ItemType.Armor, 0, 1, 0, 200),
+                new Item("가죽 자켓", "좋은 브랜드라 약간의 방어력을 기대해도 될 것 같습니다", Item.ItemType.Armor, 0, 3, 0, 600),
+                new Item("롱패딩", "전신을 감싸지만 실상은 얇은 재질입니다", Item.ItemType.Armor, 0, 4, 0, 800),
+                new Item("발가락 수면양말", "굉장히 편안한 수면양말", Item.ItemType.Armor, 0, 5, 0, 1400),
+                new Item("탈모방지 모자", "통풍이 잘 되고 머리 건강에 좋습니다.", Item.ItemType.Armor, 0, 6, 0, 2000),
+                new Item("인형탈", "그 무엇도 내부에 침범할 수 없습니다", Item.ItemType.Armor, 0, 7, 0, 3000),
 
                 //회복 아이템류
-                new Item("상처치료연고", "체력 10 회복", Item.ItemType.Restore, 0, 0, 10, 100),
-                new Item("압박붕대", "체력 15 회복", Item.ItemType.Restore, 0, 0, 15, 200),
-                new Item("봉합술 키트", "체력 25 회복", Item.ItemType.Restore, 0, 0, 25, 300),
-                new Item("회복 촉진제", "체력 50 회복", Item.ItemType.Restore, 0, 0, 25, 500),
-                new Item("줄기 세포 배양술", "체력 80 회복", Item.ItemType.Restore, 0, 0, 25, 600),
-                new Item("나노 로봇", "체력 100 회복", Item.ItemType.Restore, 0, 0, 25, 800)
+                new Item("상처치료연고", "체력 10 회복", Item.ItemType.Restore, 0, 0, 10, 150),
+                new Item("압박붕대", "체력 20 회복", Item.ItemType.Restore, 0, 0, 20, 300),
+                new Item("봉합술 키트", "체력 30 회복", Item.ItemType.Restore, 0, 0, 30, 450),
+                new Item("회복 촉진제", "체력 50 회복", Item.ItemType.Restore, 0, 0, 50, 1000),
+                new Item("줄기 세포 배양술", "체력 80 회복", Item.ItemType.Restore, 0, 0, 80, 1700),
+                new Item("나노 로봇", "체력 100 회복", Item.ItemType.Restore, 0, 0, 100, 2000)
 
             };
 
@@ -935,7 +960,15 @@ namespace _5week_assignment
                 }
 
                 merchantItem[i].PrintItemStatDescription(true, i + 1);
+
+                if (i % (merchantItem.Count / 3) == 5)
+                {
+                    Console.WriteLine();
+                }
+
             }
+            Console.WriteLine();
+            Console.WriteLine($"소지금 : {_player.Gold} Gold");
             Console.WriteLine();
             Console.WriteLine("0. 나가기");
             Console.WriteLine("");
