@@ -327,10 +327,7 @@ namespace _5week_assignment
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("MP가 부족하여 스킬을 사용할 수 없습니다.");
                     Console.ResetColor();
-                    Console.WriteLine("아무키나 눌러 돌아갑니다");
-                    // 사용자가 확인하기 전까지 대기
-                    Console.ReadKey();
-                    Console.Clear();
+                    Thread.Sleep(1000);
                     Skill(); // 스킬 선택으로 돌아감
                 }
                 else
@@ -348,9 +345,7 @@ namespace _5week_assignment
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("MP가 부족하여 스킬을 사용할 수 없습니다.");
                     Console.ResetColor();
-                    Console.WriteLine("아무키나 눌러 돌아갑니다");
-                    // 사용자가 확인하기 전까지 대기
-                    Console.ReadKey();
+                    Thread.Sleep(1000);
                     Console.Clear();
                     Skill(); // 스킬 선택으로 돌아감
                 }
