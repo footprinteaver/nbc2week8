@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace _5week_assignment
@@ -43,30 +44,29 @@ namespace _5week_assignment
             switch (randMonster)
             {
                 case (int)MonsterType.LeeHanSol:
-                    MonsterSetting("이한솔 매니저", 10, 3, 0, 2, 100,2);
+                    MonsterSetting("이한솔 매니저", 22, 6, 1, 1, 200, 5);
                     monsterDropItem = DropItem((int)MonsterType.LeeHanSol);
                     break;
                 case (int)MonsterType.MonYeongOh:
-                    MonsterSetting("문영오 매니저", 15, 3, 1, 3, 150, 3);
+                    MonsterSetting("문영오 매니저", 27, 8, 3, 2, 260, 7);
                     monsterDropItem = DropItem((int)MonsterType.MonYeongOh);
                     break;
                 case (int)MonsterType.HanHyoseung:
-                    MonsterSetting("한효승 매니저", 25, 9, 3, 5, 300, 5);
+                    MonsterSetting("한효승 매니저", 35, 12, 5, 3, 370, 12);
                     monsterDropItem = DropItem((int)MonsterType.HanHyoseung);
                     break;
                 case (int)MonsterType.LeeHanbyeol:
-                    MonsterSetting("이한솔 튜터", 30, 3, 5, 5, 350, 5);
+                    MonsterSetting("이한솔 튜터", 50, 9, 9, 4, 600, 15);
                     monsterDropItem = DropItem((int)MonsterType.LeeHanbyeol);
                     break;
                 case (int)MonsterType.KimHyunjeong:
-                    MonsterSetting("김현정 튜터", 60, 10, 7, 7, 400, 7);
+                    MonsterSetting("김현정 튜터", 26, 20, 4, 5, 580, 17);
                     monsterDropItem = DropItem((int)MonsterType.KimHyunjeong);
                     break;
                 case (int)MonsterType.KimYeongHo:
-                    MonsterSetting("김영호 튜터", 100, 15, 15, 10, 600, 10);
+                    MonsterSetting("김영호 튜터", 52, 14, 7, 6, 720, 22);
                     monsterDropItem = DropItem((int)MonsterType.KimYeongHo);
                     break;
-                    
             }
 
         }
@@ -114,15 +114,14 @@ namespace _5week_assignment
                 Console.WriteLine("\r\n크리티컬 발동!!");
                 Console.ResetColor();
                 attack = (int)Math.Ceiling(attack * 1.6);
-                character.currentHP -= attack;
-                damaged = attack;
+                character.currentHP -= (int)(attack * (5.0f / (character.Def + 5.0f)));
+                damaged = (int)(attack * (5.0f / (character.Def + 5.0f)));
             }
             else
             {
                 // 일반
-                character.currentHP -= attack;
-                damaged = attack;
-                
+                character.currentHP -= (int)(attack * (5.0f / (character.Def + 5.0f)));
+                damaged = (int)(attack * (5.0f / (character.Def + 5.0f)));
             }
         }
 
@@ -139,9 +138,9 @@ namespace _5week_assignment
                 case (int)MonsterType.LeeHanSol:
                     monsterItem = new List<Item>
                     {
-                        new Item("핸드백", "작은 크기지만 그 무엇보다 많은게 들어있습니다", Item.ItemType.Weapon, 4, 0, 0, 150),
-                        new Item("프랜치 코트", "방어구보단 패션 아이템 같습니다", Item.ItemType.Armor, 0, 1, 0, 130),
-                        new Item("상처치료연고", "체력 10 회복", Item.ItemType.Restore, 0, 0, 10, 100),
+                        new Item("핸드백", "작은 크기지만 그 무엇보다 많은게 들어있습니다", Item.ItemType.Weapon, 2, 0, 0, 300),
+                        new Item("프랜치 코트", "방어구보단 패션 아이템 같습니다", Item.ItemType.Armor, 0, 1, 0, 200),
+                        new Item("상처치료연고", "체력 10 회복", Item.ItemType.Restore, 0, 0, 10, 150),
                         null
                     };
                     monsterDropRate = new List<int>
@@ -155,9 +154,9 @@ namespace _5week_assignment
                 case (int)MonsterType.MonYeongOh:
                     monsterItem = new List<Item>
                     {
-                        new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", Item.ItemType.Weapon, 7, 0, 0, 250),
-                        new Item("가죽 자켓", "좋은 브랜드라 약간의 방어력을 기대해도 될 것 같습니다", Item.ItemType.Armor, 0, 3, 0, 230),
-                        new Item("압박붕대", "체력 15 회복", Item.ItemType.Restore, 0, 0, 15, 200),
+                        new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", Item.ItemType.Weapon, 5, 0, 0, 700),
+                        new Item("가죽 자켓", "좋은 브랜드라 약간의 방어력을 기대해도 될 것 같습니다", Item.ItemType.Armor, 0, 3, 0, 600),
+                        new Item("압박붕대", "체력 20 회복", Item.ItemType.Restore, 0, 0, 20, 300),
                         null
                     };
                     monsterDropRate = new List<int>
@@ -171,9 +170,9 @@ namespace _5week_assignment
                 case (int)MonsterType.HanHyoseung:
                     monsterItem = new List<Item>
                     {
-                        new Item("마우스", "\"딸깍\"", Item.ItemType.Weapon, 10, 0, 0, 350),
-                        new Item("롱패딩", "전신을 감싸지만 실상은 얇은 재질입니다", Item.ItemType.Armor, 0, 4, 0, 330),
-                        new Item("봉합술 키트", "체력 25 회복", Item.ItemType.Restore, 0, 0, 25, 300),
+                        new Item("마우스", "\"딸깍\"", Item.ItemType.Weapon, 7, 0, 0, 1600),
+                        new Item("롱패딩", "전신을 감싸지만 실상은 얇은 재질입니다", Item.ItemType.Armor, 0, 4, 0, 800),
+                        new Item("봉합술 키트", "체력 30 회복", Item.ItemType.Restore, 0, 0, 30, 450),
                         null
                     };
                     monsterDropRate = new List<int>
@@ -187,9 +186,9 @@ namespace _5week_assignment
                 case (int)MonsterType.LeeHanbyeol:
                     monsterItem = new List<Item>
                     {
-                        new Item("고장난 키보드", "무기로 쓰기에 적합한 키보드", Item.ItemType.Weapon, 15, 0, 0, 850),
-                        new Item("발가락 수면양말", "굉장히 편안한 수면양말", Item.ItemType.Armor, 0, 7, 0, 830),
-                        new Item("회복 촉진제", "체력 50 회복", Item.ItemType.Restore, 0, 0, 50, 500),
+                        new Item("고장난 키보드", "무기로 쓰기에 적합한 키보드", Item.ItemType.Weapon, 9, 0, 0, 2600),
+                        new Item("발가락 수면양말", "굉장히 편안한 수면양말", Item.ItemType.Armor, 0, 5, 0, 1400),
+                        new Item("회복 촉진제", "체력 50 회복", Item.ItemType.Restore, 0, 0, 50, 1000),
                         null
                     };
                     monsterDropRate = new List<int>
@@ -203,9 +202,9 @@ namespace _5week_assignment
                 case (int)MonsterType.KimHyunjeong:
                     monsterItem = new List<Item>
                     {
-                        new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", Item.ItemType.Weapon, 7, 0, 0, 950),
-                        new Item("탈모방지 모자", "통풍이 잘 되고 머리 건강에 좋습니다.", Item.ItemType.Armor, 0, 7, 0, 930),
-                        new Item("줄기 세포 배양술", "체력 80 회복", Item.ItemType.Restore, 0, 0, 80, 600),
+                        new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", Item.ItemType.Weapon, 13, 0, 0, 3700),
+                        new Item("탈모방지 모자", "통풍이 잘 되고 머리 건강에 좋습니다.", Item.ItemType.Armor, 0, 6, 0, 2000),
+                        new Item("줄기 세포 배양술", "체력 80 회복", Item.ItemType.Restore, 0, 0, 80, 1700),
                         null
                     };
                     monsterDropRate = new List<int>
@@ -219,9 +218,9 @@ namespace _5week_assignment
                 case (int)MonsterType.KimYeongHo:
                     monsterItem = new List<Item>
                     {
-                        new Item("커피 보틀", "모서리에 맞으면 아픈 보틀", Item.ItemType.Weapon, 9, 0, 0, 1050),
-                        new Item("인형탈", "그 무엇도 내부에 침범할 수 없습니다", Item.ItemType.Armor, 0, 7, 0, 1030),
-                        new Item("나노 로봇", "체력 100 회복", Item.ItemType.Restore, 0, 0, 100, 800),
+                        new Item("커피 보틀", "모서리에 맞으면 아픈 보틀", Item.ItemType.Weapon, 17, 0, 0, 5500),
+                        new Item("인형탈", "그 무엇도 내부에 침범할 수 없습니다", Item.ItemType.Armor, 0, 7, 0, 3000),
+                        new Item("나노 로봇", "체력 100 회복", Item.ItemType.Restore, 0, 0, 100, 2000),
                         null
                     };
                     monsterDropRate = new List<int>
@@ -253,25 +252,25 @@ namespace _5week_assignment
 
 
 
-        private int SummonByStage(int currentStage)             // 스테이지 별 캐릭터 소환메서드
+        private int SummonByStage(int currentStage)             // 스테이지 별 몬스터 소환메서드
         {
             Random rand = new Random();
             int randMonster;
-            if (currentStage <= 1)
+            if (currentStage <= 3)
             {
                 randMonster = rand.Next(1, 4);
             }
-            else if (currentStage <= 2)
+            else if (currentStage <= 6)
             {
-                randMonster = rand.Next(1, 6);
+                randMonster = rand.Next(2, 6);
             }
-            else if (currentStage <= 3)
+            else if (currentStage <= 10)
             {
-                randMonster = rand.Next(1, 7);
+                randMonster = rand.Next(3, 7);
             }
             else
             {
-                randMonster = rand.Next(2, 7);
+                randMonster = rand.Next(4, 7);
             }
             return randMonster;
         }

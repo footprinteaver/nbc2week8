@@ -39,7 +39,7 @@ namespace _5week_assignment
             string input = Console.ReadLine();
 
             Name = input;
-            Gold = 1500;
+            Gold = 500;
             isDead = false;
             Level = 1;
             Exp = 0;
@@ -62,32 +62,32 @@ namespace _5week_assignment
                 case 1:
                     choice = ClassType.Knight;
                     Job = "전사";
-                    Hp = 100;
-                    Mp = 30;
+                    Hp = 70;
+                    Mp = 45;
                     currentHP = Hp;
                     currentMP = Mp;
-                    Atk = 10;
-                    Def = 20;
+                    Atk = 8;
+                    Def = 10;
                     break;
                 case 2:
                     choice = ClassType.Archer;
                     Job = "궁수";
-                    Hp = 80;
-                    Mp = 40;
+                    Hp = 60;
+                    Mp = 70;
                     currentHP = Hp;
                     currentMP = Mp;
-                    Atk = 15;
-                    Def = 15;
+                    Atk = 10;
+                    Def = 8;
                     break;
                 case 3:
                     choice = ClassType.Mage;
                     Job = "마법사";
-                    Hp = 60;
-                    Mp = 80;
+                    Hp = 45;
+                    Mp = 100;
                     currentHP = Hp;
                     currentMP = Mp;
-                    Atk = 20;
-                    Def = 8;
+                    Atk = 15;
+                    Def = 6;
                     break;
                 default:
                     Console.Clear();
@@ -121,14 +121,14 @@ namespace _5week_assignment
                 Console.WriteLine("\r\n크리티컬 발동!!");
                 Console.ResetColor();
                 attack = (int)Math.Ceiling(attack * 1.6);
-                monster.currentHp -= attack;
-                damaged = attack;
+                monster.currentHp -= (int)(attack * (5.0f / (monster.Def + 5.0f)));
+                damaged = (int)(attack * (5.0f / (monster.Def + 5.0f)));
             }
             else
             {
                 //일반
-                monster.currentHp -= attack;
-                damaged = attack;
+                monster.currentHp -= (int)(attack * (5.0f / (monster.Def + 5.0f)));
+                damaged = (int)(attack * (5.0f / (monster.Def + 5.0f)));
             }
         }
 
