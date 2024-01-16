@@ -121,14 +121,14 @@ namespace _5week_assignment
                 Console.WriteLine("\r\n크리티컬 발동!!");
                 Console.ResetColor();
                 attack = (int)Math.Ceiling(attack * 1.6);
-                monster.currentHp -= attack;
-                damaged = attack;
+                monster.currentHp -= attack - monster.Def;
+                damaged = attack - monster.Def;
             }
             else
             {
                 //일반
-                monster.currentHp -= attack;
-                damaged = attack;
+                monster.currentHp -= attack - monster.Def;
+                damaged = attack - monster.Def;
             }
         }
 

@@ -31,7 +31,7 @@ namespace _5week_assignment
         }
 
 
-        public void SkillInfo(bool skillNum = false, int index = 0)
+        public void SkillInfo(bool skillNum = false, int index = 0)         // 스킬 정보표시
         {
             Console.Write("- ");
 

@@ -59,7 +59,7 @@ namespace _5week_assignment
                     monsterDropItem = DropItem((int)MonsterType.LeeHanbyeol);
                     break;
                 case (int)MonsterType.KimHyunjeong:
-                    MonsterSetting("김현정 튜터", 60, 10, 7, 9,400,9);
+                    MonsterSetting("김현정 튜터", 60, 10, 7, 9, 400, 9);
                     monsterDropItem = DropItem((int)MonsterType.KimHyunjeong);
                     break;
                 case (int)MonsterType.KimYeongHo:
@@ -113,13 +113,22 @@ namespace _5week_assignment
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\r\n크리티컬 발동!!");
                 Console.ResetColor();
-                attack = (int)Math.Ceiling(attack * 1.6);
+                attack = (int)Math.Ceiling(attack * 1.6) - character.Def;
+                if(attack <= 0)
+                {
+                    attack = 1;
+                }
                 character.currentHP -= attack;
                 damaged = attack;
             }
             else
             {
                 // 일반
+                attack = attack - character.Def;
+                if(attack <= 0)
+                {
+                    attack = 1;
+                }
                 character.currentHP -= attack;
                 damaged = attack;
                 
@@ -158,7 +167,7 @@ namespace _5week_assignment
                         new Item("코딩 책", "사전에 비견되는 딱딱함과 묵직함을 지녔습니다", Item.ItemType.Weapon, 7, 0, 0, 250),
                         new Item("가죽 자켓", "좋은 브랜드라 약간의 방어력을 기대해도 될 것 같습니다", Item.ItemType.Armor, 0, 3, 0, 230),
                         new Item("압박붕대", "체력 15 회복", Item.ItemType.Restore, 0, 0, 15, 200),
-                        null
+                        null 
                     };
                     monsterDropRate = new List<int>
                     {

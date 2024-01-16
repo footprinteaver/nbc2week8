@@ -63,31 +63,31 @@ namespace _5week_assignment
             int summonCnt;
 
 
-            if (currentStage <= 1)
+            if (currentStage <= 5)
             {
-                summonCnt = rand.Next(1, 5);            // 1 ~ 5단계에선 1마리 ~ 4마리까지의 몬스터가 등장하게끔
+                summonCnt = rand.Next(1, 5);            // 1 ~ 5단계에선 1마리 ~ 4마리까지의 몬스터가 등장하게
                 for (int i = 0; i < summonCnt; i++)
                 {
                     monsterPool.Add(new Monster(currentStage));
                 }
             }
-            else if (currentStage <= 2)
+            else if (currentStage <= 10)
             {
-                summonCnt = rand.Next(2, 5);            // 6 ~ 10단계에서 1마리 ~ 5마리까지의 몬스터가 등장하게끔
+                summonCnt = rand.Next(2, 5);            // 6 ~ 10단계에서 1마리 ~ 5마리까지의 몬스터가 등장하게
                 for (int i = 0; i < summonCnt; i++)
                 {
                     monsterPool.Add(new Monster(currentStage));
                 }
             }
-            else if(currentStage <= 3)
+            else if(currentStage <= 15) 
             {
-                summonCnt = rand.Next(2, 7);            // 7~ 단계에서 2마리 ~ 5마리의 몬스터가 등장하게끔
+                summonCnt = rand.Next(2, 7);            // 7~ 단계에서 2마리 ~ 5마리의 몬스터가 등장하게
                 for (int i = 0; i < summonCnt; i++)
                 {
                     monsterPool.Add(new Monster(currentStage));
                 }
             }
-            else
+            else                                     // 16 ~ 단계부터는 3마리 ~ 10마리의 몬스터가 등장하게
             {
                 summonCnt = rand.Next(3, 10);
                 for(int i = 0; i<summonCnt; i++)
@@ -365,6 +365,7 @@ namespace _5week_assignment
         private static void PlayerSkillAttackResult(int input, int damaged, playerSkill skill) //플레이어 공격 결과
         {
             
+            
 
             ShowHighlightedText("■ PlayerTurn ■");
             Console.WriteLine();
@@ -372,7 +373,7 @@ namespace _5week_assignment
             // MP 차감
             _player.currentMP -= skill.Cost;
 
-            monsterPool[input].currentHp -= damaged;
+            monsterPool[input].currentHp -= damaged - monsterPool[input].Def;
             Console.WriteLine($"{_player.Name} 의 {skill.Name}! ");
 
             Random rand = new Random();
@@ -384,11 +385,21 @@ namespace _5week_assignment
                 Console.WriteLine("\r\n크리티컬 발동!!");
                 Console.ResetColor();
                 Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
-                Console.WriteLine($" [데미지 : {(int)(damaged * 1.6f)}]");
+                damaged = (int)(damaged * 1.6f) - monsterPool[input].Def;
+                if(damaged <= 0)
+                {
+                    damaged = 1;
+                }
+                Console.WriteLine($" [데미지 : {damaged}]");
             }
             else
             {
                 Console.Write($"Lv.{monsterPool[input].Level} {monsterPool[input].Name} 를 맞췄습니다.");
+                damaged = damaged - monsterPool[input].Def;
+                if(damaged <= 0)
+                {
+                    damaged = 1;
+                }
                 Console.WriteLine($" [데미지 : {damaged}]");
             }
 
