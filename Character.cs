@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace _5week_assignment
 {
+    
     public class Character
     {
 
@@ -22,9 +23,11 @@ namespace _5week_assignment
         public int Atk { get; set; }
         public int Def { get; set; }
         public int Hp { get; set; }
+        public int Mp { get; set; }//마나 추가
 
         public bool isDead { get; set; }
         public int currentHP { get; set; }
+        public int currentMP { get; set; }
         public int Gold { get; set; }
         public int Exp { get; set; }
         public int MaxExp { get; set; }
@@ -60,7 +63,9 @@ namespace _5week_assignment
                     choice = ClassType.Knight;
                     Job = "전사";
                     Hp = 100;
+                    Mp = 30;
                     currentHP = Hp;
+                    currentMP = Mp;
                     Atk = 10;
                     Def = 20;
                     break;
@@ -68,7 +73,9 @@ namespace _5week_assignment
                     choice = ClassType.Archer;
                     Job = "궁수";
                     Hp = 80;
+                    Mp = 40;
                     currentHP = Hp;
+                    currentMP = Mp;
                     Atk = 15;
                     Def = 15;
                     break;
@@ -76,7 +83,9 @@ namespace _5week_assignment
                     choice = ClassType.Mage;
                     Job = "마법사";
                     Hp = 60;
+                    Mp = 80;
                     currentHP = Hp;
+                    currentMP = Mp;
                     Atk = 20;
                     Def = 8;
                     break;
@@ -156,8 +165,9 @@ namespace _5week_assignment
         {
 
             Console.WriteLine($"Lv.{Level.ToString("00")} {Name} ({Job})");
-            Console.WriteLine($"HP {currentHP}/{Hp}");
-            Console.WriteLine($"Exp : {Exp}  /  {MaxExp}");
+            Console.WriteLine($"HP {currentHP} / {Hp}");
+            Console.WriteLine($"MP {currentMP} / {Mp}");
+            Console.WriteLine($"Exp : {Exp} / {MaxExp}");
         }
     }
 }
