@@ -597,6 +597,7 @@ namespace _5week_assignment
                             if (inputKey2 == 0)
                             {
                                 monsterPool.Clear();
+                                playerInventory.Clear();
                                 GameDataSetting();
                                 startMenu();
                             }
